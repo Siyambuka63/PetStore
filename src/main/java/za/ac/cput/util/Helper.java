@@ -8,7 +8,7 @@ public class Helper {
     }
 
     public static boolean isValidPhoneNumber(String number) {
-        return number.matches("^0[0-9]{10}$");
+        return number.matches("^0[1-9]{9}$");
     }
 
     public static boolean isValidEmail(String email) {

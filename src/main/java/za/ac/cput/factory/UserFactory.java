@@ -31,8 +31,33 @@ public class UserFactory {
                 .setLastName(lastName)
                 .setPassword(password)
                 .setCard(card)
+                .setAddress(address)
                 .setContact(contact)
                 .setRole(role)
                 .build();
+    }
+
+    public static User createUser(
+            int userID,
+            String firstName,
+            String lastName,
+            String password,
+            String cardNumber,
+            String cardHolder,
+            String expiryDate,
+            String street,
+            String suburb,
+            String flatDetail,
+            String city,
+            String postalCode,
+            String email,
+            String phone,
+            Role role
+    ) {
+        Contact contact = ContactFactory.createContact(phone, email);
+        ShippingAddress address = null; //ToDo code
+        Card card = null; //ToDo code
+
+        return UserFactory.createUser(userID, firstName, lastName, password, card, address, contact, role);
     }
 }

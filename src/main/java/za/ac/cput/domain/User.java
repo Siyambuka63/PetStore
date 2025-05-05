@@ -106,6 +106,11 @@ public class User {
             return this;
         }
 
+        public Builder setAddress(ShippingAddress address){
+            this.address = address;
+            return this;
+        }
+
         public Builder setContact(Contact contact) {
             this.contact = contact;
             return this;
