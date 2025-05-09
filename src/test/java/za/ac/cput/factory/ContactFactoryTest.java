@@ -7,11 +7,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ContactFactoryTest {
 
-    private static Contact contactWithInvalidEmail = ContactFactory.createContact("0987654321", "test@gmail.com.");
-    private static Contact contactWithInvalidPhone = ContactFactory.createContact("09876543211", "test@gmail.com");
-    private static Contact contactWithoutEmail = ContactFactory.createContact("0987654321", "");
-    private static Contact contactWithoutPhone = ContactFactory.createContact("", "test@gmail.com");
-    private static Contact contactWithValidDetail = ContactFactory.createContact("0987654321", "test@gmail.com");
+    private static Contact contactWithInvalidEmail = ContactFactory.createContact(1, "0987654321", "test@gmail.com.");
+    private static Contact contactWithInvalidPhone = ContactFactory.createContact(1, "09876543211", "test@gmail.com");
+    private static Contact contactWithoutEmail = ContactFactory.createContact(1, "0987654321", "");
+    private static Contact contactWithoutPhone = ContactFactory.createContact(1, "", "test@gmail.com");
+    private static Contact contactWithValidDetail = ContactFactory.createContact(1, "0987654321", "test@gmail.com");
 
     @Test
     void testCreateContactWithInvalidEmail() {

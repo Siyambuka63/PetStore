@@ -1,12 +1,21 @@
 package za.ac.cput.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Contact {
+    @Id
+    private int id;
     private String email;
     private String phone;
 
-    private Contact(){}
+    protected Contact(){}
 
     private Contact(Builder builder){
+        this.id = builder.id;
         this.email = builder.email;
         this.phone = builder.phone;
     }
@@ -19,17 +28,26 @@ public class Contact {
         return phone;
     }
 
+    public int getId() { return id; }
+
     @Override
     public String toString() {
         return "Contact{" +
-                "email='" + email + '\'' +
+                "id=" + id +
+                ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 '}';
     }
 
     public static class Builder {
+        private int id;
         private String email;
         private String phone;
+
+        public Builder setId(int id){
+            this.id = id;
+            return this;
+        }
 
         public Builder setEmail(String email) {
             this.email = email;
@@ -42,6 +60,7 @@ public class Contact {
         }
 
         public Builder copy(Contact contact){
+            this.id = contact.getId();
             this.email = contact.email;
             this.phone = contact.phone;
             return this;
