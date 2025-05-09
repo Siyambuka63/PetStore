@@ -39,6 +39,7 @@ public class UserFactory {
 
     public static User createUser(
             int userID,
+            int contactID,
             String firstName,
             String lastName,
             String password,
@@ -54,7 +55,7 @@ public class UserFactory {
             String phone,
             Role role
     ) {
-        Contact contact = ContactFactory.createContact(phone, email);
+        Contact contact = ContactFactory.createContact(contactID, phone, email);
         ShippingAddress address = null; //ToDo code
         Card card = null; //ToDo code
 
