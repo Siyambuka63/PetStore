@@ -21,8 +21,6 @@ public class UserFactory {
         if (Helper.isNullOrEmpty(firstName)) return null;
         if (Helper.isNullOrEmpty(lastName)) return null;
         if (Helper.isNullOrEmpty(password)) return null;
-        if (card == null) return null;
-        if (address == null) return null;
         if (contact == null) return null;
         if (role == null) return null;
         return new User.Builder()
