@@ -2,35 +2,35 @@ package za.ac.cput.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import za.ac.cput.domain.Contact;
-import za.ac.cput.service.impl.ContactService;
+import za.ac.cput.domain.User;
+import za.ac.cput.service.impl.UserService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/contact")
-public class ContactController {
+@RequestMapping("/user")
+public class UserController {
 
-    private ContactService service;
+    private UserService service;
 
     @Autowired
-    public ContactController(ContactService service) {
+    public UserController(UserService service) {
         this.service = service;
     }
 
     @PostMapping("/create")
-    public Contact create(@RequestBody Contact contact) {
-        return service.create(contact);
+    public User create(@RequestBody User user) {
+        return service.create(user);
     }
 
     @GetMapping("/read/{id}")
-    public Contact read(@PathVariable int id) {
+    public User read(@PathVariable int id) {
         return service.read(id);
     }
 
     @PutMapping("/update")
-    public Contact update(@RequestBody Contact contact) {
-        return service.update(contact);
+    public User update(@RequestBody User user) {
+        return service.update(user);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -39,7 +39,7 @@ public class ContactController {
     }
 
     @GetMapping("/getAll")
-    public List<Contact> getAll() {
+    public List<User> getAll() {
         return service.getAll();
     }
 }
