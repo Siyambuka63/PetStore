@@ -1,5 +1,6 @@
 package za.ac.cput.domain;
 
+
 public class Brand {
     private int brandID;
     private String brandName;
@@ -49,9 +50,4 @@ public class Brand {
         public Brand build(){return new Brand(this);}
     }
 
-
-//    public Brand(int brandID, String brandName) {
-//        this.brandID = brandID;
-//        this.brandName = brandName;
- //   }
 }
