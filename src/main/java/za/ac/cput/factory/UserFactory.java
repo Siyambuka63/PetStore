@@ -21,8 +21,6 @@ public class UserFactory {
         if (Helper.isNullOrEmpty(firstName)) return null;
         if (Helper.isNullOrEmpty(lastName)) return null;
         if (Helper.isNullOrEmpty(password)) return null;
-        if (card == null) return null;
-        if (address == null) return null;
         if (contact == null) return null;
         if (role == null) return null;
         return new User.Builder()
@@ -39,6 +37,7 @@ public class UserFactory {
 
     public static User createUser(
             int userID,
+            int contactID,
             String firstName,
             String lastName,
             String password,
@@ -54,7 +53,7 @@ public class UserFactory {
             String phone,
             Role role
     ) {
-        Contact contact = ContactFactory.createContact(phone, email);
+        Contact contact = ContactFactory.createContact(contactID, phone, email);
         ShippingAddress address = null; //ToDo code
         Card card = null; //ToDo code
 

@@ -1,9 +1,13 @@
 package za.ac.cput.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import za.ac.cput.domain.enums.Role;
 
-
+@Entity
 public class User {
+    @Id
     private int userID;
     private String firstName;
     private String lastName;
@@ -13,7 +17,7 @@ public class User {
     private Contact contact;
     private Role role;
 
-    private User(){}
+    protected User(){}
 
     private User(Builder builder){
         userID = builder.userID;
