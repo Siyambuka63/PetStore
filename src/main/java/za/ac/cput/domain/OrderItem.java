@@ -1,5 +1,8 @@
 package za.ac.cput.domain;
-
+/*
+     OrderItem class
+     Author: Sinovuyo Mathungana (230143725)
+*/
 public class OrderItem {
     private int orderItemID;
     private int productID;

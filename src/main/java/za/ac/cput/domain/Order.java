@@ -1,10 +1,12 @@
 package za.ac.cput.domain;
 
 import za.ac.cput.domain.enums.Status;
-
 import java.time.LocalDate;
 import java.util.List;
-
+/*
+     Order class
+     Author: Sinovuyo Mathungana (230143725)
+*/
 public class Order {
     private int orderID;
     private int userID;
