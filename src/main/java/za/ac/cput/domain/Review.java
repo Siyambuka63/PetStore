@@ -51,9 +51,9 @@ public class Review {
     }
 
     public static class Builder {
-        private Integer reviewId;
-        private Integer userId;
-        private Integer productId;
+        private int reviewId;
+        private int userId;
+        private int productId;
         private String review;
         private Float rating;
 
