@@ -1,3 +1,7 @@
+/* Review.java
+   Review class
+   Author: Nkheso Senior Mathebula 230762883
+*/
 package za.ac.cput.domain;
 
 public class Review {

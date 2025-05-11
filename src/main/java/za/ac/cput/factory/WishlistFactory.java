@@ -6,7 +6,7 @@ import za.ac.cput.util.Helper;
 
 import java.util.List;
 
-public class WishListFactory {
+public class WishlistFactory {
     public static Wishlist createWishlist(int wishlistId, int userId, List<Product> items) {
         if (!Helper.isValidId(wishlistId) || !Helper.isValidId(userId)) return null;
         if (Helper.isNullOrEmpty(items)) return null;

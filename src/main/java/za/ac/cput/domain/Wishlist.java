@@ -1,3 +1,7 @@
+/* Wishlist.java
+   Wishlist class
+   Author: Nkheso Senior Mathebula 230762883
+*/
 package za.ac.cput.domain;
 
 import java.util.List;
