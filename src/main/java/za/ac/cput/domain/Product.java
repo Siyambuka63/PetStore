@@ -1,8 +1,5 @@
 package za.ac.cput.domain;
 
-import za.ac.cput.domain.enums.Category;
-import za.ac.cput.domain.enums.Flavour;
-
 import java.sql.Blob;
 import java.util.List;
 
@@ -11,7 +8,7 @@ import java.util.List;
 * product class*/
 public class Product {
     private int productID;
-    private String name;
+    private String productName;
     private String description;
     private Blob image;
     private double rating;
@@ -30,7 +27,7 @@ public class Product {
 
     private Product(Builder builder) {
         productID = builder.productID;
-        name = builder.name;
+        productName = builder.productName;
         description = builder.description;
         image = builder.image;
         rating = builder.rating;
@@ -48,16 +45,15 @@ public class Product {
         return productID;
     }
 
-    public String getName() {
-        return name;
+    public String getProductName() {
+        return productName;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public Blob getImage() {
-        return image;
+    public Blob getImage() {return image;
     }
 
     public double getRating() {
@@ -100,7 +96,7 @@ public class Product {
     public String toString() {
         return "Product{" +
                 "productID=" + productID +
-                ", name='" + name + '\'' +
+                ", productName='" + productName + '\'' +
                 ", description='" + description + '\'' +
                 ", image=" + image +
                 ", rating=" + rating +
@@ -117,7 +113,7 @@ public class Product {
 
     public static class Builder {
         private int productID;
-        private String name;
+        private String productName;
         private String description;
         private Blob image;
         private double rating;
@@ -131,61 +127,74 @@ public class Product {
         private List<Category> categories;
 
 
-        public void setProductID(int productID) {
+        public Builder setProductID(int productID) {
             this.productID = productID;
+            return this;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public Builder setProductName(String productName) {
+            this.productName = productName;
+            return this;
         }
 
-        public void setDescription(String description) {
+        public Builder setDescription(String description) {
             this.description = description;
+            return this;
         }
 
-        public void setImage(Blob image) {
+        public Builder setImage(Blob image) {
             this.image = image;
+            return this;
         }
 
-        public void setRating(double rating) {
+        public Builder setRating(double rating) {
             this.rating = rating;
+            return this;
         }
 
-        public void setPrice(double price) {
+        public Builder setPrice(double price) {
             this.price = price;
+            return this;
         }
 
-        public void setStock(int stock) {
+        public Builder setStock(int stock) {
             this.stock = stock;
+            return this;
         }
 
-        public void setWeight(double weight) {
+        public Builder setWeight(double weight) {
             this.weight = weight;
+            return this;
         }
 
-        public void setLifeStageID(int lifeStageID) {
+        public Builder setLifeStageID(int lifeStageID) {
             this.lifeStageID = lifeStageID;
+            return this;
         }
 
-        public void setFoodtypeID(int foodtypeID) {
+        public Builder setFoodtypeID(int foodtypeID) {
             this.foodtypeID = foodtypeID;
+            return this;
         }
 
-        public void setPetTypeID(int petTypeID) {
+        public Builder setPetTypeID(int petTypeID) {
             this.petTypeID = petTypeID;
+            return this;
         }
 
-        public void setFlavours(List<Flavour> flavours) {
+        public Builder setFlavours(List<Flavour> flavours) {
             this.flavours = flavours;
+            return this;
         }
 
-        public void setCategories(List<Category> categories) {
+        public Builder setCategories(List<Category> categories) {
             this.categories = categories;
+            return this;
         }
 
         public Product copy(Product product) {
             this.productID = product.productID;
-            this.name = product.name;
+            this.productName = product.productName;
             this.description = product.description;
             this.image = product.image;
             this.rating = product.rating;
