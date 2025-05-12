@@ -2,6 +2,8 @@ package za.ac.cput.util;
 
 import org.apache.commons.validator.routines.EmailValidator;
 
+import java.time.LocalDate;
+
 public class Helper {
     public static boolean isNullOrEmpty(String str) {
         return str == null || str.isEmpty();
@@ -22,4 +24,14 @@ public class Helper {
         return emailValidator.isValid(email);
     }
 
+    public static boolean isValidDate(LocalDate date){
+        return date == null;
+    }
+  
+    public static boolean isValidPrice(double Price){
+        if (Double.isNaN(Price)) {
+            return true;
+        }
+        return false;
+    }
 }
