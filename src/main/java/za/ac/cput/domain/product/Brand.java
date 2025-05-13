@@ -1,5 +1,6 @@
 package za.ac.cput.domain.product;
-
+/*Oluhle Makhaye
+* 222419636*/
 
 public class Brand {
     private int brandID;
