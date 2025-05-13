@@ -34,12 +34,12 @@ public class PetType {
   private int petTypeID;
   private String petTypeName;
 
-  public PetType.Builder setPetTypeID(int petTypeID) {
+  public Builder setPetTypeID(int petTypeID) {
    this.petTypeID = petTypeID;
    return this;
   }
 
-  public PetType.Builder setPetTypeName(String PetTypeName) {
+  public Builder setPetTypeName(String PetTypeName) {
    this.petTypeName = petTypeName;
    return this;
   }
