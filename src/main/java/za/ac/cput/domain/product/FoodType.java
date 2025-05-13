@@ -1,4 +1,6 @@
 package za.ac.cput.domain.product;
+/*Oluhle Makhaye
+* 222419636*/
 
 public class FoodType {
     private  String foodTypeID;
