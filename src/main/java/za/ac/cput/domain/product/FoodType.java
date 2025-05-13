@@ -3,7 +3,7 @@ package za.ac.cput.domain.product;
 * 222419636*/
 
 public class FoodType {
-    private  String foodTypeID;
+    private  int foodTypeID;
     private  String foodTypeName;
 
     private FoodType() {
@@ -14,7 +14,7 @@ public class FoodType {
 
     }
 
-    public String getFoodTypeID() {
+    public int getFoodTypeID() {
         return foodTypeID;
     }
 
@@ -31,10 +31,10 @@ public class FoodType {
     }
 
     public static class Builder {
-        private String foodTypeID;
+        private int foodTypeID;
         private String foodTypeName;
 
-        public Builder setFoodTypeID(String foodTypeID) {
+        public Builder setFoodTypeID(int foodTypeID) {
             this.foodTypeID = foodTypeID;
             return this;
         }
