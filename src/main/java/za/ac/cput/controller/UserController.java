@@ -2,8 +2,8 @@ package za.ac.cput.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import za.ac.cput.domain.User;
-import za.ac.cput.service.impl.UserService;
+import za.ac.cput.domain.user.User;
+import za.ac.cput.service.user.impl.UserService;
 
 import java.util.List;
 
@@ -42,4 +42,6 @@ public class UserController {
     public List<User> getAll() {
         return service.getAll();
     }
+
+
 }

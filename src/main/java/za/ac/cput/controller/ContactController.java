@@ -2,8 +2,8 @@ package za.ac.cput.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import za.ac.cput.domain.Contact;
-import za.ac.cput.service.impl.ContactService;
+import za.ac.cput.domain.user.Contact;
+import za.ac.cput.service.user.impl.ContactService;
 
 import java.util.List;
 
