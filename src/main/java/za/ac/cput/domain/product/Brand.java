@@ -34,12 +34,14 @@ public class Brand {
         private int brandID;
         private String brandName;
 
-        public void setBrandID(int brandID) {
+        public Builder setBrandID(int brandID) {
             this.brandID = brandID;
+            return this;
         }
 
-        public void setBrandName(String brandName) {
+        public Builder setBrandName(String brandName) {
             this.brandName = brandName;
+            return this;
         }
 
         public Brand copy(Brand brand){
