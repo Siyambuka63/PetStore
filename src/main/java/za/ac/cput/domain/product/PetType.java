@@ -10,8 +10,9 @@ public class PetType {
 
  }
 
- private PetType(PetType.Builder builder){
-
+ private PetType(Builder builder){
+  petTypeID = builder.petTypeID;
+  petTypeName = builder.petTypeName;
  }
 
  public int getPetTypeID() {
@@ -39,7 +40,7 @@ public class PetType {
    return this;
   }
 
-  public Builder setPetTypeName(String PetTypeName) {
+  public Builder setPetTypeName(String petTypeName) {
    this.petTypeName = petTypeName;
    return this;
   }
