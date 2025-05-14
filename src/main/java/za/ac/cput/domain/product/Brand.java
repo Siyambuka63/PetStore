@@ -11,7 +11,8 @@ public class Brand {
     }
 
     private Brand(Builder builder){
-
+        this.brandID = builder.brandID;
+        this.brandName = builder.brandName;
     }
 
     public int getBrandID() {
