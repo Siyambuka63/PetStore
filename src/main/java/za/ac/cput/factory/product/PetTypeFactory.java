@@ -6,7 +6,7 @@ import za.ac.cput.domain.product.PetType;
 import za.ac.cput.util.Helper;
 
 public class PetTypeFactory {
-    private static PetType createPetType(int petTypeID, String petTypeName) {
+    public static PetType createPetType(int petTypeID, String petTypeName) {
         if (Helper.isNullOrEmpty(petTypeName)) return null;
         return new PetType.Builder()
                 .setPetTypeID(petTypeID)
