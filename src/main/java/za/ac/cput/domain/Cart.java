@@ -1,3 +1,11 @@
+/* Cart.java
+
+     Cart POJO class
+
+     Author: Elethu Manikivana (221195521)
+
+     Date: 09 May 2025 */
+
 package za.ac.cput.domain;
 
 import java.util.List;

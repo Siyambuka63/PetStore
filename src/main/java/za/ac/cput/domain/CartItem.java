@@ -1,3 +1,11 @@
+/* CartItem.java
+
+     CartItem POJO class
+
+     Author: Elethu Manikivana (221195521)
+
+     Date: 09 May 2025 */
+
 package za.ac.cput.domain;
 
 public class CartItem {
@@ -68,6 +76,7 @@ public class CartItem {
         public CartItem build() {
             return new CartItem(this);
         }
+
     }
 
 }
