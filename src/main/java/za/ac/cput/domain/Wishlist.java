@@ -4,6 +4,8 @@
 */
 package za.ac.cput.domain;
 
+import za.ac.cput.domain.product.Product;
+
 import java.util.List;
 
 public class Wishlist {
