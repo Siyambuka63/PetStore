@@ -5,10 +5,10 @@
      Author: Elethu Manikivana (221195521)
 
      Date: 17 May 2025 */
-package za.ac.cput.factory;
+package za.ac.cput.factory.cart;
 
-import za.ac.cput.domain.Cart;
-import za.ac.cput.domain.CartItem;
+import za.ac.cput.domain.cart.Cart;
+import za.ac.cput.domain.cart.CartItem;
 
 public class CartItemFactory {
     public static CartItem createCartItem(int cartItemId,int productId ,int quantity ) {
