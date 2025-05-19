@@ -5,7 +5,6 @@ package za.ac.cput.domain.product;
 public class FoodType {
     private  int foodTypeID;
     private  String foodTypeName;
-    private PetType petType;
 
     private FoodType() {
 
@@ -14,7 +13,6 @@ public class FoodType {
     private FoodType(Builder builder){
         this.foodTypeID = builder.foodTypeID;
         this.foodTypeName = builder.foodTypeName;
-        this.petType = builder.petType;
 
     }
 
@@ -26,21 +24,17 @@ public class FoodType {
         return foodTypeName;
     }
 
-    public PetType getPetType() {return petType;}
-
     @Override
     public String toString() {
         return "FoodType{" +
                 "foodTypeID=" + foodTypeID +
                 ", foodTypeName='" + foodTypeName + '\'' +
-                ", petType=" + petType +
                 '}';
     }
 
     public static class Builder {
         private int foodTypeID;
         private String foodTypeName;
-        private PetType petType;
 
         public Builder setFoodTypeID(int foodTypeID) {
             this.foodTypeID = foodTypeID;
@@ -52,15 +46,9 @@ public class FoodType {
             return this;
         }
 
-        public Builder setPetType(PetType petType) {
-            this.petType = petType;
-            return this;
-        }
-
         public FoodType copy(FoodType foodType){
             this.foodTypeID = foodType.foodTypeID;
             this.foodTypeName = foodType.foodTypeName;
-            this.petType = foodType.petType;
             return this.build();
         }
 
