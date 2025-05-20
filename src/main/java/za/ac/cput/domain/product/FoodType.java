@@ -2,11 +2,16 @@ package za.ac.cput.domain.product;
 /*Oluhle Makhaye
 * 222419636*/
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
 public class FoodType {
+    @Id
     private  int foodTypeID;
     private  String foodTypeName;
 
-    private FoodType() {
+    protected FoodType() {
 
     }
 
