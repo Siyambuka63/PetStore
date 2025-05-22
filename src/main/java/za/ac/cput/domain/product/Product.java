@@ -1,34 +1,47 @@
 package za.ac.cput.domain.product;
 
+import jakarta.persistence.*;
+
 import java.sql.Blob;
 import java.util.List;
 /*Oluhle Makhaye
 * 222419636
 * product class*/
+
+@Entity
 public class Product {
+    @Id
     private int productID;
     private String productName;
     private String description;
-    private Blob image;
+    @Lob
+    @Column(length=1024)
+    private byte[] productImage;
     private double rating;
     private double price;
     private int stock;
     private double weight;
+    @ManyToOne
+    @JoinColumn(name="Brand")
     private Brand brand;
     private int lifeStageID;
     private int foodtypeID;
     private int petTypeID;
-    private List<Flavour> flavours;
-    private List<Category> categories;
+    @ManyToOne
+    @JoinColumn(name="Flavours")
+    private Flavour flavours;
+    @ManyToOne
+    @JoinColumn(name="foodCategory")
+    private Category categories;
 
-    private Product () {
+    protected Product () {
     }
 
     private Product(Builder builder) {
         productID = builder.productID;
         productName = builder.productName;
         description = builder.description;
-        image = builder.image;
+        productImage = builder.productImage;
         rating = builder.rating;
         price = builder.price;
         stock = builder.stock;
@@ -53,7 +66,7 @@ public class Product {
         return description;
     }
 
-    public Blob getImage() {return image;
+    public byte[] getImage() {return productImage;
     }
 
     public double getRating() {
@@ -88,11 +101,11 @@ public class Product {
         return petTypeID;
     }
 
-    public List<Flavour> getFlavours() {
+    public Flavour getFlavours() {
         return flavours;
     }
 
-    public List<Category> getCategories() {
+    public Category getCategories() {
         return categories;
     }
 
@@ -102,7 +115,7 @@ public class Product {
                 "productID=" + productID +
                 ", productName='" + productName + '\'' +
                 ", description='" + description + '\'' +
-                ", image=" + image +
+                ", productImage=" + productImage +
                 ", rating=" + rating +
                 ", price=" + price +
                 ", stock=" + stock +
@@ -120,7 +133,7 @@ public class Product {
         private int productID;
         private String productName;
         private String description;
-        private Blob image;
+        private byte[] productImage;
         private double rating;
         private double price;
         private int stock;
@@ -129,8 +142,8 @@ public class Product {
         private int lifeStageID;
         private int foodtypeID;
         private int petTypeID;
-        private List<Flavour> flavours;
-        private List<Category> categories;
+        private Flavour flavours;
+        private Category categories;
 
 
         public Builder setProductID(int productID) {
@@ -148,8 +161,8 @@ public class Product {
             return this;
         }
 
-        public Builder setImage(Blob image) {
-            this.image = image;
+        public Builder setProductImage(byte[] productImage) {
+            this.productImage = productImage;
             return this;
         }
 
@@ -193,12 +206,12 @@ public class Product {
             return this;
         }
 
-        public Builder setFlavours(List<Flavour> flavours) {
+        public Builder setFlavours(Flavour flavours) {
             this.flavours = flavours;
             return this;
         }
 
-        public Builder setCategories(List<Category> categories) {
+        public Builder setCategories(Category categories) {
             this.categories = categories;
             return this;
         }
@@ -207,7 +220,7 @@ public class Product {
             this.productID = product.productID;
             this.productName = product.productName;
             this.description = product.description;
-            this.image = product.image;
+            this.productImage = product.productImage;
             this.rating = product.rating;
             this.price = product.price;
             this.stock = product.stock;
