@@ -1,5 +1,7 @@
 package za.ac.cput.domain.user;
 
+import java.time.LocalDate;
+
 public class Card {
    private int cardID;
     private String cardHolder;
@@ -65,6 +67,4 @@ public class Card {
         }
 
     }
-}
-
 }
