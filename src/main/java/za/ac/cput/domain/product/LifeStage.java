@@ -1,6 +1,11 @@
 package za.ac.cput.domain.product;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
 public class LifeStage {
+@Id
 private int lifeStageID;
 private String lifeStageName;
 

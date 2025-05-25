@@ -1,8 +1,13 @@
 package za.ac.cput.domain.cart;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 import java.util.List;
 
+@Entity
 public class Cart {
+    @Id
     public int cartID;
     public int userID;
     public List<CartItem> items;
