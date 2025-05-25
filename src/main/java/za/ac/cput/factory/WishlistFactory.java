@@ -2,22 +2,21 @@
    Nkheso Senior Mathebula 230762883
 */
 package za.ac.cput.factory;
-
-import za.ac.cput.domain.Product;
 import za.ac.cput.domain.Wishlist;
-import za.ac.cput.util.Helper;
-
+import za.ac.cput.domain.product.Product;
+import za.ac.cput.domain.user.User;
 import java.util.List;
 
 public class WishlistFactory {
-    public static Wishlist createWishlist(int wishlistId, int userId, List<Product> items) {
-        if (Helper.isNullOrEmpty(items))
+    public static Wishlist createWishlist(int wishlistId, User user, List<Product> items) {
+        if (user == null || items == null || items.isEmpty())
             return null;
 
         return new Wishlist.Builder()
                 .setWishlistId(wishlistId)
-                .setUserId(userId)
-                .setItem(items)
+                .setUser(user)
+                .setItems(items)
                 .build();
     }
 }
+

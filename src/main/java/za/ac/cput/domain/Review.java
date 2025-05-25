@@ -1,18 +1,22 @@
-/*
-   Nkheso Senior Mathebula 230762883
-*/
 package za.ac.cput.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-
+import jakarta.persistence.*;
+import za.ac.cput.domain.product.Product;
+import za.ac.cput.domain.user.User;
 @Entity
 public class Review {
 
     @Id
     private int reviewId;
-    private int userId;
-    private int productId;
+
+    @ManyToOne
+    @JoinColumn(name = "userID")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "productID")
+    private Product product;
+
     private String review;
     private Float rating;
 
@@ -20,8 +24,8 @@ public class Review {
 
     private Review(Builder builder) {
         this.reviewId = builder.reviewId;
-        this.userId = builder.userId;
-        this.productId = builder.productId;
+        this.user = builder.user;
+        this.product = builder.product;
         this.review = builder.review;
         this.rating = builder.rating;
     }
@@ -30,12 +34,12 @@ public class Review {
         return reviewId;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public int getProductId() {
-        return productId;
+    public Product getProduct() {
+        return product;
     }
 
     public String getReview() {
@@ -50,8 +54,8 @@ public class Review {
     public String toString() {
         return "Review{" +
                 "reviewId=" + reviewId +
-                ", userId=" + userId +
-                ", productId=" + productId +
+                ", user=" + user +
+                ", product=" + product +
                 ", review='" + review + '\'' +
                 ", rating=" + rating +
                 '}';
@@ -59,8 +63,8 @@ public class Review {
 
     public static class Builder {
         private int reviewId;
-        private int userId;
-        private int productId;
+        private User user;
+        private Product product;
         private String review;
         private Float rating;
 
@@ -69,13 +73,13 @@ public class Review {
             return this;
         }
 
-        public Builder setUserId(int userId) {
-            this.userId = userId;
+        public Builder setUser(User user) {
+            this.user = user;
             return this;
         }
 
-        public Builder setProductId(int productId) {
-            this.productId = productId;
+        public Builder setProduct(Product product) {
+            this.product = product;
             return this;
         }
 
@@ -91,8 +95,8 @@ public class Review {
 
         public Builder copy(Review review) {
             this.reviewId = review.reviewId;
-            this.userId = review.userId;
-            this.productId = review.productId;
+            this.user = review.user;
+            this.product = review.product;
             this.review = review.review;
             this.rating = review.rating;
             return this;
