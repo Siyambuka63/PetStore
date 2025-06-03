@@ -9,12 +9,6 @@ public class Helper {
         return str == null || str.isEmpty();
     }
 
-//    public static boolean isIntValid(int number) {
-//        if (number < 0)
-//             return true;
-//        return false;
-//    }
-
     public static boolean isValidPhoneNumber(String number) {
         return number.matches("^0[1-9]{9}$");
     }
@@ -28,10 +22,5 @@ public class Helper {
         return date == null;
     }
   
-    public static boolean isValidPrice(double Price){
-        if (Double.isNaN(Price)) {
-            return true;
-        }
-        return false;
-    }
+    public static boolean isValidPrice(double price){ return price > 0; }
 }

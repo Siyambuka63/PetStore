@@ -5,6 +5,6 @@ import za.ac.cput.service.IService;
 
 import java.util.List;
 
-public interface IUserService extends IService<User, Integer> {
+public interface UserService extends IService<User, Integer> {
     List<User> getAll();
 }
