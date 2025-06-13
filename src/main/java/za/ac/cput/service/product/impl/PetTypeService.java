@@ -2,11 +2,9 @@ package za.ac.cput.service.product.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import za.ac.cput.domain.product.FoodType;
 import za.ac.cput.domain.product.PetType;
 import za.ac.cput.repository.product.FoodTypeRepository;
 import za.ac.cput.repository.product.PetTypeRepository;
-import za.ac.cput.service.product.IFoodTypeService;
 import za.ac.cput.service.product.IPetTypeService;
 
 import java.util.List;
