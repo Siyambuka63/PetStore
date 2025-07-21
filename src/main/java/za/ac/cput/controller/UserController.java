@@ -3,7 +3,7 @@ package za.ac.cput.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import za.ac.cput.domain.user.User;
-import za.ac.cput.service.user.impl.UserService;
+import za.ac.cput.service.user.impl.UserServiceImpl;
 
 import java.util.List;
 
@@ -11,10 +11,10 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
 
-    private UserService service;
+    private UserServiceImpl service;
 
     @Autowired
-    public UserController(UserService service) {
+    public UserController(UserServiceImpl service) {
         this.service = service;
     }
 
@@ -42,6 +42,4 @@ public class UserController {
     public List<User> getAll() {
         return service.getAll();
     }
-
-
 }

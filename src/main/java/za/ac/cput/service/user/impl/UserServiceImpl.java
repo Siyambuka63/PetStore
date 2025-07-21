@@ -4,15 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import za.ac.cput.domain.user.User;
 import za.ac.cput.repository.user.UserRepository;
-import za.ac.cput.service.user.IUserService;
+import za.ac.cput.service.user.UserService;
 
 import java.util.List;
 
 @Service
-public class UserService implements IUserService {
+public class UserServiceImpl implements UserService {
 
     @Autowired
-    private static IUserService service;
+    private static UserService service;
 
     @Autowired
     private UserRepository repository;
