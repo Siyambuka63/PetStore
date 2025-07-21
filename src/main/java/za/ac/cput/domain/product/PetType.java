@@ -3,6 +3,7 @@ package za.ac.cput.domain.product;
 * 222419636*/
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity

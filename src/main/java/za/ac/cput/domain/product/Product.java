@@ -15,24 +15,23 @@ public class Product {
     private String productName;
     private String description;
     @Lob
-    @Column(length=1024)
     private byte[] productImage;
     private double rating;
     private double price;
     private int stock;
     private double weight;
     @ManyToOne
-    @JoinColumn(name="Brand")
+    @JoinColumn(name="brandID" , nullable=false)
     private Brand brand;
     private int lifeStageID;
     private int foodtypeID;
     private int petTypeID;
-    @ManyToOne
-    @JoinColumn(name="Flavours")
-    private Flavour flavours;
-    @ManyToOne
+    @ManyToMany
+    @JoinColumn(name="flavours")
+    private List<Flavour> flavours;
+    @ManyToMany
     @JoinColumn(name="foodCategory")
-    private Category categories;
+    private List<Category> categories;
 
     protected Product () {
     }
@@ -101,11 +100,11 @@ public class Product {
         return petTypeID;
     }
 
-    public Flavour getFlavours() {
+    public List<Flavour> getFlavours() {
         return flavours;
     }
 
-    public Category getCategories() {
+    public List<Category> getCategories() {
         return categories;
     }
 
@@ -142,8 +141,8 @@ public class Product {
         private int lifeStageID;
         private int foodtypeID;
         private int petTypeID;
-        private Flavour flavours;
-        private Category categories;
+        private List<Flavour> flavours;
+        private List<Category> categories;
 
 
         public Builder setProductID(int productID) {
@@ -206,12 +205,12 @@ public class Product {
             return this;
         }
 
-        public Builder setFlavours(Flavour flavours) {
+        public Builder setFlavours(List<Flavour> flavours) {
             this.flavours = flavours;
             return this;
         }
 
-        public Builder setCategories(Category categories) {
+        public Builder setCategories(List<Category> categories) {
             this.categories = categories;
             return this;
         }
