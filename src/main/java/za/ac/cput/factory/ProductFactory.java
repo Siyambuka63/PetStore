@@ -1,8 +1,8 @@
-package za.ac.cput.factory.product;
+package za.ac.cput.factory;
 /*Oluhle Makhaye
  * 222419636*/
 
-import za.ac.cput.domain.product.Product;
+import za.ac.cput.domain.Product;
 import za.ac.cput.util.Helper;
 
 public class ProductFactory {

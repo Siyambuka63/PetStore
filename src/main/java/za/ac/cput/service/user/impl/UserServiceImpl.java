@@ -21,18 +21,13 @@ public class UserServiceImpl implements UserService {
     public User create(User user) { return repository.save(user); }
 
     @Override
-    public User read(Integer id) { return repository.getReferenceById(id); }
+    public User read(Long id) { return repository.getReferenceById(id); }
 
     @Override
     public User update(User user) { return repository.save(user); }
 
-
-
     @Override
-    public boolean delete(Integer id) {
-        repository.deleteById(id);
-        return true;
-    }
+    public void delete(Long id) { repository.deleteById(id); }
 
     @Override
     public List<User> getAll() { return repository.findAll(); }

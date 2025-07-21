@@ -7,5 +7,5 @@ public interface IService<Type, ID> {
 
     Type update(Type type);
 
-    boolean delete(ID id);
+    void delete(ID id);
 }
