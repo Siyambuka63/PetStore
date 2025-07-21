@@ -1,6 +1,8 @@
 package za.ac.cput.domain;
 
 import jakarta.persistence.*;
+
+import java.util.List;
 /*Oluhle Makhaye
 * 222419636
 * product class*/
@@ -8,27 +10,23 @@ import jakarta.persistence.*;
 @Entity
 public class Product {
     @Id
-    private int productID;
+    private long productID;
     private String productName;
+    private String imageAddress;
     private String description;
-    @Lob
-    private byte[] productImage;
-    private double rating;
+    private float rating;
     private double price;
+    private double salePrice;
+    private boolean onSale;
     private int stock;
     private double weight;
-    @ManyToOne
-    @JoinColumn(name="brandID" , nullable=false)
-    private Brand brand;
-    private int lifeStageID;
-    private int foodtypeID;
-    private int petTypeID;
-    @ManyToMany
-    @JoinColumn(name="flavours")
-    private List<Flavour> flavours;
-    @ManyToMany
-    @JoinColumn(name="foodCategory")
-    private List<Category> categories;
+    private String brand;
+    private String lifeStage;
+    private String foodType;
+    private String petType;
+    private String flavour;
+    @OneToMany
+    private List<String> categories;
 
     protected Product () {
     }
@@ -36,72 +34,69 @@ public class Product {
     private Product(Builder builder) {
         productID = builder.productID;
         productName = builder.productName;
+        imageAddress = builder.imageAddress;
         description = builder.description;
-        productImage = builder.productImage;
         rating = builder.rating;
         price = builder.price;
+        salePrice = builder.salePrice;
+        onSale = builder.onSale;
         stock = builder.stock;
-        brand = builder.brand;
         weight = builder.weight;
-        lifeStageID = builder.lifeStageID;
-        foodtypeID = builder.foodtypeID;
-        petTypeID = builder.petTypeID;
-        flavours = builder.flavours;
+        brand = builder.brand;
+        lifeStage = builder.lifeStage;
+        foodType = builder.foodType;
+        petType = builder.petType;
+        flavour = builder.flavour;
         categories = builder.categories;
     }
 
-    public int getProductID() {
+    public long getProductID() {
         return productID;
     }
 
     public String getProductName() {
         return productName;
     }
-
+    public String getImageAddress() {
+        return imageAddress;
+    }
     public String getDescription() {
         return description;
     }
-
-    public byte[] getImage() {return productImage;
-    }
-
-    public double getRating() {
+    public float getRating() {
         return rating;
     }
-
     public double getPrice() {
         return price;
     }
-
+    public double getSalePrice() {
+        return salePrice;
+    }
+    public boolean isOnSale() {
+        return onSale;
+    }
     public int getStock() {
         return stock;
     }
-
     public double getWeight() {
         return weight;
     }
-
-    public Brand getBrand() {
+    public String getBrand() {
         return brand;
     }
-
-    public int getLifeStageID() {
-        return lifeStageID;
+    public String getLifeStage() {
+        return lifeStage;
     }
-
-    public int getFoodtypeID() {
-        return foodtypeID;
+    public String getFoodType() {
+        return foodType;
     }
-
-    public int getPetTypeID() {
-        return petTypeID;
+    public String getPetType() {
+        return petType;
     }
-
-    public List<Flavour> getFlavours() {
-        return flavours;
+    public String getFlavour() {
+        return flavour;
     }
-
-    public List<Category> getCategories() {
+    public List<String> getCategories() {
         return categories;
     }
 
@@ -110,39 +105,42 @@ public class Product {
         return "Product{" +
                 "productID=" + productID +
                 ", productName='" + productName + '\'' +
+                ", imageAddress='" + imageAddress + '\'' +
                 ", description='" + description + '\'' +
-                ", productImage=" + productImage +
                 ", rating=" + rating +
                 ", price=" + price +
+                ", salePrice=" + salePrice +
+                ", onSale=" + onSale +
                 ", stock=" + stock +
                 ", weight=" + weight +
-                ", brand=" + brand +
-                ", lifeStageID=" + lifeStageID +
-                ", foodtypeID=" + foodtypeID +
-                ", petTypeID=" + petTypeID +
-                ", flavours=" + flavours +
+                ", brand='" + brand + '\'' +
+                ", lifeStage='" + lifeStage + '\'' +
+                ", foodType='" + foodType + '\'' +
+                ", petType='" + petType + '\'' +
+                ", flavour='" + flavour + '\'' +
                 ", categories=" + categories +
                 '}';
     }
 
     public static class Builder {
-        private int productID;
+        private long productID;
         private String productName;
+        private String imageAddress;
         private String description;
-        private byte[] productImage;
-        private double rating;
+        private float rating;
         private double price;
+        private double salePrice;
+        private boolean onSale;
         private int stock;
         private double weight;
-        private Brand brand;
-        private int lifeStageID;
-        private int foodtypeID;
-        private int petTypeID;
-        private List<Flavour> flavours;
-        private List<Category> categories;
+        private String brand;
+        private String lifeStage;
+        private String foodType;
+        private String petType;
+        private String flavour;
+        private List<String> categories;
 
-
-        public Builder setProductID(int productID) {
+        public Builder setProductID(long productID) {
             this.productID = productID;
             return this;
         }
@@ -152,23 +150,33 @@ public class Product {
             return this;
         }
 
+        public Builder setImageAddress(String imageAddress) {
+            this.imageAddress = imageAddress;
+            return this;
+        }
+
         public Builder setDescription(String description) {
             this.description = description;
             return this;
         }
 
-        public Builder setProductImage(byte[] productImage) {
-            this.productImage = productImage;
-            return this;
-        }
-
-        public Builder setRating(double rating) {
+        public Builder setRating(float rating) {
             this.rating = rating;
             return this;
         }
 
         public Builder setPrice(double price) {
             this.price = price;
+            return this;
+        }
+
+        public Builder setSalePrice(double salePrice) {
+            this.salePrice = salePrice;
+            return this;
+        }
+
+        public Builder setOnSale(boolean onSale) {
+            this.onSale = onSale;
             return this;
         }
 
@@ -182,56 +190,59 @@ public class Product {
             return this;
         }
 
-        public Builder setBrand(Brand brand) {
+        public Builder setBrand(String brand) {
             this.brand = brand;
             return this;
         }
 
-        public Builder setLifeStageID(int lifeStageID) {
-            this.lifeStageID = lifeStageID;
+        public Builder setLifeStage(String lifeStage) {
+            this.lifeStage = lifeStage;
             return this;
         }
 
-        public Builder setFoodtypeID(int foodtypeID) {
-            this.foodtypeID = foodtypeID;
+        public Builder setFoodType(String foodType) {
+            this.foodType = foodType;
             return this;
         }
 
-        public Builder setPetTypeID(int petTypeID) {
-            this.petTypeID = petTypeID;
+        public Builder setPetType(String petType) {
+            this.petType = petType;
             return this;
-        }
+         }
 
-        public Builder setFlavours(List<Flavour> flavours) {
-            this.flavours = flavours;
-            return this;
-        }
+         public Builder setFlavour(String flavour) {
+             this.flavour = flavour;
+             return this;
+         }
 
-        public Builder setCategories(List<Category> categories) {
-            this.categories = categories;
-            return this;
-        }
+         public Builder setCategories(List<String> categories) {
+             this.categories = categories;
+             return this;
+         }
 
-        public Product copy(Product product) {
+        public Builder copy(Product product) {
             this.productID = product.productID;
             this.productName = product.productName;
+            this.imageAddress = product.imageAddress;
             this.description = product.description;
-            this.productImage = product.productImage;
             this.rating = product.rating;
             this.price = product.price;
+            this.salePrice = product.salePrice;
+            this.onSale = product.onSale;
             this.stock = product.stock;
             this.weight = product.weight;
             this.brand = product.brand;
-            this.lifeStageID = product.lifeStageID;
-            this.foodtypeID = product.foodtypeID;
-            this.petTypeID = product.petTypeID;
-            this.flavours = product.flavours;
+            this.lifeStage = product.lifeStage;
+            this.foodType = product.foodType;
+            this.petType = product.petType;
+            this.flavour = product.flavour;
             this.categories = product.categories;
-            return this.build();
+            return this;
         }
-
-        public Product build() {
-            return new Product(this);
-        }
+        public Product build() {return new Product(this);}
     }
 }
+
+
+
+

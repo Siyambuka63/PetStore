@@ -6,7 +6,7 @@ import za.ac.cput.domain.Product;
 import za.ac.cput.util.Helper;
 
 public class ProductFactory {
-    public static Product createProduct(int productID, String productName, String description) {
+    public static Product createProduct(long productID, String productName, String description) {
         if (Helper.isNullOrEmpty(productName) || Helper.isNullOrEmpty(description)) return null;
         return new Product.Builder()
                 .setProductID(productID)
