@@ -7,9 +7,11 @@ public class OrderItemFactory {
     public static OrderItem createOrderItem(
             long orderItemID,
             long productID,
+            long quantity,
             float totalPrice,
             float pricePerItem
     ){
+
         if(Helper.isValidPrice(totalPrice)){
             return null;
         }
@@ -19,6 +21,7 @@ public class OrderItemFactory {
         return new OrderItem.Builder()
                 .setOrderItemID(orderItemID)
                 .setProductID(productID)
+                .setQuantity(quantity)
                 .setTotalPrice(totalPrice)
                 .setPricePerItem(pricePerItem)
                 .build();

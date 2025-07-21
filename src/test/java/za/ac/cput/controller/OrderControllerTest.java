@@ -33,7 +33,7 @@ class OrderControllerTest {
     public static void setUp() {
         LocalDate orderDate = LocalDate.now();
         LocalDate deliveryDate = LocalDate.parse("2025-05-10");
-        OrderItem orderItem = OrderItemFactory.createOrderItem(1,1,100,50);
+        OrderItem orderItem = OrderItemFactory.createOrderItem(1,1,100,50,25);
         Status status = Status.Busy;
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem);

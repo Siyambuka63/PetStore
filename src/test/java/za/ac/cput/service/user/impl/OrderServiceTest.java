@@ -26,8 +26,7 @@ class OrderServiceTest {
     private OrderService service;
     @Test
     void a_create() {
-        OrderItem orderItem = OrderItemFactory.createOrderItem(1,1,123,4);
-        LocalDate orderDate = LocalDate.now();
+OrderItem orderItem = OrderItemFactory.createOrderItem(1,1,50,100,10);        LocalDate orderDate = LocalDate.now();
           LocalDate deliveryDate = LocalDate.parse("2025-05-10");
           Status status = Status.Busy;
           List<OrderItem> orderItems = new ArrayList<>();
@@ -42,8 +41,7 @@ class OrderServiceTest {
 
     @Test
     void b_read() {
-        OrderItem orderItem = OrderItemFactory.createOrderItem(1,1,123,4);
-        LocalDate orderDate = LocalDate.now();
+OrderItem orderItem = OrderItemFactory.createOrderItem(1,1,50,100,10);        LocalDate orderDate = LocalDate.now();
         LocalDate deliveryDate = LocalDate.parse("2025-08-10");
         Status status = Status.Busy;
         List<OrderItem> orderItems = new ArrayList<>();
@@ -59,8 +57,7 @@ class OrderServiceTest {
 
     @Test
     void c_update() {
-        OrderItem orderItem = OrderItemFactory.createOrderItem(1,1,123,4);
-        LocalDate orderDate = LocalDate.now();
+OrderItem orderItem = OrderItemFactory.createOrderItem(1,1,50,100,10);        LocalDate orderDate = LocalDate.now();
         LocalDate deliveryDate = LocalDate.parse("2025-05-10");
         Status status = Status.Busy;
         List<OrderItem> orderItems = new ArrayList<>();
@@ -78,8 +75,7 @@ class OrderServiceTest {
     @Test
     @Disabled
     void d_delete() {
-        OrderItem orderItem = OrderItemFactory.createOrderItem(1,1,123,4);
-        LocalDate orderDate = LocalDate.now();
+OrderItem orderItem = OrderItemFactory.createOrderItem(1,1,50,100,10);        LocalDate orderDate = LocalDate.now();
         LocalDate deliveryDate = LocalDate.parse("2025-05-10");
         Status status = Status.Busy;
         List<OrderItem> orderItems = new ArrayList<>();
@@ -94,8 +90,7 @@ class OrderServiceTest {
 
     @Test
     void e_getAll() {
-        OrderItem orderItem = OrderItemFactory.createOrderItem(1,1,123,4);
-        LocalDate orderDate = LocalDate.now();
+OrderItem orderItem = OrderItemFactory.createOrderItem(1,1,50,100,10);        LocalDate orderDate = LocalDate.now();
         LocalDate deliveryDate = LocalDate.parse("2025-05-10");
         Status status = Status.Busy;
         List<OrderItem> orderItems = new ArrayList<>();
@@ -107,8 +102,7 @@ class OrderServiceTest {
 
     @Test
     void f_findByOrderDate() {
-        OrderItem orderItem = OrderItemFactory.createOrderItem(1,1,123,4);
-        LocalDate orderDate = LocalDate.now();
+OrderItem orderItem = OrderItemFactory.createOrderItem(1,1,50,100,10);        LocalDate orderDate = LocalDate.now();
         LocalDate deliveryDate = LocalDate.parse("2025-05-10");
         Status status = Status.Busy;
         List<OrderItem> orderItems = new ArrayList<>();
@@ -121,8 +115,7 @@ class OrderServiceTest {
 
     @Test
     void g_findByDeliveryDate() {
-        OrderItem orderItem = OrderItemFactory.createOrderItem(1,1,123,4);
-        LocalDate orderDate = LocalDate.now();
+OrderItem orderItem = OrderItemFactory.createOrderItem(1,1,50,100,10);        LocalDate orderDate = LocalDate.now();
         LocalDate deliveryDate = LocalDate.parse("2025-05-10");
         Status status = Status.Busy;
         List<OrderItem> orderItems = new ArrayList<>();
@@ -135,8 +128,7 @@ class OrderServiceTest {
 
     @Test
     void h_findByTotalPrice() {
-        OrderItem orderItem = OrderItemFactory.createOrderItem(1,1,123,4);
-        LocalDate orderDate = LocalDate.now();
+OrderItem orderItem = OrderItemFactory.createOrderItem(1,1,50,100,10);        LocalDate orderDate = LocalDate.now();
         LocalDate deliveryDate = LocalDate.parse("2025-05-10");
         Status status = Status.Busy;
         List<OrderItem> orderItems = new ArrayList<>();
