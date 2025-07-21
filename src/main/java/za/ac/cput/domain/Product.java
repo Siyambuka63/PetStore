@@ -50,7 +50,7 @@ public class Product {
         categories = builder.categories;
     }
 
-    public long getProductID() {
+    public int getProductID() {
         return productID;
     }
 
