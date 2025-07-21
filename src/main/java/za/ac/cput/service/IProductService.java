@@ -1,7 +1,6 @@
-package za.ac.cput.service.product;
+package za.ac.cput.service;
 
-import za.ac.cput.domain.product.Product;
-import za.ac.cput.service.IService;
+import za.ac.cput.domain.Product;
 
 import java.util.List;
 

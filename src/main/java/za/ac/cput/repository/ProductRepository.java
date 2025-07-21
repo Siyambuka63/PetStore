@@ -1,10 +1,10 @@
-package za.ac.cput.repository.product;
+package za.ac.cput.repository;
 /*Oluhle Makhaye
 * 222419636*/
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import za.ac.cput.domain.product.Product;
+import za.ac.cput.domain.Product;
 
 import java.util.Optional;
 

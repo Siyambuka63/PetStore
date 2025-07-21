@@ -1,9 +1,6 @@
-package za.ac.cput.domain.product;
+package za.ac.cput.domain;
 
 import jakarta.persistence.*;
-
-import java.sql.Blob;
-import java.util.List;
 /*Oluhle Makhaye
 * 222419636
 * product class*/

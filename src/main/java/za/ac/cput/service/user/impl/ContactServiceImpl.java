@@ -32,10 +32,7 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public boolean delete(Integer id) {
-        repository.deleteById(id);
-        return true;
-    }
+    public void delete(Integer id) { repository.deleteById(id); }
 
     @Override
     public List<Contact> getAll() {
