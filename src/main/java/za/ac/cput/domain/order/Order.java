@@ -16,7 +16,7 @@ public class Order{
     private long userID;
     private LocalDate orderDate;
     private LocalDate deliveryDate;
-    private float totalPrice;
+    private float price;
     @Enumerated(EnumType.STRING)
     private Status status;
     @OneToMany(fetch =  FetchType.EAGER)
@@ -32,7 +32,7 @@ public class Order{
         this.userID = builder.userID;
         this.orderDate = builder.orderDate;
         this.deliveryDate = builder.deliveryDate;
-        this.totalPrice = builder.totalPrice;
+        this.price = builder.price;
         this.items = builder.items;
         this.status = builder.status;
     }
@@ -49,8 +49,8 @@ public class Order{
         return orderDate;
     }
 
-    public float getTotalPrice() {
-        return totalPrice;
+    public float getPrice() {
+        return price;
     }
 
     public List<OrderItem> getItems() {
@@ -72,7 +72,7 @@ public class Order{
                 ", userID=" + userID +
                 ", orderDate=" + orderDate +
                 ", deliveryDate=" + deliveryDate +
-                ", totalPrice=" + totalPrice +
+                ", price=" + price +
                 ", items=" + items +
                 ", status=" + status +
                 '}';
@@ -83,7 +83,7 @@ public class Order{
         private long userID;
         private LocalDate orderDate;
         private LocalDate deliveryDate;
-        private float totalPrice;
+        private float price;
         private List<OrderItem> items;
         private Status status;
 
@@ -105,8 +105,8 @@ public class Order{
             this.deliveryDate = deliveryDate;
             return this;
         }
-        public Builder setTotalPrice(float totalPrice) {
-            this.totalPrice = totalPrice;
+        public Builder setPrice(float price) {
+            this.price = price;
             return this;
         }
 
@@ -125,7 +125,7 @@ public class Order{
             this.userID = order.userID;
             this.orderDate = order.orderDate;
             this.deliveryDate = order.deliveryDate;
-            this.totalPrice = order.totalPrice;
+            this.price = order.price;
             this.items = order.items;
             this.status = order.status;
             return this;

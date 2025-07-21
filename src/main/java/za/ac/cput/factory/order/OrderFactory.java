@@ -14,7 +14,7 @@ public class OrderFactory {
             long userID,
             LocalDate orderDate,
             LocalDate deliveryDate,
-            float totalPrice,
+            float price,
             List<OrderItem> items,
             Status status
     ){
@@ -29,7 +29,7 @@ public class OrderFactory {
              .setUserID(userID)
              .setOrderDate(orderDate)
              .setDeliveryDate(deliveryDate)
-             .setTotalPrice(totalPrice)
+             .setPrice(price)
              .setItems(items)
              .setStatus(status)
              .build();
