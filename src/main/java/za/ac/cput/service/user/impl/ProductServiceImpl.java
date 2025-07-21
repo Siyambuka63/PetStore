@@ -27,7 +27,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product read(Integer id) {
+    public Product read(long id) {
         return repository.getReferenceById(id);
     }
 
@@ -37,7 +37,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Long id) {
         repository.deleteById(id);
     }
 
@@ -51,8 +51,13 @@ public class ProductServiceImpl implements ProductService {
         return repository.findByProductName(productName);
     }
 
-    @Override
-    public Product findByProductID(Integer productID) {
+
+    public Product findByProductID(long productID) {
+        return null;
+    }
+
+
+    public Product findByProductID(Long productID) {
         return repository.findByProductID(productID);
     }
 }
