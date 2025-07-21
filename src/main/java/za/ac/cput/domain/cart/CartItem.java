@@ -1,6 +1,11 @@
 package za.ac.cput.domain.cart;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
 public class CartItem {
+    @Id
     public int cartItemId;
     public int productId;
     public int quantity;
