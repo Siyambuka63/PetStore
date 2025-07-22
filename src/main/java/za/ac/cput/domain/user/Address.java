@@ -1,16 +1,16 @@
 package za.ac.cput.domain.user;
 
-public class ShippingAddress {
-      private int shippingAddressID;
+public class Address {
+    private int shippingAddressID;
     private String street;
     private String flatDetail;
     private String suburb;
     private String city;
     private String postalCode;
 
-    private ShippingAddress() {}
+    private Address() {}
 
-    private ShippingAddress(Builder builder) {
+    private Address(Builder builder) {
         this.shippingAddressID = builder.shippingAddressID;
         this.street = builder.street;
         this.flatDetail = builder.flatDetail;
@@ -97,8 +97,8 @@ public class ShippingAddress {
             return this;
         }
 
-        public ShippingAddress build() {
-            return new ShippingAddress(this);
+        public Address build() {
+            return new Address(this);
         }
     }
 }
