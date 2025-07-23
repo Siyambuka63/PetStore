@@ -14,6 +14,19 @@ public class ProductFactory {
                                         String lifeStage, String foodType, String petType, String flavour, List<String> categories) {
 
         if (Helper.isNullOrEmpty(productName) || Helper.isNullOrEmpty(description)) return null;
+        if (!Helper.isValidRating(rating)) {
+            throw new IllegalArgumentException("Rating should be between 0 and 5");
+        }
+        if (!Helper.isValidPriceVsSale(price, salePrice)) {
+            throw new IllegalArgumentException("Sale price must be less than original price");
+        }
+        if (stock == 0) {
+            System.err.println("⚠ Warning: Creating product with 0 stock: " + productName);
+        } else if (stock <= 5) {
+            System.out.println("⚠ Info: Low stock warning for product: " + productName + " (stock: " + stock + ")");
+        }
+
+
 
         return new Product.Builder()
                 .setProductID(productID)
