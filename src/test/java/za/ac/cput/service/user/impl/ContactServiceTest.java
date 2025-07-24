@@ -41,7 +41,7 @@ class ContactServiceTest {
     @Test
     @Order(2)
     void read() {
-        String url = BASE_URL + "/read/" + contact.getId();
+        String url = BASE_URL + "/read/" + contact.getContactId();
         ResponseEntity<Contact> readContact = restTemplate.getForEntity(url, Contact.class);
         assertNotNull(readContact);
         System.out.println(readContact);
@@ -60,10 +60,10 @@ class ContactServiceTest {
     @Test
     @Order(5)
     void delete() {
-        String url = BASE_URL + "/delete/" + contact.getId();
+        String url = BASE_URL + "/delete/" + contact.getContactId();
         restTemplate.delete(url);
 
-        String readUrl = BASE_URL + "/read/" + contact.getId();
+        String readUrl = BASE_URL + "/read/" + contact.getContactId();
         ResponseEntity<Contact> reponse = restTemplate.getForEntity(readUrl, Contact.class);
         assertEquals(HttpStatus.NOT_FOUND, reponse.getStatusCode());
         System.out.println("true");
