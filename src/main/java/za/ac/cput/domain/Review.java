@@ -7,14 +7,17 @@ import za.ac.cput.domain.user.User;
 @Entity
 public class Review {
 
-    @Id
+    @EmbeddedId
+    private ReviewId id;
 
+    @MapsId("userId")
     @ManyToOne
-    @JoinColumn(name = "userID", nullable = false)
+    @JoinColumn(name = "userID")
     private User user;
 
+    @MapsId("productId")
     @ManyToOne
-    @JoinColumn(name = "productID", nullable = false)
+    @JoinColumn(name = "productID")
     private Product product;
 
     private String review;
@@ -25,10 +28,14 @@ public class Review {
     private Review(Builder builder) {
         this.user = builder.user;
         this.product = builder.product;
+        this.id = new ReviewId(user.getId(), product.getId());
         this.review = builder.review;
         this.rating = builder.rating;
     }
 
+    public ReviewId getId() {
+        return id;
+    }
 
     public User getUser() {
         return user;
@@ -49,7 +56,7 @@ public class Review {
     @Override
     public String toString() {
         return "Review{" +
-                ", user=" + user +
+                " user=" + user +
                 ", product=" + product +
                 ", review='" + review + '\'' +
                 ", rating=" + rating +
@@ -61,7 +68,6 @@ public class Review {
         private Product product;
         private String review;
         private float rating;
-
 
         public Builder setUser(User user) {
             this.user = user;

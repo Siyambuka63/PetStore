@@ -40,4 +40,7 @@ public class Helper {
     }
 
 
+    public static boolean isValidQuantity(int quantity) {
+        return quantity > 0;
+    }
 }
