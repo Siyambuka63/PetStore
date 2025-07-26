@@ -1,38 +1,61 @@
 package za.ac.cput.domain.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import za.ac.cput.domain.Review;
+import za.ac.cput.domain.Product;
+
+import java.util.List;
 
 @Entity
 public class User {
     @Id
-    private int userID;
+    private long userID;
     private String firstName;
+    private String middleName;
     private String lastName;
     private String password;
+    @ManyToMany
+    private List<Product> wishlistItems;
+    @OneToMany
+    private List<Review> reviews;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "card_id")
     private Card card;
-    private ShippingAddress address;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
+    private Address shippingAddress;
+    @JoinColumn(name = "address_id")
+    private Address billingAddress;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "contact_id")
     private Contact contact;
-    private Role role;
 
     protected User(){}
 
     private User(Builder builder){
         userID = builder.userID;
         firstName = builder.firstName;
+        middleName = builder.middleName;
         lastName = builder.lastName;
         password = builder.password;
+        wishlistItems = builder.wishlistItems;
+        reviews = builder.reviews;
         card = builder.card;
-        address = builder.address;
+        shippingAddress = builder.shippingAddress;
+        billingAddress = builder.billingAddress;
         contact = builder.contact;
-        role = builder.role;
     }
-    public int getUserID() {
+
+    public long getUserID() {
         return userID;
     }
 
     public String getFirstName() {
         return firstName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
     }
 
     public String getLastName() {
@@ -43,20 +66,28 @@ public class User {
         return password;
     }
 
-    public Contact getContact() {
-        return contact;
+    public List<Product> getWishlistItems() {
+        return wishlistItems;
     }
 
-    public Card getCard(){
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public Card getCard() {
         return card;
     }
 
-    public ShippingAddress getAddress(){
-        return address;
+    public Address getShippingAddress() {
+        return shippingAddress;
     }
 
-    public Role getRole() {
-        return role;
+    public Address getBillingAddress() {
+        return billingAddress;
+    }
+
+    public Contact getContact() {
+        return contact;
     }
 
     @Override
@@ -64,32 +95,43 @@ public class User {
         return "User{" +
                 "userID=" + userID +
                 ", firstName='" + firstName + '\'' +
+                ", middleName='" + middleName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", password='" + password + '\'' +
+                ", wishlistItems=" + wishlistItems +
+                ", reviews=" + reviews +
                 ", card=" + card +
-                ", address=" + address +
+                ", shippingAddress=" + shippingAddress +
+                ", billingAddress=" + billingAddress +
                 ", contact=" + contact +
-                ", role=" + role +
                 '}';
     }
 
     public static class Builder {
-        private int userID;
+        private long userID;
         private String firstName;
+        private String middleName;
         private String lastName;
         private String password;
+        private List<Product> wishlistItems;
+        private List<Review> reviews;
         private Card card;
-        private ShippingAddress address;
+        private Address shippingAddress;
+        private Address billingAddress;
         private Contact contact;
-        private Role role;
 
-        public Builder setUserID(int userID) {
+        public Builder setUserID(long userID) {
             this.userID = userID;
             return this;
         }
 
         public Builder setFirstName(String firstName) {
             this.firstName = firstName;
+            return this;
+        }
+
+        public Builder setMiddleName(String middleName) {
+            this.middleName = middleName;
             return this;
         }
 
@@ -103,13 +145,28 @@ public class User {
             return this;
         }
 
-        public Builder setCard(Card card){
+        public Builder setWishlistItems(List<Product> wishlistItems) {
+            this.wishlistItems = wishlistItems;
+            return this;
+        }
+
+        public Builder setReviews(List<Review> reviews) {
+            this.reviews = reviews;
+            return this;
+        }
+
+        public Builder setCard(Card card) {
             this.card = card;
             return this;
         }
 
-        public Builder setAddress(ShippingAddress address){
-            this.address = address;
+        public Builder setShippingAddress(Address shippingAddress) {
+            this.shippingAddress = shippingAddress;
+            return this;
+        }
+
+        public Builder setBillingAddress(Address billingAddress) {
+            this.billingAddress = billingAddress;
             return this;
         }
 
@@ -118,20 +175,18 @@ public class User {
             return this;
         }
 
-        public Builder setRole(Role role) {
-            this.role = role;
-            return this;
-        }
-
         public Builder copy(User user){
             this.userID = user.userID;
             this.firstName = user.firstName;
+            this.middleName = user.middleName;
             this.lastName = user.lastName;
             this.password = user.password;
+            this.wishlistItems = user.wishlistItems;
+            this.reviews = user.reviews;
             this.card = user.card;
-            this.address = user.address;
+            this.shippingAddress = user.shippingAddress;
+            this.billingAddress = user.billingAddress;
             this.contact = user.contact;
-            this.role = user.role;
             return this;
         }
 

@@ -1,4 +1,4 @@
-package za.ac.cput.service.user;
+package za.ac.cput.controller;
 
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class ContactServiceTest {
+class ContactControllerTest {
 
     private static Contact contact;
 
@@ -52,9 +52,9 @@ class ContactServiceTest {
     void update() {
         Contact updateContact = new Contact.Builder().copy(contact).setPhone("0123456789").build();
         String url = BASE_URL + "/update";
-        ResponseEntity<Contact> updatedContact = restTemplate.postForEntity(url, contact, Contact.class);
-        assertNotNull(updatedContact);
-        System.out.println(updatedContact);
+        ResponseEntity<Contact> updated = restTemplate.postForEntity(url, updateContact, Contact.class);
+        assertNotNull(updated);
+        System.out.println(updated);
     }
 
     @Test

@@ -3,7 +3,7 @@ package za.ac.cput.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import za.ac.cput.domain.user.User;
-import za.ac.cput.service.user.impl.UserService;
+import za.ac.cput.service.user.impl.UserServiceImpl;
 
 import java.util.List;
 
@@ -11,10 +11,10 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
 
-    private UserService service;
+    private UserServiceImpl service;
 
     @Autowired
-    public UserController(UserService service) {
+    public UserController(UserServiceImpl service) {
         this.service = service;
     }
 
@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @GetMapping("/read/{id}")
-    public User read(@PathVariable int id) {
+    public User read(@PathVariable long id) {
         return service.read(id);
     }
 
@@ -34,14 +34,10 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public boolean delete(@PathVariable int id) {
-        return service.delete(id);
-    }
+    public void delete(@PathVariable long id) { service.delete(id); }
 
     @GetMapping("/getAll")
     public List<User> getAll() {
         return service.getAll();
     }
-
-
 }
