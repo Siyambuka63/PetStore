@@ -10,7 +10,6 @@ import java.time.LocalDate;
 
 public class Card {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long cardId;
     private String provider;
     private String token;
