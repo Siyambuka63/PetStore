@@ -7,11 +7,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CardFactoryTest {
 
-    private static Card validCard = CardFactory.createCard(987654456,"Ozow", "Visa_4456","4456","Visa");
-    private static Card cardWithNullProvider = CardFactory.createCard(987654456,"","Visa_4456","4456","Visa");
-    private static Card cardWithNullToken = CardFactory.createCard(987654456, "Ozow", "","4456","Visa");
-    private static Card cardWithNullLastFourDigits = CardFactory.createCard(987654456, "Ozow", "Visa_4456","","Visa");
-    private static Card cardWithNullBrand = CardFactory.createCard(987654456, "Ozow", "Visa_4456","4456","");
+    private static Card validCard = CardFactory.createCard(987554456,"Ozow", "Visa_4456","4456","Visa");
+    private static Card cardWithNullProvider = CardFactory.createCard(987554456,"","Visa_4456","4456","Visa");
+    private static Card cardWithNullToken = CardFactory.createCard(987554456, "Ozow", "","4456","Visa");
+    private static Card cardWithNullLastFourDigits = CardFactory.createCard(987554456, "Ozow", "Visa_4456","","Visa");
+    private static Card cardWithNullBrand = CardFactory.createCard(987554456, "Ozow", "Visa_4456","4456","");
 
 
     @Test
