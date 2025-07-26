@@ -26,7 +26,3 @@ public class Helper {
     public static boolean isValidRating(Float rating) {
         return rating != null && rating >= 0 && rating <= 10;
     }
-
-
-    public static boolean isValidPrice(double price){ return price > 0; }
-}

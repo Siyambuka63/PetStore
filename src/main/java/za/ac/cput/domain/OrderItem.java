@@ -1,21 +1,24 @@
-//nkheso mathebula 230762883
+// Nkheso Mathebula - 230762883
 package za.ac.cput.domain;
 
 import jakarta.persistence.*;
-import za.ac.cput.domain.product.Product;
 import za.ac.cput.domain.order.Order;
+import za.ac.cput.domain.product.Product;
 
 @Entity
 public class OrderItem {
 
-    @Id
+    @EmbeddedId
+    private OrderItemId id;
 
+    @MapsId("orderId")
     @ManyToOne
-    @JoinColumn(name = "orderID", nullable = false)
+    @JoinColumn(name = "orderID")
     private Order order;
 
+    @MapsId("productId")
     @ManyToOne
-    @JoinColumn(name = "productID", nullable = false)
+    @JoinColumn(name = "productID")
     private Product product;
 
     private float pricePerItem;
@@ -30,8 +33,15 @@ public class OrderItem {
         this.pricePerItem = builder.pricePerItem;
         this.quantity = builder.quantity;
         this.totalPrice = builder.totalPrice;
+        Long orderId = (order != null) ? order.getId() : null;
+        Long productId = (product != null) ? product.getId() : null;
+        this.id = new OrderItemId(orderId, productId);
     }
 
+
+    public OrderItemId getId() {
+        return id;
+    }
 
     public Order getOrder() {
         return order;
@@ -56,6 +66,7 @@ public class OrderItem {
     @Override
     public String toString() {
         return "OrderItem{" +
+                "id=" + id +
                 ", order=" + order +
                 ", product=" + product +
                 ", pricePerItem=" + pricePerItem +
@@ -70,7 +81,6 @@ public class OrderItem {
         private float pricePerItem;
         private int quantity;
         private float totalPrice;
-
 
         public Builder setOrder(Order order) {
             this.order = order;
@@ -111,4 +121,3 @@ public class OrderItem {
         }
     }
 }
-
