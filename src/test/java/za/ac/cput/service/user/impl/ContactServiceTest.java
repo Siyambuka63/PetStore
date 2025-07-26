@@ -64,8 +64,8 @@ class ContactServiceTest {
         restTemplate.delete(url);
 
         String readUrl = BASE_URL + "/read/" + contact.getContactId();
-        ResponseEntity<Contact> reponse = restTemplate.getForEntity(readUrl, Contact.class);
-        assertEquals(HttpStatus.NOT_FOUND, reponse.getStatusCode());
+        ResponseEntity<Contact> response = restTemplate.getForEntity(readUrl, Contact.class);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         System.out.println("true");
     }
 
