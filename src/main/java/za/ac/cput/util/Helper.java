@@ -30,7 +30,3 @@ public class Helper {
 
         return rating != null && rating >= 0 && rating <= 5;
     }
-
-
-    public static boolean isValidPrice(double price){ return price > 0; }
-}
