@@ -11,10 +11,16 @@ import java.util.List;
 @Service
 public class ContactService implements IContactService {
 
+    @Autowired
+    private IContactService contactService;
+
+    @Autowired
     private ContactRepository repository;
 
     @Autowired
-    public ContactService(ContactRepository repository) { this.repository = repository; }
+    public ContactService(ContactRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public Contact create(Contact contact) {
@@ -22,9 +28,10 @@ public class ContactService implements IContactService {
     }
 
     @Override
-    public Contact read(Integer id) {
-        return repository.getReferenceById(id);
+    public Contact read(Long contactId) {
+        return repository.getReferenceById(contactId);
     }
+
 
     @Override
     public Contact update(Contact contact) {
@@ -32,10 +39,12 @@ public class ContactService implements IContactService {
     }
 
     @Override
-    public boolean delete(Integer id) {
-        repository.deleteById(id);
+    public boolean delete(Long contactId) {
+        repository.deleteById(contactId);
         return true;
     }
+
+
 
     @Override
     public List<Contact> getAll() {
@@ -51,4 +60,6 @@ public class ContactService implements IContactService {
     public Contact findByPhone(String phone) {
         return repository.findByPhone(phone);
     }
+
+
 }

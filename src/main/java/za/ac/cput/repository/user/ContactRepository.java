@@ -8,7 +8,7 @@ import za.ac.cput.domain.user.Contact;
 import java.util.Optional;
 
 @Repository
-public interface ContactRepository extends JpaRepository<Contact, Integer> {
+public interface ContactRepository extends JpaRepository<Contact, Long> {
     Contact findByEmail(String email);
 
     Contact findByPhone(String phone);
