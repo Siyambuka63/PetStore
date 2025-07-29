@@ -4,21 +4,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import za.ac.cput.domain.user.Contact;
 import za.ac.cput.repository.user.ContactRepository;
-import za.ac.cput.service.user.IContactService;
+import za.ac.cput.service.user.ContactService;
 
 import java.util.List;
 
 @Service
-public class ContactService implements IContactService {
+public class ContactServiceImpl implements ContactService {
 
     @Autowired
-    private IContactService contactService;
+    private static ContactService contactService;
 
     @Autowired
     private ContactRepository repository;
 
     @Autowired
-    public ContactService(ContactRepository repository) {
+    public ContactServiceImpl(ContactRepository repository) {
         this.repository = repository;
     }
 

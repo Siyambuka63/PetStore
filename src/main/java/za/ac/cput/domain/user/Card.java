@@ -89,6 +89,15 @@ public class Card {
             this.brand = brand;
             return this;
         }
+
+        public Builder copy (Card card) {
+            this.cardId = card.cardId;
+            this.provider = card.provider;
+            this.token = card.token;
+            this.lastFourDigits = card.lastFourDigits;
+            this.brand = card.brand;
+            return this;
+        }
         public Card build() {
             return new Card(this);
         }
