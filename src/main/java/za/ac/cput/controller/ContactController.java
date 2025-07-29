@@ -3,7 +3,7 @@ package za.ac.cput.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import za.ac.cput.domain.user.Contact;
-import za.ac.cput.service.user.impl.ContactService;
+import za.ac.cput.service.user.impl.ContactServiceImpl;
 
 import java.util.List;
 
@@ -11,10 +11,10 @@ import java.util.List;
 @RequestMapping("/contact")
 public class ContactController {
 
-    private ContactService service;
+    private ContactServiceImpl service;
 
     @Autowired
-    public ContactController(ContactService service) {
+    public ContactController(ContactServiceImpl service) {
         this.service = service;
     }
 
@@ -24,8 +24,8 @@ public class ContactController {
     }
 
     @GetMapping("/read/{id}")
-    public Contact read(@PathVariable int id) {
-        return service.read(id);
+    public Contact read(@PathVariable Long contactId) {
+        return service.read(contactId);
     }
 
     @PutMapping("/update")
@@ -34,8 +34,8 @@ public class ContactController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public boolean delete(@PathVariable int id) {
-        return service.delete(id);
+    public boolean delete(@PathVariable Long contactId) {
+        return service.delete(contactId);
     }
 
     @GetMapping("/getAll")
