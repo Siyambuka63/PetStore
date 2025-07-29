@@ -1,70 +1,97 @@
 package za.ac.cput.domain.user;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import org.springframework.data.annotation.Id;
+
 import java.time.LocalDate;
 
+
 public class Card {
-   private int cardID;
-    private String cardHolder;
-    private String cardNumber;
-    private LocalDate expiryDate;
+    @Id
+    private long cardId;
+    private String provider;
+    private String token;
+    private String lastFourDigits;
+    private String brand;
 
-    private Card () {}
 
-    private Card (Builder builder) {
-        this.cardID = builder.cardID;
-        this.cardHolder = builder.cardHolder;
-        this.cardNumber = builder.cardNumber;
-        this.expiryDate = builder.expiryDate;
+    protected Card() {
     }
 
-    public int getCardID() {
-        return cardID;
+    public Card(Builder builder) {
+        this.cardId = builder.cardId;
+        this.provider = builder.provider;
+        this.token = builder.token;
+        this.lastFourDigits = builder.lastFourDigits;
+        this.brand = builder.brand;
     }
 
-    public String getCardHolder() {
-        return cardHolder;
+    public long getCardId() {
+        return cardId;
     }
 
-    public String getCardNumber() {
-        return cardNumber;
+    public String getProvider() {
+        return provider;
     }
 
-    public LocalDate getExpiryDate() {
-        return expiryDate;
+    public String getToken() {
+        return token;
+    }
+
+    public String getLastFourDigits() {
+        return lastFourDigits;
+    }
+
+    public String getBrand() {
+        return brand;
     }
 
     @Override
     public String toString() {
         return "Card{" +
-                "cardID=" + cardID +
-                ", cardHolder='" + cardHolder + '\'' +
-                ", cardNumber='" + cardNumber + '\'' +
-                ", expiryDate=" + expiryDate +
+                "cardId=" + cardId +
+                ", provider='" + provider + '\'' +
+                ", token='" + token + '\'' +
+                ", lastFourDigits='" + lastFourDigits + '\'' +
+                ", brand='" + brand + '\'' +
                 '}';
     }
+
+
+
+
     public static class Builder {
+        private long cardId;
+        private String provider;
+        private String token;
+        private String lastFourDigits;
+        private String brand;
 
-        private int cardID;
-        private String cardHolder;
-        private String cardNumber;
-        private LocalDate expiryDate;
-
-        public Builder cardID(Integer cardID) {
-            this.cardID = cardID;
+        public Builder setCardID(long cardId) {
+            this.cardId = cardId;
             return this;
         }
-        public Builder cardHolder(String cardHolder) {
-            this.cardHolder = cardHolder;
+        public Builder setProvider(String provider) {
+            this.provider = provider;
             return this;
         }
-        public Builder cardNumber(String cardNumber) {
-            this.cardNumber = cardNumber;
+        public Builder setToken(String token) {
+            this.token = token;
             return this;
         }
-        public Builder expiryDate(LocalDate expiryDate) {
-            this.expiryDate = expiryDate;
+        public Builder setLastFourDigits(String lastFourDigits) {
+            this.lastFourDigits = lastFourDigits;
             return this;
         }
-
+        public Builder setBrand(String brand) {
+            this.brand = brand;
+            return this;
+        }
+        public Card build() {
+            return new Card(this);
+        }
     }
+
 }
