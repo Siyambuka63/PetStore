@@ -22,7 +22,11 @@ public class Helper {
         return date == null;
     }
 
+    public static boolean isValidPriceVsSale(double price, double salePrice) {
+        return salePrice < price;
+    }
 
     public static boolean isValidRating(Float rating) {
-        return rating != null && rating >= 0 && rating <= 10;
+
+        return rating != null && rating >= 0 && rating <= 5;
     }
