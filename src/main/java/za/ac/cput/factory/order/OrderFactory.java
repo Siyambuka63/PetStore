@@ -21,7 +21,7 @@ public class OrderFactory {
         if(Helper.isValidDate(orderDate)
         ||Helper.isValidDate(deliveryDate)
                 || items.isEmpty()
-        || status == null){
+        || status == null || !Helper.isValidPrice(price)){
             return null;
         }
      return new Order.Builder()
