@@ -47,7 +47,7 @@ class CardServiceImplTest {
     @Order(3)
     void update() {
         Card updatedCard = new Card.Builder().copy(card).setProvider("Paypal").build();
-        Card updated = cardService.update(card);
+        Card updated = cardService.update(updatedCard);
         assertNotNull(updated);
         System.out.println(updated);
     }
