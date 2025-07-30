@@ -3,9 +3,6 @@ package za.ac.cput.service.user.impl;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import za.ac.cput.domain.user.Contact;
 import za.ac.cput.factory.user.ContactFactory;
 

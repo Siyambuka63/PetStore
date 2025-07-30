@@ -6,7 +6,6 @@ import za.ac.cput.service.IService;
 import java.util.List;
 
 public interface ContactService extends IService<Contact, Long> {
-
     List<Contact> getAll();
 
     Contact findByEmail(String email);

@@ -17,11 +17,6 @@ public class ContactServiceImpl implements ContactService {
     @Autowired
     private ContactRepository repository;
 
-    @Autowired
-    public ContactServiceImpl(ContactRepository repository) {
-        this.repository = repository;
-    }
-
     @Override
     public Contact create(Contact contact) {
         return repository.save(contact);
@@ -31,8 +26,7 @@ public class ContactServiceImpl implements ContactService {
     public Contact read(Long contactId) {
         return repository.getReferenceById(contactId);
     }
-
-
+  
     @Override
     public Contact update(Contact contact) {
         return repository.save(contact);
@@ -43,8 +37,6 @@ public class ContactServiceImpl implements ContactService {
         repository.deleteById(contactId);
         return true;
     }
-
-
 
     @Override
     public List<Contact> getAll() {
@@ -60,6 +52,4 @@ public class ContactServiceImpl implements ContactService {
     public Contact findByPhone(String phone) {
         return repository.findByPhone(phone);
     }
-
-
 }

@@ -9,12 +9,6 @@ public class Helper {
         return str == null || str.isEmpty();
     }
 
-//    public static boolean isIntValid(int number) {
-//        if (number < 0)
-//             return true;
-//        return false;
-//    }
-
     public static boolean isValidPhoneNumber(String number) {
         return number.matches("^0[1-9]{9}$");
     }
@@ -27,17 +21,12 @@ public class Helper {
     public static boolean isValidDate(LocalDate date){
         return date == null;
     }
-  
-    public static boolean isValidPrice(double Price){
-        if (Double.isNaN(Price)) {
-            return true;
-        }
-        return false;
+
+    public static boolean isValidPriceVsSale(double price, double salePrice) {
+        return salePrice < price;
     }
 
     public static boolean isValidRating(Float rating) {
-        return rating != null && rating >= 0 && rating <= 10;
+
+        return rating != null && rating >= 0 && rating <= 5;
     }
-
-
-}
