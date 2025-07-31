@@ -10,14 +10,6 @@ public class Review {
     @EmbeddedId
     private ReviewId id;
 
-    @MapsId("userId")
-    @ManyToOne
-    @JoinColumn(name = "userID")
-    private User user;
-
-    @MapsId("productId")
-    @ManyToOne
-    @JoinColumn(name = "productID")
     private Product product;
 
     private String review;

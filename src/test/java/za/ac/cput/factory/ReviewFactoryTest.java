@@ -1,48 +1,53 @@
-/*
-   Nkheso Senior Mathebula 230762883
-*/
 package za.ac.cput.factory;
 
 import org.junit.jupiter.api.Test;
 import za.ac.cput.domain.Review;
+import za.ac.cput.domain.product.Product;
+import za.ac.cput.domain.user.User;
+import za.ac.cput.factory.product.ProductFactory;
+import za.ac.cput.factory.user.UserFactory;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ReviewFactoryTest {
 
-    private static final Review validReview = ReviewFactory.createReview(1, 1001, 2001, "Great product!", 4.5f);
-    private static final Review nullReviewText = ReviewFactory.createReview(2, 1002, 2002, null, 3.5f);
-    private static final Review emptyReviewText = ReviewFactory.createReview(3, 1003, 2003, "", 3.5f);
-    private static final Review invalidRatingLow = ReviewFactory.createReview(4, 1004, 2004, "Too bad", -1.0f);
-    private static final Review invalidRatingHigh = ReviewFactory.createReview(5, 1005, 2005, "Too perfect", 6.0f);
+    private User validUser = UserFactory.createUser(1, "Name", "Middle", "Last", "password123");
+    private Product validProduct = ProductFactory.createProduct( 1, "Multistage", "Nibbles", "placeholder.jpg", 4f, 249.99, 199.99, true, 23, 1.34, "Jock", "Adult", "Dry", "Dog", "Lamb");
+
+    private Review reviewWithNullUser = ReviewFactory.createReview(null, validProduct, "Nice product", 4.0f);
+    private Review reviewWithNullProduct = ReviewFactory.createReview(validUser, null, "Nice product", 4.0f);
+    private Review reviewWithEmptyReviewText = ReviewFactory.createReview(validUser, validProduct, "", 4.0f);
+    private Review reviewWithInvalidRating = ReviewFactory.createReview(validUser, validProduct, "Good", -1f);
+    private Review validReview = ReviewFactory.createReview(validUser, validProduct, "Excellent!", 4.7f);
 
     @Test
-    void createReviewWithValidData() {
+    void testCreateReviewWithNullUser() {
+        assertNull(reviewWithNullUser);
+        System.out.println(reviewWithNullUser);
+    }
+
+    @Test
+    void testCreateReviewWithNullProduct() {
+        assertNull(reviewWithNullProduct);
+        System.out.println( reviewWithNullProduct);
+    }
+
+    @Test
+    void testCreateReviewWithEmptyReviewText() {
+        assertNull(reviewWithEmptyReviewText);
+        System.out.println( reviewWithEmptyReviewText);
+    }
+
+    @Test
+    void testCreateReviewWithInvalidRating() {
+        assertNull(reviewWithInvalidRating);
+        System.out.println(reviewWithInvalidRating);
+    }
+
+    @Test
+    void testCreateValidReview() {
         assertNotNull(validReview);
         System.out.println(validReview);
     }
 
-    @Test
-    void createReviewWithNullText() {
-        assertNull(nullReviewText);
-        System.out.println(nullReviewText);
-    }
-
-    @Test
-    void createReviewWithEmptyText() {
-        assertNull(emptyReviewText);
-        System.out.println(emptyReviewText);
-    }
-
-    @Test
-    void createReviewWithInvalidLowRating() {
-        assertNull(invalidRatingLow);
-        System.out.println(invalidRatingLow);
-    }
-
-    @Test
-    void createReviewWithInvalidHighRating() {
-        assertNull(invalidRatingHigh);
-        System.out.println(invalidRatingHigh);
-    }
 }

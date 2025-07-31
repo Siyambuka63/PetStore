@@ -11,14 +11,6 @@ public class OrderItem {
     @EmbeddedId
     private OrderItemId id;
 
-    @MapsId("orderId")
-    @ManyToOne
-    @JoinColumn(name = "orderID")
-    private Order order;
-
-    @MapsId("productId")
-    @ManyToOne
-    @JoinColumn(name = "productID")
     private Product product;
 
     private float pricePerItem;
