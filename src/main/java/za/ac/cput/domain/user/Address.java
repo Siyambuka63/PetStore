@@ -1,35 +1,35 @@
 package za.ac.cput.domain.user;
 
 public class Address {
-    private int shippingAddressID;
-    private String street;
-    private String flatDetail;
+    private long addressID;
+    private String streetAddress;
+    private String complexDetail;
     private String suburb;
     private String city;
-    private String postalCode;
+    private Type type;
 
     private Address() {}
 
     private Address(Builder builder) {
-        this.shippingAddressID = builder.shippingAddressID;
-        this.street = builder.street;
-        this.flatDetail = builder.flatDetail;
+        this.addressID = builder.addressID;
+        this.streetAddress = builder.streetAddress;
+        this.complexDetail = builder.complexDetail;
         this.suburb = builder.suburb;
         this.city = builder.city;
-        this.postalCode = builder.postalCode;
+        this.type = builder.type;
 
     }
 
-    public Integer getShippingAddressID() {
-        return shippingAddressID;
+    public Long getAddressID() {
+        return addressID;
     }
 
-    public String getStreet() {
-        return street;
+    public String getStreetAddress() {
+        return streetAddress;
     }
 
-    public String getFlatDetail() {
-        return flatDetail;
+    public String getComplexDetail() {
+        return complexDetail;
     }
 
     public String getSuburb() {
@@ -40,45 +40,45 @@ public class Address {
         return city;
     }
 
-    public String getPostalCode() {
-        return postalCode;
+    public String getType() {
+        return type;
     }
 
 
     @Override
     public String toString() {
-        return "ShippingAddress{" +
-                "shippingAddressID=" + shippingAddressID +
-                ", street='" + street + '\'' +
-                ", flatDetail='" + flatDetail + '\'' +
+        return "Address{" +
+                "addressID=" + addressID +
+                ", streetAddress='" + streetAddress + '\'' +
+                ", complexDetail='" + complexDetail + '\'' +
                 ", suburb='" + suburb + '\'' +
                 ", city='" + city + '\'' +
-                ", postalCode='" + postalCode + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 
 
     public static class Builder {
 
-        private Integer shippingAddressID;
-        private String street;
-        private String flatDetail;
+        private long addressID;
+        private String streetAddress;
+        private String complexDetail;
         private String suburb;
         private String city;
-        private String postalCode;
+        private Type type;
 
-        public Builder shippingAddressID(Integer shippingAddressID) {
-            this.shippingAddressID = shippingAddressID;
+        public Builder addressID(Long addressID) {
+            this.addressID = addressID;
             return this;
         }
 
-        public Builder street(String street) {
-            this.street = street;
+        public Builder streetAddress(String streetAddress) {
+            this.streetAddress = streetAddress;
             return this;
         }
 
-        public Builder flatDetail(String flatDetail) {
-            this.flatDetail = flatDetail;
+        public Builder complexDetail(String complexDetail) {
+            this.complexDetail = complwxDetail;
             return this;
         }
 
@@ -92,8 +92,8 @@ public class Address {
             return this;
         }
 
-        public Builder postalCode(String postalCode) {
-            this.postalCode = postalCode;
+        public Builder type(Type type) {
+            this.type = type;
             return this;
         }
 
