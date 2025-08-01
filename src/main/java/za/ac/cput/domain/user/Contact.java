@@ -6,14 +6,14 @@ import jakarta.persistence.Id;
 @Entity
 public class Contact {
     @Id
-    private int id;
+    private long contactId;
     private String email;
     private String phone;
 
     protected Contact(){}
 
     private Contact(Builder builder){
-        this.id = builder.id;
+        this.contactId = builder.contactId;
         this.email = builder.email;
         this.phone = builder.phone;
     }
@@ -26,24 +26,24 @@ public class Contact {
         return phone;
     }
 
-    public int getId() { return id; }
+    public long getContactId() { return contactId; }
 
     @Override
     public String toString() {
         return "Contact{" +
-                "id=" + id +
+                "contactId=" + contactId +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 '}';
     }
 
     public static class Builder {
-        private int id;
+        private long contactId;
         private String email;
         private String phone;
 
-        public Builder setId(int id){
-            this.id = id;
+        public Builder setContactId(long contactId){
+            this.contactId = contactId;
             return this;
         }
 
@@ -58,7 +58,7 @@ public class Contact {
         }
 
         public Builder copy(Contact contact){
-            this.id = contact.getId();
+            this.contactId = contact.getContactId();
             this.email = contact.email;
             this.phone = contact.phone;
             return this;

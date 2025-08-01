@@ -26,7 +26,7 @@ public class ProductController {
     }
 
     @GetMapping("/read/{id}")
-    public Product read(@PathVariable int id) {
+    public Product read(@PathVariable long id) {
         return service.read(id);
     }
 
@@ -36,7 +36,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable int id) { service.delete(id); }
+    public void delete(@PathVariable long id) { service.delete(id); }
 
     @GetMapping("/getAll")
     public List<Product> getAll() {

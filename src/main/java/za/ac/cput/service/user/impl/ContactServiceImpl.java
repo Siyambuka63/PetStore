@@ -11,10 +11,11 @@ import java.util.List;
 @Service
 public class ContactServiceImpl implements ContactService {
 
-    private ContactRepository repository;
+    @Autowired
+    private static ContactService contactService;
 
     @Autowired
-    public ContactServiceImpl(ContactRepository repository) { this.repository = repository; }
+    private ContactRepository repository;
 
     @Override
     public Contact create(Contact contact) {
@@ -22,17 +23,20 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public Contact read(Integer id) {
-        return repository.getReferenceById(id);
+    public Contact read(Long contactId) {
+        return repository.getReferenceById(contactId);
     }
-
+  
     @Override
     public Contact update(Contact contact) {
         return repository.save(contact);
     }
 
     @Override
-    public void delete(Integer id) { repository.deleteById(id); }
+    public boolean delete(Long contactId) {
+        repository.deleteById(contactId);
+        return true;
+    }
 
     @Override
     public List<Contact> getAll() {
