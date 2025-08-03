@@ -3,7 +3,7 @@ package za.ac.cput.domain;
 
 import jakarta.persistence.*;
 import za.ac.cput.domain.order.Order;
-import za.ac.cput.domain.product.Product;
+import za.ac.cput.domain.Product;
 
 @Entity
 public class OrderItem {
@@ -33,9 +33,9 @@ public class OrderItem {
         this.pricePerItem = builder.pricePerItem;
         this.quantity = builder.quantity;
         this.totalPrice = builder.totalPrice;
-        Long orderId = (order != null) ? order.getId() : null;
-        Long productId = (product != null) ? product.getId() : null;
-        this.id = new OrderItemId(orderId, productId);
+        Long orderID = (order != null) ? order.getOrderID() : null;
+        Long productId = (product != null) ? product.getProductID() : null;
+        this.id = new OrderItemId(orderID, productId);
     }
 
 
