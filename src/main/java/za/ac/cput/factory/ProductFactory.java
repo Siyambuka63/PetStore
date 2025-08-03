@@ -14,12 +14,9 @@ public class ProductFactory {
                                         String lifeStage, String foodType, String petType, String flavour, List<String> categories) {
 
         if (Helper.isNullOrEmpty(productName) || Helper.isNullOrEmpty(description)) return null;
-        if (!Helper.isValidRating(rating)) {
-            throw new IllegalArgumentException("Rating should be between 0 and 5");
-        }
-        if (!Helper.isValidPriceVsSale(price, salePrice)) {
-            throw new IllegalArgumentException("Sale price must be less than original price");
-        }
+        if (!Helper.isValidRating(rating)) return null;
+
+        if (!Helper.isValidPriceVsSale(price, salePrice)) return null;
         if (stock == 0) {
             System.err.println("⚠ Warning: Creating product with 0 stock: " + productName);
         } else if (stock <= 5) {
