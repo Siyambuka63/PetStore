@@ -1,7 +1,7 @@
 package za.ac.cput.domain;
 
 import jakarta.persistence.*;
-import za.ac.cput.domain.product.Product;
+import za.ac.cput.domain.Product;
 import za.ac.cput.domain.user.User;
 
 @Entity
@@ -28,7 +28,7 @@ public class Review {
     private Review(Builder builder) {
         this.user = builder.user;
         this.product = builder.product;
-        this.id = new ReviewId(user.getId(), product.getId());
+        this.id = new ReviewId(user.getUserID(), product.getProductID());
         this.review = builder.review;
         this.rating = builder.rating;
     }

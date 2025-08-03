@@ -4,7 +4,7 @@
 package za.ac.cput.factory;
 
 import za.ac.cput.domain.Review;
-import za.ac.cput.domain.product.Product;
+import za.ac.cput.domain.Product;
 import za.ac.cput.domain.user.User;
 import za.ac.cput.util.Helper;
 
