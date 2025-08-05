@@ -10,7 +10,6 @@ public class Address {
     private String suburb;
     private Type type;
     private String city;
-
     private String postalCode;
 
     private Address() {
@@ -23,6 +22,7 @@ public class Address {
         this.suburb = builder.suburb;
         this.type = builder.type;
         this.city = builder.city;
+        this.postalCode = builder.postalCode;
 
  }
 
@@ -73,6 +73,7 @@ public class Address {
         private String suburb;
         private Type type;
         private String city;
+        private String postalCode;
 
         public Builder setAddressID(long addressID) {
             this.addressID = addressID;
@@ -101,6 +102,11 @@ public class Address {
 
         public void setCity(String city) {
             this.city = city;
+            return this;
+        }
+        public void setPostalCode(String postalCode) {
+            this.postalCode = postalCode;
+            return this;
         }
         public Builder copy(Address address) {
         this.addressID = address.addressID;
@@ -109,6 +115,7 @@ public class Address {
         this.suburb = address.suburb;
         this.type = address.type;
         this.city = address.city;
+        this.postalCode = address.postalCode;    
         return this;
         }
         public Address build() {
