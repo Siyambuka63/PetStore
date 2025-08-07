@@ -33,9 +33,8 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public boolean delete(Long contactId) {
+    public void delete(Long contactId) {
         repository.deleteById(contactId);
-        return true;
     }
 
     @Override

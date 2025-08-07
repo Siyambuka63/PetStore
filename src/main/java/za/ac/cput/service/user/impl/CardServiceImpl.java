@@ -39,9 +39,8 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public boolean delete(Long cardId) {
+    public void delete(Long cardId) {
         cardRepository.deleteById(cardId);
-        return true;
     }
 
 
