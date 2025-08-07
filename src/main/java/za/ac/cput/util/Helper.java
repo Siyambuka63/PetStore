@@ -18,7 +18,7 @@ public class Helper {
         return emailValidator.isValid(email);
     }
 
-    public static boolean isValidDate(LocalDate date){
+    public static boolean isValidDate(LocalDate date) {
         return date == null;
     }
 
@@ -30,3 +30,4 @@ public class Helper {
 
         return rating != null && rating >= 0 && rating <= 5;
     }
+}

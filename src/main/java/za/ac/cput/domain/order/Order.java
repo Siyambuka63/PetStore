@@ -7,8 +7,8 @@ import java.util.List;
      Author: Sinovuyo Mathungana (230143725)
 */
 public class Order {
-    private int orderID;
-    private int userID;
+    private long orderID;
+    private long userID;
     private LocalDate orderDate;
     private LocalDate deliveryDate;
     private double totalPrice;
@@ -27,11 +27,11 @@ public class Order {
         this.status = builder.status;
     }
 
-    public int getOrderID() {
+    public long getOrderID() {
         return orderID;
     }
 
-    public int getUserID() {
+    public long getUserID() {
         return userID;
     }
 
@@ -69,20 +69,20 @@ public class Order {
     }
 
     public static class Builder{
-        private int orderID;
-        private int userID;
+        private long orderID;
+        private long userID;
         private LocalDate orderDate;
         private LocalDate deliveryDate;
         private double totalPrice;
         private List<OrderItem> items;
         private Status status;
 
-        public Builder setOrderID(int orderID) {
+        public Builder setOrderID(long orderID) {
             this.orderID = orderID;
             return this;
         }
 
-        public Builder setUserID(int userID) {
+        public Builder setUserID(long userID) {
             this.userID = userID;
             return this;
         }
