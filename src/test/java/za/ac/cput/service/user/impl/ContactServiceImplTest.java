@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ContactServiceImplTest {
 
@@ -33,7 +33,7 @@ class ContactServiceImplTest {
     @Test
     @Order(2)
     void read() {
-        Contact read = service.read(contact.getId());
+        Contact read = service.read(contact.getContactId());
         assertNotNull(read);
         System.out.println(read);
     }
@@ -50,8 +50,8 @@ class ContactServiceImplTest {
     @Test
     @Order(5)
     void delete() {
-        service.delete(contact.getId());
-        Contact deleted = service.read(contact.getId());
+        service.delete(contact.getContactId());
+        Contact deleted = service.read(contact.getContactId());
         assertNull(deleted);
         System.out.println(deleted);
     }

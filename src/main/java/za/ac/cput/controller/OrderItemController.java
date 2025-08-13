@@ -1,43 +1,47 @@
+
+// Nkheso Mathebula - 230762883
 package za.ac.cput.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import za.ac.cput.domain.order.OrderItem;
-import za.ac.cput.service.order.impl.OrderItemService;
+import za.ac.cput.domain.OrderItem;
+import za.ac.cput.domain.OrderItemId;
+import za.ac.cput.service.user.impl.OrderItemServiceImpl;
 
 import java.util.List;
-
 @RestController
-@RequestMapping("/orderItem")
+@RequestMapping("/orderitem")
 public class OrderItemController {
 
-    private OrderItemService service;
+    private OrderItemServiceImpl service;
 
-    @Autowired
-    public OrderItemController(OrderItemService service) {
-        this.service = service;
-    }
+        @Autowired
+        public OrderItemController(OrderItemServiceImpl service) {
+            this.service = service;
+        }
 
-    @PostMapping("/create")
-    public OrderItem create(@RequestBody OrderItem orderItem){
-        return service.create(orderItem);
-    }
+        @PostMapping("/create")
+        public OrderItem create(@RequestBody OrderItem orderItem) {
+            return service.create(orderItem);
+        }
 
-    @GetMapping("/read/{id}")
-    public OrderItem read(@PathVariable long id){
-        return service.read(id);
-    }
+        @GetMapping("/read/{orderId}/{productId}")
+        public OrderItem read(@PathVariable Long orderId, @PathVariable Long productId) {
+            return service.read(new OrderItemId(orderId, productId));
+        }
 
-    @PutMapping("/update")
-    public OrderItem update(@RequestBody OrderItem orderItem){
-        return service.update(orderItem);
+        @PutMapping("/update")
+        public OrderItem update(@RequestBody OrderItem orderItem) {
+            return service.update(orderItem);
+        }
+
+        @DeleteMapping("/delete/{orderId}/{productId}")
+        public void delete(@PathVariable Long orderId, @PathVariable Long productId) {
+            service.delete(new OrderItemId(orderId, productId));
+        }
+
+        @GetMapping("/getAll")
+        public List<OrderItem> getAll() {
+            return service.getAll();
+        }
     }
-    @DeleteMapping("/delete/{id}")
-    public boolean delete(@PathVariable long id){
-        return service.delete(id);
-    }
-    @GetMapping("/getAll")
-    public List<OrderItem> getAll(){
-        return service.getAll();
-    }
-}

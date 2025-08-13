@@ -23,9 +23,9 @@ public class ContactController {
         return service.create(contact);
     }
 
-    @GetMapping("/read/{id}")
-    public Contact read(@PathVariable int id) {
-        return service.read(id);
+    @GetMapping("/read/{contactId}")
+    public Contact read(@PathVariable Long contactId) {
+        return service.read(contactId);
     }
 
     @PutMapping("/update")
@@ -33,9 +33,9 @@ public class ContactController {
         return service.update(contact);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public boolean delete(@PathVariable int id) {
-        return service.delete(id);
+    @DeleteMapping("/delete/{contactId}")
+    public void delete(@PathVariable Long contactId) {
+        service.delete(contactId);
     }
 
     @GetMapping("/getAll")
