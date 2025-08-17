@@ -1,37 +1,40 @@
 package za.ac.cput.domain;
 
 import jakarta.persistence.*;
-import za.ac.cput.domain.product.Product;
+import za.ac.cput.domain.Product;
 import za.ac.cput.domain.user.User;
+
 @Entity
 public class Review {
 
-    @Id
-    private int reviewId;
+    @EmbeddedId
+    private ReviewId id;
 
+    @MapsId("userId")
     @ManyToOne
     @JoinColumn(name = "userID")
     private User user;
 
+    @MapsId("productId")
     @ManyToOne
     @JoinColumn(name = "productID")
     private Product product;
 
     private String review;
-    private Float rating;
+    private float rating;
 
     protected Review() {}
 
     private Review(Builder builder) {
-        this.reviewId = builder.reviewId;
         this.user = builder.user;
         this.product = builder.product;
+        this.id = new ReviewId(user.getUserID(), product.getProductID());
         this.review = builder.review;
         this.rating = builder.rating;
     }
 
-    public int getReviewId() {
-        return reviewId;
+    public ReviewId getId() {
+        return id;
     }
 
     public User getUser() {
@@ -46,15 +49,14 @@ public class Review {
         return review;
     }
 
-    public Float getRating() {
+    public float getRating() {
         return rating;
     }
 
     @Override
     public String toString() {
         return "Review{" +
-                "reviewId=" + reviewId +
-                ", user=" + user +
+                " user=" + user +
                 ", product=" + product +
                 ", review='" + review + '\'' +
                 ", rating=" + rating +
@@ -62,16 +64,10 @@ public class Review {
     }
 
     public static class Builder {
-        private int reviewId;
         private User user;
         private Product product;
         private String review;
-        private Float rating;
-
-        public Builder setReviewId(int reviewId) {
-            this.reviewId = reviewId;
-            return this;
-        }
+        private float rating;
 
         public Builder setUser(User user) {
             this.user = user;
@@ -88,13 +84,12 @@ public class Review {
             return this;
         }
 
-        public Builder setRating(Float rating) {
+        public Builder setRating(float rating) {
             this.rating = rating;
             return this;
         }
 
         public Builder copy(Review review) {
-            this.reviewId = review.reviewId;
             this.user = review.user;
             this.product = review.product;
             this.review = review.review;

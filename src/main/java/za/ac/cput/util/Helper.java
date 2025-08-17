@@ -18,15 +18,17 @@ public class Helper {
         return emailValidator.isValid(email);
     }
 
-    public static boolean isValidDate(LocalDate date){
+    public static boolean isValidDate(LocalDate date) {
         return date == null;
     }
 
-
-    public static boolean isValidRating(Float rating) {
-        return rating != null && rating >= 0 && rating <= 10;
+    public static boolean isValidPriceVsSale(double price, double salePrice) {
+        return salePrice < price;
     }
 
+    public static boolean isValidRating(Float rating) { return rating != null && rating >= 0 && rating <= 5;}
 
     public static boolean isValidPrice(double price){ return price > 0; }
+    public static boolean isValidPrice(float price){ return price > 0; }
+
 }
