@@ -1,47 +1,31 @@
 package za.ac.cput.domain.order;
-
-import jakarta.persistence.*;
-
 /*
      OrderItem class
      Author: Sinovuyo Mathungana (230143725)
 */
-@Entity
-public class OrderItem{
-    @Id
-    private long orderItemID;
-    private long productID;
-    private float totalPrice;
-    private long quantity;
-    private float pricePerItem;
-    protected OrderItem(){}
+public class OrderItem {
+    private int orderItemID;
+    private int productID;
+    private double price;
 
-
+    private OrderItem(){}
 
     private OrderItem(Builder builder){
         this.orderItemID = builder.orderItemID;
         this.productID = builder.productID;
-        this.totalPrice = builder.totalPrice;
-        this.quantity = builder.quantity;
+        this.price = builder.price;
     }
 
-    public long getOrderItemID() {
+    public int getOrderItemID() {
         return orderItemID;
     }
 
-    public long getProductID() {
+    public int getProductID() {
         return productID;
     }
 
-    public float getTotalPrice() {
-        return totalPrice;
-    }
-
-    public long getQuantity() {
-        return quantity;
-    }
-    public float getPricePerItem() {
-        return pricePerItem;
+    public double getPrice() {
+        return price;
     }
 
     @Override
@@ -49,51 +33,34 @@ public class OrderItem{
         return "OrderItem{" +
                 "orderItemID=" + orderItemID +
                 ", productID=" + productID +
-                ", totalPrice=" + totalPrice +
-                ", quantity="+ quantity+
-                ", pricePerItem=" + pricePerItem +
+                ", price=" + price +
                 '}';
     }
     public static class Builder{
-        private long orderItemID;
-        private long productID;
-        private float totalPrice;
-        private long quantity;
-        private float pricePerItem;
+        private int orderItemID;
+        private int productID;
+        private double price;
 
-        public Builder setOrderItemID(long orderItemID) {
+        public Builder setOrderItemID(int orderItemID) {
             this.orderItemID = orderItemID;
             return this;
         }
 
-        public Builder setProductID(long productID) {
+        public Builder setProductID(int productID) {
             this.productID = productID;
             return this;
         }
 
-        public Builder setTotalPrice(float totalPrice) {
-            this.totalPrice = totalPrice;
-            return this;
-        }
-
-        public Builder setQuantity(long quantity) {
-            this.quantity = quantity;
-            return this;
-        }
-        public Builder setPricePerItem(float pricePerItem) {
-            this.pricePerItem = pricePerItem;
+        public Builder setPrice(double price) {
+            this.price = price;
             return this;
         }
         public Builder copy(OrderItem orderitem){
             this.orderItemID = orderitem.orderItemID;
             this.productID = orderitem.productID;
-            this.totalPrice = orderitem.totalPrice;
-            this.quantity = orderitem.quantity;
-            this.pricePerItem = orderitem.pricePerItem;
+            this.price = orderitem.price;
             return this;
         }
         public OrderItem build(){return new OrderItem(this);}
     }
 }
-
-

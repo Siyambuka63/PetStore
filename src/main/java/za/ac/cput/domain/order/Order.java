@@ -1,38 +1,28 @@
 package za.ac.cput.domain.order;
 
-import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.util.List;
 /*
      Order class
      Author: Sinovuyo Mathungana (230143725)
 */
-@Entity
-@Table(name = "orders")
-public class Order{
-    @Id
+public class Order {
     private long orderID;
     private long userID;
     private LocalDate orderDate;
     private LocalDate deliveryDate;
-    private float price;
-    @Enumerated(EnumType.STRING)
-    private Status status;
-    @OneToMany(fetch =  FetchType.EAGER)
-    @JoinColumn(name = "orderID")
+    private double totalPrice;
     private List<OrderItem> items;
+    private Status status;
 
-
-
-    protected Order(){}
+    private Order(){}
 
     private Order(Builder builder){
         this.orderID = builder.orderID;
         this.userID = builder.userID;
         this.orderDate = builder.orderDate;
         this.deliveryDate = builder.deliveryDate;
-        this.price = builder.price;
+        this.totalPrice = builder.totalPrice;
         this.items = builder.items;
         this.status = builder.status;
     }
@@ -49,8 +39,8 @@ public class Order{
         return orderDate;
     }
 
-    public float getPrice() {
-        return price;
+    public double getTotalPrice() {
+        return totalPrice;
     }
 
     public List<OrderItem> getItems() {
@@ -72,7 +62,7 @@ public class Order{
                 ", userID=" + userID +
                 ", orderDate=" + orderDate +
                 ", deliveryDate=" + deliveryDate +
-                ", price=" + price +
+                ", totalPrice=" + totalPrice +
                 ", items=" + items +
                 ", status=" + status +
                 '}';
@@ -83,7 +73,7 @@ public class Order{
         private long userID;
         private LocalDate orderDate;
         private LocalDate deliveryDate;
-        private float price;
+        private double totalPrice;
         private List<OrderItem> items;
         private Status status;
 
@@ -105,8 +95,8 @@ public class Order{
             this.deliveryDate = deliveryDate;
             return this;
         }
-        public Builder setPrice(float price) {
-            this.price = price;
+        public Builder setTotalPrice(double totalPrice) {
+            this.totalPrice = totalPrice;
             return this;
         }
 
@@ -125,7 +115,7 @@ public class Order{
             this.userID = order.userID;
             this.orderDate = order.orderDate;
             this.deliveryDate = order.deliveryDate;
-            this.price = order.price;
+            this.totalPrice = order.totalPrice;
             this.items = order.items;
             this.status = order.status;
             return this;

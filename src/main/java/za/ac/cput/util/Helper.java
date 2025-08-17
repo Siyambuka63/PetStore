@@ -26,9 +26,8 @@ public class Helper {
         return salePrice < price;
     }
 
-    public static boolean isValidRating(Float rating) { return rating != null && rating >= 0 && rating <= 5;}
+    public static boolean isValidRating(Float rating) {
 
-    public static boolean isValidPrice(double price){ return price > 0; }
-    public static boolean isValidPrice(float price){ return price > 0; }
-
+        return rating != null && rating >= 0 && rating <= 5;
+    }
 }

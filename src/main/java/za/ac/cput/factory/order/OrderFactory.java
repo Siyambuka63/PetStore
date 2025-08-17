@@ -10,18 +10,18 @@ import za.ac.cput.util.Helper;
 
 public class OrderFactory {
     public static Order createOrder(
-            long orderID,
-            long userID,
+            int orderID,
+            int userID,
             LocalDate orderDate,
             LocalDate deliveryDate,
-            float price,
+            double totalPrice,
             List<OrderItem> items,
             Status status
     ){
         if(Helper.isValidDate(orderDate)
         ||Helper.isValidDate(deliveryDate)
                 || items.isEmpty()
-        || status == null || !Helper.isValidPrice(price)){
+        || status == null){
             return null;
         }
      return new Order.Builder()
@@ -29,7 +29,7 @@ public class OrderFactory {
              .setUserID(userID)
              .setOrderDate(orderDate)
              .setDeliveryDate(deliveryDate)
-             .setPrice(price)
+             .setTotalPrice(totalPrice)
              .setItems(items)
              .setStatus(status)
              .build();

@@ -4,26 +4,18 @@ import za.ac.cput.domain.order.OrderItem;
 import za.ac.cput.util.Helper;
 
 public class OrderItemFactory {
-    public static OrderItem createOrderItem(
-            long orderItemID,
-            long productID,
-            long quantity,
-            float totalPrice,
-            float pricePerItem
+    public static OrderItem createOrder(
+            int orderItemID,
+            int productID,
+            double price
     ){
-
-        if(Helper.isValidPrice(totalPrice)){
-            return null;
-        }
-        if(Helper.isValidPrice(pricePerItem)){
+        if(Helper.isValidPrice(price)){
             return null;
         }
         return new OrderItem.Builder()
                 .setOrderItemID(orderItemID)
                 .setProductID(productID)
-                .setQuantity(quantity)
-                .setTotalPrice(totalPrice)
-                .setPricePerItem(pricePerItem)
+                .setPrice(price)
                 .build();
     }
 }
