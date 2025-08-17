@@ -4,8 +4,8 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import za.ac.cput.domain.order.Order;
-import za.ac.cput.domain.order.OrderItem;
 import za.ac.cput.domain.order.Status;
+import za.ac.cput.factory.OrderFactory;
 
 import java.time.LocalDate;
 import java.util.*;

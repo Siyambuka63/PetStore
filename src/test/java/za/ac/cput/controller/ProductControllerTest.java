@@ -46,7 +46,7 @@ class ProductControllerTest {
     @Test
     @Order(2)
     void read() {
-        String url = BASE_URL + "/read/" + product.getProductID();
+        String url = BASE_URL + "/read/" + product.getId();
         ResponseEntity<Product> readProduct = restTemplate.getForEntity(url, Product.class);
         assertNotNull(readProduct);
         System.out.println(readProduct);
@@ -65,10 +65,10 @@ class ProductControllerTest {
     @Test
     @Order(5)
     void delete() {
-        String url = BASE_URL + "/delete/" + product.getProductID();
+        String url = BASE_URL + "/delete/" + product.getId();
         restTemplate.delete(url);
 
-        String readUrl = BASE_URL + "/read/" + product.getProductID();
+        String readUrl = BASE_URL + "/read/" + product.getId();
         ResponseEntity<Product> reponse = restTemplate.getForEntity(readUrl, Product.class);
         assertEquals(HttpStatus.NOT_FOUND, reponse.getStatusCode());
         System.out.println("true");

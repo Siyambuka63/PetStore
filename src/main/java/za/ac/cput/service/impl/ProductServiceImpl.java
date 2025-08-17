@@ -1,4 +1,4 @@
-package za.ac.cput.service.user.impl;
+package za.ac.cput.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,14 +22,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product create(Product product) {
-        return repository.save(product);
-    }
+    public Product create(Product product) {return repository.save(product);}
 
     @Override
-    public Product read(long id) {
-        return repository.getReferenceById(id);
-    }
+    public Product read(Long id) {return repository.getReferenceById(id);}
 
     @Override
     public Product update(Product product) {
@@ -37,9 +33,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void delete(Long id) {
-        repository.deleteById(id);
-    }
+    public void delete(Long id) {repository.deleteById(id);}
 
     @Override
     public List<Product> getAll() {
@@ -49,15 +43,5 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product findByProductName(String productName) {
         return repository.findByProductName(productName);
-    }
-
-
-    public Product findByProductID(long productID) {
-        return null;
-    }
-
-
-    public Product findByProductID(Long productID) {
-        return repository.findByProductID(productID);
     }
 }

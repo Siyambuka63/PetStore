@@ -8,7 +8,5 @@ import java.util.List;
 public interface CardService extends IService<Card, Long> {
     List<Card> getAll();
 
-    Card findByCardId(Long contactId);
     Card findByLastFourDigits(String lastFourDigits);
-
 }

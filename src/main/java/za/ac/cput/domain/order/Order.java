@@ -1,16 +1,17 @@
 package za.ac.cput.domain.order;
 
 import jakarta.persistence.*;
+import za.ac.cput.domain.orderItem.OrderItem;
 
 import java.time.LocalDate;
 import java.util.List;
+
 /*
      Order class
      Author: Sinovuyo Mathungana (230143725)
 */
 @Entity
-@Table(name = "orders")
-public class Order{
+public class Order {
     @Id
     private long orderID;
     private long userID;
@@ -19,15 +20,13 @@ public class Order{
     private float price;
     @Enumerated(EnumType.STRING)
     private Status status;
-    @OneToMany(fetch =  FetchType.EAGER)
-    @JoinColumn(name = "orderID")
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
     private List<OrderItem> items;
 
+    protected Order() {
+    }
 
-
-    protected Order(){}
-
-    private Order(Builder builder){
+    private Order(Builder builder) {
         this.orderID = builder.orderID;
         this.userID = builder.userID;
         this.orderDate = builder.orderDate;
@@ -73,12 +72,12 @@ public class Order{
                 ", orderDate=" + orderDate +
                 ", deliveryDate=" + deliveryDate +
                 ", price=" + price +
-                ", items=" + items +
                 ", status=" + status +
+                ", items=" + items +
                 '}';
     }
 
-    public static class Builder{
+    public static class Builder {
         private long orderID;
         private long userID;
         private LocalDate orderDate;
@@ -101,10 +100,12 @@ public class Order{
             this.orderDate = orderDate;
             return this;
         }
+
         public Builder setDeliveryDate(LocalDate deliveryDate) {
             this.deliveryDate = deliveryDate;
             return this;
         }
+
         public Builder setPrice(float price) {
             this.price = price;
             return this;
@@ -120,7 +121,7 @@ public class Order{
             return this;
         }
 
-        public Builder copy(Order order){
+        public Builder copy(Order order) {
             this.orderID = order.orderID;
             this.userID = order.userID;
             this.orderDate = order.orderDate;
@@ -130,6 +131,9 @@ public class Order{
             this.status = order.status;
             return this;
         }
-        public Order build(){return new Order(this);}
+
+        public Order build() {
+            return new Order(this);
+        }
     }
 }

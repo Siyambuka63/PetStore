@@ -10,7 +10,6 @@ import java.util.List;
 
 @Service
 public class CardServiceImpl implements CardService {
-
     @Autowired
     private static CardService  cardService;
 
@@ -21,7 +20,6 @@ public class CardServiceImpl implements CardService {
     public CardServiceImpl(CardRepository cardRepository) {
         this.cardRepository = cardRepository;
     }
-
 
     @Override
     public Card create(Card card) {
@@ -43,21 +41,13 @@ public class CardServiceImpl implements CardService {
         cardRepository.deleteById(cardId);
     }
 
-
-
     @Override
     public List<Card> getAll() {
         return cardRepository.findAll();
     }
 
     @Override
-    public Card findByCardId(Long contactId) {
-        return cardRepository.findByCardId(contactId);
-    }
-
-    @Override
     public Card findByLastFourDigits(String lastFourDigits) {
         return cardRepository.findByLastFourDigits(lastFourDigits);
     }
-
 }

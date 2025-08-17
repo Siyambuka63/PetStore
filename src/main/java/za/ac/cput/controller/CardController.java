@@ -46,11 +46,5 @@ public class CardController {
    @GetMapping("/findByLastFourDigits/{lastFourDigits}")
     public Card findByLastFourDigits(@PathVariable String lastFourDigits) {
         return this.service.findByLastFourDigits(lastFourDigits);
-
    }
-
-   @GetMapping("/findByCardId/{cardId}")
-    public Card findByCardId(@PathVariable Long cardId) {
-        return this.service.findByCardId(cardId);
-    }
 }

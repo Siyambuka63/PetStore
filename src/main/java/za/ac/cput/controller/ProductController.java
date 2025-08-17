@@ -5,14 +5,13 @@ package za.ac.cput.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import za.ac.cput.domain.Product;
-import za.ac.cput.service.user.impl.ProductServiceImpl;
+import za.ac.cput.service.impl.ProductServiceImpl;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/product")
 public class ProductController {
-
     private ProductServiceImpl service;
 
     @Autowired

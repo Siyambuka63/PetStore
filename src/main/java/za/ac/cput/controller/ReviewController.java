@@ -5,37 +5,25 @@ package za.ac.cput.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import za.ac.cput.domain.Review;
-import za.ac.cput.domain.ReviewId;
-import za.ac.cput.service.user.impl.ReviewServiceImpl;
+import za.ac.cput.domain.review.Review;
+import za.ac.cput.domain.review.ReviewId;
+import za.ac.cput.service.impl.ReviewServiceImpl;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/reviews")
 public class ReviewController {
+    private final ReviewServiceImpl service;
 
-    private ReviewServiceImpl service;
-
-
-        @Autowired
-        public ReviewController(ReviewServiceImpl service) {
-            this.service = service;
-        }
+    @Autowired
+    public ReviewController(ReviewServiceImpl service) {
+        this.service = service;
+    }
 
     @PostMapping("/create")
     public Review create(@RequestBody Review review) {
-        return service.save(review);
-    }
-
-    @PutMapping("/update")
-    public Review update(@RequestBody Review review) {
-        return service.save(review);
-    }
-
-    @DeleteMapping("/delete/{userId}/{productId}")
-    public void delete(@PathVariable Long userId, @PathVariable Long productId) {
-        service.delete(new ReviewId(userId, productId));
+        return service.create(review);
     }
 
     @GetMapping("/read/{userId}/{productId}")
@@ -43,7 +31,18 @@ public class ReviewController {
         return service.read(new ReviewId(userId, productId));
     }
 
+    @PutMapping("/update")
+    public Review update(@RequestBody Review review) {
+        return service.update(review);
+    }
+
+    @DeleteMapping("/delete/{userId}/{productId}")
+    public void delete(@PathVariable Long userId, @PathVariable Long productId) {
+        service.delete(new ReviewId(userId, productId));
+    }
+
     @GetMapping("/getAll")
     public List<Review> getAll() {
-        return service.findAll();
-    }}
+        return service.getAll();
+    }
+}

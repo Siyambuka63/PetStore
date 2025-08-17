@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import za.ac.cput.domain.Product;
-import za.ac.cput.domain.Review;
+import za.ac.cput.domain.review.Review;
 import za.ac.cput.domain.user.Address;
 import za.ac.cput.domain.user.Card;
 import za.ac.cput.domain.user.Contact;
@@ -63,7 +63,7 @@ class UserControllerTest {
     @Test
     @Order(2)
     void read() {
-        String url = BASE_URL + "/read/" + user.getUserID();
+        String url = BASE_URL + "/read/" + user.getId();
         User readUser = restTemplate.getForObject(url, User.class);
         assertNotNull(readUser);
         System.out.println(readUser);
@@ -82,7 +82,7 @@ class UserControllerTest {
     @Test
     @Order(5)
     void delete() {
-        String url = BASE_URL + "/delete" + user.getUserID();
+        String url = BASE_URL + "/delete" + user.getId();
         restTemplate.delete(url);
         User deletedUser = restTemplate.getForObject(url, User.class);
         assertNull(deletedUser);

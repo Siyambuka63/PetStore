@@ -6,12 +6,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import za.ac.cput.domain.order.OrderItem;
 import za.ac.cput.domain.order.Status;
 import za.ac.cput.domain.order.Order;
-import za.ac.cput.factory.order.OrderFactory;
+import za.ac.cput.factory.OrderFactory;
 import za.ac.cput.factory.order.OrderItemFactory;
-import za.ac.cput.service.order.impl.OrderService;
+import za.ac.cput.service.impl.OrderServiceImpl;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,9 +20,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest()
 @TestMethodOrder(MethodOrderer.MethodName.class)
-class OrderServiceTest {
+class OrderServiceImplTest {
     @Autowired
-    private OrderService service;
+    private OrderServiceImpl service;
     @Test
     void a_create() {
 OrderItem orderItem = OrderItemFactory.createOrderItem(1,1,50,100,10);        LocalDate orderDate = LocalDate.now();

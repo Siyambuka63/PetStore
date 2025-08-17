@@ -1,35 +1,30 @@
 package za.ac.cput.domain.user;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import org.springframework.data.annotation.Id;
-
-import java.time.LocalDate;
+import jakarta.persistence.Id;
 
 
+@Entity
 public class Card {
     @Id
-    private long cardId;
+    private long id;
     private String provider;
     private String token;
     private String lastFourDigits;
     private String brand;
 
-
-    protected Card() {
-    }
+    protected Card() {}
 
     public Card(Builder builder) {
-        this.cardId = builder.cardId;
+        this.id = builder.cardId;
         this.provider = builder.provider;
         this.token = builder.token;
         this.lastFourDigits = builder.lastFourDigits;
         this.brand = builder.brand;
     }
 
-    public long getCardId() {
-        return cardId;
+    public long getId() {
+        return id;
     }
 
     public String getProvider() {
@@ -51,7 +46,7 @@ public class Card {
     @Override
     public String toString() {
         return "Card{" +
-                "cardId=" + cardId +
+                "cardId=" + id +
                 ", provider='" + provider + '\'' +
                 ", token='" + token + '\'' +
                 ", lastFourDigits='" + lastFourDigits + '\'' +
@@ -59,8 +54,9 @@ public class Card {
                 '}';
     }
 
-
-
+    public void setId(long cardId) {
+        this.id = cardId;
+    }
 
     public static class Builder {
         private long cardId;
@@ -73,34 +69,38 @@ public class Card {
             this.cardId = cardId;
             return this;
         }
+
         public Builder setProvider(String provider) {
             this.provider = provider;
             return this;
         }
+
         public Builder setToken(String token) {
             this.token = token;
             return this;
         }
+
         public Builder setLastFourDigits(String lastFourDigits) {
             this.lastFourDigits = lastFourDigits;
             return this;
         }
+
         public Builder setBrand(String brand) {
             this.brand = brand;
             return this;
         }
 
-        public Builder copy (Card card) {
-            this.cardId = card.cardId;
+        public Builder copy(Card card) {
+            this.cardId = card.id;
             this.provider = card.provider;
             this.token = card.token;
             this.lastFourDigits = card.lastFourDigits;
             this.brand = card.brand;
             return this;
         }
+
         public Card build() {
             return new Card(this);
         }
     }
-
 }

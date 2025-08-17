@@ -4,7 +4,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.cput.domain.Product;
-import za.ac.cput.domain.Review;
+import za.ac.cput.domain.review.Review;
 import za.ac.cput.domain.user.Address;
 import za.ac.cput.domain.user.Card;
 import za.ac.cput.domain.user.Contact;
@@ -59,7 +59,7 @@ class UserServiceImplTest {
     @Test
     @Order(2)
     void read() {
-        User readUser = service.read(user.getUserID());
+        User readUser = service.read(user.getId());
         assertNotNull(readUser);
         System.out.println(readUser);
     }
@@ -76,8 +76,8 @@ class UserServiceImplTest {
     @Test
     @Order(5)
     void delete() {
-        service.delete(user.getUserID());
-        User deletedUser = service.read(user.getUserID());
+        service.delete(user.getId());
+        User deletedUser = service.read(user.getId());
         assertNull(deletedUser);
         System.out.println(deletedUser);
     }

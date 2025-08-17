@@ -2,7 +2,7 @@ package za.ac.cput.factory.user;
 
 import org.junit.jupiter.api.Test;
 import za.ac.cput.domain.Product;
-import za.ac.cput.domain.Review;
+import za.ac.cput.domain.review.Review;
 import za.ac.cput.domain.user.Address;
 import za.ac.cput.domain.user.Card;
 import za.ac.cput.domain.user.Contact;

@@ -1,17 +1,14 @@
 package za.ac.cput.controller;
 
-import org.aspectj.weaver.ast.Or;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import za.ac.cput.domain.order.OrderItem;
 import za.ac.cput.domain.order.Order;
 import za.ac.cput.domain.order.Status;
-import za.ac.cput.factory.order.OrderFactory;
-import za.ac.cput.factory.order.OrderFactory;
+import za.ac.cput.factory.OrderFactory;
 import za.ac.cput.factory.order.OrderItemFactory;
 import java.time.LocalDate;
 import java.util.ArrayList;

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.cput.domain.Product;
 import za.ac.cput.factory.ProductFactory;
+import za.ac.cput.service.impl.ProductServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,7 @@ class ProductServiceImplTest {
         @Test
         @Order(2)
         void read() {
-            Product read = service.read(product.getProductID());
+            Product read = service.read(product.getId());
             assertNotNull(read);
             System.out.println(read);
         }
@@ -53,8 +54,8 @@ class ProductServiceImplTest {
         @Test
         @Order(5)
         void delete() {
-            service.delete(product.getProductID());
-            Product deleted = service.read(product.getProductID());
+            service.delete(product.getId());
+            Product deleted = service.read(product.getId());
             assertNull(deleted);
             System.out.println(deleted);
         }
@@ -78,7 +79,7 @@ class ProductServiceImplTest {
    @Test
     @Disabled
     void findByProductID() {
-        Product foundByProductID = service.findByProductID(product.getProductID());
+        Product foundByProductID = service.findByProductID(product.getId());
         assertNotNull(foundByProductID);
         System.out.println(foundByProductID);
     }
