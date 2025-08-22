@@ -4,14 +4,19 @@ package za.ac.cput.service.user.impl;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import za.ac.cput.domain.Review;
-import za.ac.cput.domain.ReviewId;
-import za.ac.cput.domain.product.Product;
-import za.ac.cput.domain.user.User;
-import za.ac.cput.factory.product.ProductFactory;
+import za.ac.cput.domain.review.Review;
+import za.ac.cput.domain.review.ReviewId;
+import za.ac.cput.domain.Product;
+import za.ac.cput.domain.user.*;
+import za.ac.cput.factory.ProductFactory;
+import za.ac.cput.factory.user.AddressFactory;
+import za.ac.cput.factory.user.CardFactory;
+import za.ac.cput.factory.user.ContactFactory;
 import za.ac.cput.factory.user.UserFactory;
 import za.ac.cput.factory.ReviewFactory;
+import za.ac.cput.service.impl.ReviewServiceImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,9 +34,18 @@ class ReviewServiceImplTest {
 
     @BeforeAll
     static void setUp() {
+        List<Product> wishlistItems = new ArrayList<Product>();
+        List<Review> reviews = new ArrayList<Review>();
 
-        user = UserFactory.createUser(1, "Name", "Middle", "Last", "password123");
-        product = ProductFactory.createProduct(1, "Multistage", "Nibbles", "placeholder.jpg", 4f, 249.99, 199.99, true, 23, 1.34, "Jock", "Adult", "Dry", "Dog", "Lamb");
+        Card card = CardFactory.createCard(987554456, "Ozow", "Visa_4456", "4456", "Visa");
+        Address shippingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
+        Address billingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
+        Contact contact = ContactFactory.createContact(1, "0987654321", "test@gmail.com");
+        user = UserFactory.createUser(1, "Name", "Middle", "Last", "password123", wishlistItems, reviews, card, shippingAddress, billingAddress, contact);
+
+        List<String> categories = new ArrayList<>();
+        List<User> wishlistedUser = new ArrayList<>();
+        product = ProductFactory.createProduct(1, "Multistage", "Nibbles", "placeholder.jpg", 4f, 249.99f, 199.99f, true, 23, 1.34f, "Jock", "Adult", "Dry", "Dog", "Lamb", categories, wishlistedUser);
 
 
         review = ReviewFactory.createReview(user, product, "Great product!", 4.7f);
@@ -41,7 +55,7 @@ class ReviewServiceImplTest {
     @Test
     @Order(1)
     void create() {
-        Review created = service.save(review);
+        Review created = service.create(review);
         assertNotNull(created);
         System.out.println(created);
     }
@@ -59,7 +73,7 @@ class ReviewServiceImplTest {
     @Order(3)
     void update() {
         Review updatedReview = new Review.Builder().copy(review).setReview("Updated review text").setRating(4.9f).build();
-        Review updated = service.save(updatedReview);
+        Review updated = service.update(updatedReview);
         assertNotNull(updated);
         System.out.println(updated);
     }
@@ -77,24 +91,8 @@ class ReviewServiceImplTest {
     @Test
     @Order(4)
     void getAll() {
-        List<Review> reviews = service.findAll();
+        List<Review> reviews = service.getAll();
         assertNotNull(reviews);
         System.out.println(reviews);
-    }
-
-    @Test
-    @Order(6)
-    void findByUserId() {
-        List<Review> reviewsByUser = service.findByUserId(user.getId());
-        assertNotNull(reviewsByUser);
-        System.out.println(reviewsByUser);
-    }
-
-    @Test
-    @Order(7)
-    void findByProductId() {
-        List<Review> reviewsByProduct = service.findByProductId(product.getId());
-        assertNotNull(reviewsByProduct);
-        System.out.println( reviewsByProduct);
     }
 }

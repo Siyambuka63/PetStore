@@ -4,14 +4,24 @@ package za.ac.cput.service.user.impl;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import za.ac.cput.domain.OrderItem;
-import za.ac.cput.domain.OrderItemId;
+import za.ac.cput.domain.order.Status;
+import za.ac.cput.domain.orderItem.OrderItem;
+import za.ac.cput.domain.orderItem.OrderItemId;
 import za.ac.cput.domain.order.Order;
-import za.ac.cput.domain.product.Product;
+import za.ac.cput.domain.Product;
+import za.ac.cput.domain.review.Review;
+import za.ac.cput.domain.user.*;
 import za.ac.cput.factory.OrderItemFactory;
-import za.ac.cput.factory.order.OrderFactory;
-import za.ac.cput.factory.product.ProductFactory;
+import za.ac.cput.factory.OrderFactory;
+import za.ac.cput.factory.ProductFactory;
+import za.ac.cput.factory.user.AddressFactory;
+import za.ac.cput.factory.user.CardFactory;
+import za.ac.cput.factory.user.ContactFactory;
+import za.ac.cput.factory.user.UserFactory;
+import za.ac.cput.service.impl.OrderItemServiceImpl;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,14 +39,30 @@ class OrderItemServiceImplTest {
 
     @BeforeAll
     static void setUp() {
-        order = OrderFactory.createOrder(1L);
-        product = ProductFactory.createProduct(1, "Multistage", "Nibbles", "placeholder.jpg", 4f, 249.99, 199.99, true, 23, 1.34, "Jock", "Adult", "Dry", "Dog", "Lamb");
+        LocalDate orderDate = LocalDate.now();
+        LocalDate deliveryDate = LocalDate.parse("2025-05-10");
+        Status status = Status.Busy;
+
+        List<Product> wishlistItems = new ArrayList<Product>();
+        List<Review> reviews = new ArrayList<Review>();
+
+        Card card = CardFactory.createCard(987554456, "Ozow", "Visa_4456", "4456", "Visa");
+        Address shippingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
+        Address billingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
+        Contact contact = ContactFactory.createContact(1, "0987654321", "test@gmail.com");
+
+        User user = UserFactory.createUser(1, "Name", "Middle", "Last", "password123", wishlistItems, reviews, card, shippingAddress, billingAddress, contact);
+        order = OrderFactory.createOrder(1,user,orderDate,deliveryDate,8000,status);
+
+        List<String> categories = new ArrayList<>();
+        List<User> wishlistedUser = new ArrayList<>();
+        product = ProductFactory.createProduct(1, "Multistage", "Nibbles", "placeholder.jpg", 4f, 249.99f, 199.99f, true, 23, 1.34f, "Jock", "Adult", "Dry", "Dog", "Lamb", categories, wishlistedUser);
 
         orderItem = OrderItemFactory.createOrderItem(order, product, 100f, 2);
-        orderItemId = new OrderItemId(order.getId(), product.getId());}
+    }
 
     @Test
-    @Order(1)
+    @org.junit.jupiter.api.Order(1)
     void create() {
         OrderItem created = service.create(orderItem);
         assertNotNull(created);
@@ -44,7 +70,7 @@ class OrderItemServiceImplTest {
     }
 
     @Test
-    @Order(2)
+    @org.junit.jupiter.api.Order(2)
     void read() {
         OrderItem read = service.read(new OrderItemId(order.getId(), product.getId()));
         assertNotNull(read);
@@ -52,7 +78,7 @@ class OrderItemServiceImplTest {
     }
 
     @Test
-    @Order(3)
+    @org.junit.jupiter.api.Order(3)
     void update() {
         OrderItem updatedOrderItem = new OrderItem.Builder().copy(orderItem).setQuantity(3).setTotalPrice(300f).build();
         OrderItem updated = service.update(updatedOrderItem);
@@ -62,7 +88,7 @@ class OrderItemServiceImplTest {
     }
 
     @Test
-    @Order(4)
+    @org.junit.jupiter.api.Order(4)
     void getAll() {
         List<OrderItem> all = service.getAll();
         assertNotNull(all);
@@ -71,7 +97,7 @@ class OrderItemServiceImplTest {
     }
 
     @Test
-    @Order(5)
+    @org.junit.jupiter.api.Order(5)
     void delete() {
         service.delete(new OrderItemId(order.getId(), product.getId()));
         OrderItem deleted = service.read(new OrderItemId(order.getId(), product.getId()));

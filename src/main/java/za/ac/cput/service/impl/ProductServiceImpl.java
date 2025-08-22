@@ -12,7 +12,7 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
-    private ProductService service;
+    private static ProductService service;
 
     private ProductRepository repository;
 

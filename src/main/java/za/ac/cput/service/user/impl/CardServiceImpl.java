@@ -16,11 +16,6 @@ public class CardServiceImpl implements CardService {
     @Autowired
     private CardRepository cardRepository;
 
-    @Autowired
-    public CardServiceImpl(CardRepository cardRepository) {
-        this.cardRepository = cardRepository;
-    }
-
     @Override
     public Card create(Card card) {
         return cardRepository.save(card);

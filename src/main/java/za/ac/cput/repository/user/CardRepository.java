@@ -6,9 +6,5 @@ import za.ac.cput.domain.user.Card;
 
 @Repository
 public interface CardRepository extends JpaRepository<Card, Long> {
-
-    Card findByCardId(Long cardId);
-
     Card findByLastFourDigits(String lastFourDigits);
-
 }

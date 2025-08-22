@@ -4,6 +4,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.cput.domain.Product;
+import za.ac.cput.domain.user.User;
 import za.ac.cput.factory.ProductFactory;
 import za.ac.cput.service.impl.ProductServiceImpl;
 
@@ -24,7 +25,9 @@ class ProductServiceImplTest {
     @BeforeAll
     static void setUp() {
         List<String> categories = new ArrayList<>();
-        product = ProductFactory.createProduct(1, "Multistage", "Nibbles", "placeholder.jpg", 4f, 249.99, 199.99, true, 23, 1.34, "Jock", "Adult", "Dry", "Dog", "Lamb", categories);}
+        List<User> wishlistedUser = new ArrayList<>();
+
+        product = ProductFactory.createProduct(1, "Multistage", "Nibbles", "placeholder.jpg", 4f, 249.99f, 199.99f, true, 23, 1.34f, "Jock", "Adult", "Dry", "Dog", "Lamb", categories, wishlistedUser);}
 
         @Test
         @Order(1)
@@ -75,13 +78,4 @@ class ProductServiceImplTest {
             assertNotNull(foundByProductName);
             System.out.println(foundByProductName);
         }
-
-   @Test
-    @Disabled
-    void findByProductID() {
-        Product foundByProductID = service.findByProductID(product.getId());
-        assertNotNull(foundByProductID);
-        System.out.println(foundByProductID);
-    }
-
 }

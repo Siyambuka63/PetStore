@@ -14,7 +14,7 @@ public class User {
     private String middleName;
     private String lastName;
     private String password;
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany(mappedBy = "wishlistedUsers")
     private List<Product> wishlistItems;
     @OneToMany
     private List<Review> reviews;
@@ -22,9 +22,10 @@ public class User {
     @JoinColumn(name = "card_id")
     private Card card;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id")
+    @JoinColumn(name = "shipping_id")
     private Address shippingAddress;
-    @JoinColumn(name = "address_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "billing_id")
     private Address billingAddress;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "contact_id")

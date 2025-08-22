@@ -7,6 +7,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import za.ac.cput.domain.Product;
+import za.ac.cput.domain.user.User;
 import za.ac.cput.factory.ProductFactory;
 
 import java.util.ArrayList;
@@ -30,8 +31,9 @@ class ProductControllerTest {
     static void setUp() {
 
         List<String> categories = new ArrayList<>();
+        List<User> wishlistedUser = new ArrayList<>();
 
-        product = ProductFactory.createProduct(1,"MissDog", "Nibbles","placeholder.jpg", 4f, 249.99, 199.99, true, 23, 1.34, "SaveMor", "Adult", "Dry", "Dog", "Chicken", categories);
+        product = ProductFactory.createProduct(1,"MissDog", "Nibbles","placeholder.jpg", 4f, 249.99f, 199.99f, true, 23, 1.34f, "SaveMor", "Adult", "Dry", "Dog", "Chicken", categories, wishlistedUser);
     }
 
     @Test

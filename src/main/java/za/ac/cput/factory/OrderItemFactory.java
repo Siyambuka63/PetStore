@@ -33,7 +33,7 @@ public class OrderItemFactory {
         if (order == null) return null;
         if (product == null) return null;
 
-        return createOrderItem(order.getOrderID(), product.getId(), pricePerItem, quantity);
+        return createOrderItem(order.getId(), product.getId(), pricePerItem, quantity);
     }
 }
 

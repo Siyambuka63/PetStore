@@ -3,6 +3,7 @@ package za.ac.cput.domain.review;
 import jakarta.persistence.Embeddable;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Embeddable
 public class ReviewId implements Serializable {
@@ -31,5 +32,17 @@ public class ReviewId implements Serializable {
                 "userId=" + userId +
                 ", productId=" + productId +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        ReviewId reviewId = (ReviewId) o;
+        return Objects.equals(userId, reviewId.userId) && Objects.equals(productId, reviewId.productId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, productId);
     }
 }

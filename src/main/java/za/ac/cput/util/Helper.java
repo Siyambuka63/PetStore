@@ -26,11 +26,23 @@ public class Helper {
         return salePrice < price;
     }
 
-    public static boolean isValidRating(Float rating) { return rating >= 0 && rating <= 5;}
-
-    public static boolean isValidPrice(float price){ return price > 0; }
-
-    public static boolean isValidQuantity(int quantity) {return quantity > 0;}
-
-    public static boolean isValidLastFourDigits(String lastFourDigits) { return lastFourDigits.matches("[0-9]{4}]");}
+    public static boolean isValidRating(Float rating) {
+        return rating >= 0 && rating <= 5;
     }
+
+    public static boolean isValidPrice(float price) {
+        return price > 0;
+    }
+
+    public static boolean isValidQuantity(int quantity) {
+        return quantity > 0;
+    }
+
+    public static boolean isValidLastFourDigits(String lastFourDigits) {
+        return lastFourDigits.matches("[0-9]{4}]");
+    }
+
+    public static boolean isValidPostalCode(String postalCode) {
+        return postalCode.matches("[0-9]{4}]");
+    }
+}

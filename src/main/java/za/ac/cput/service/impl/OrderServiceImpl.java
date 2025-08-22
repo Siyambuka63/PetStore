@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import za.ac.cput.domain.order.Order;
 import za.ac.cput.domain.order.Status;
-import za.ac.cput.repository.order.OrderRepository;
+import za.ac.cput.repository.OrderRepository;
 import za.ac.cput.service.OrderService;
 
 import java.time.LocalDate;
