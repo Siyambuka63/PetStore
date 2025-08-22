@@ -1,17 +1,17 @@
-package za.ac.cput.domain;
+package za.ac.cput.domain.review;
 
 import jakarta.persistence.Embeddable;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
 public class ReviewId implements Serializable {
-
     private Long userId;
     private Long productId;
 
-
-    protected ReviewId() {}
+    protected ReviewId() {
+    }
 
     public ReviewId(Long userId, Long productId) {
         this.userId = userId;
@@ -22,17 +22,18 @@ public class ReviewId implements Serializable {
         return userId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
     public Long getProductId() {
         return productId;
     }
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
+    @Override
+    public String toString() {
+        return "ReviewId{" +
+                "userId=" + userId +
+                ", productId=" + productId +
+                '}';
     }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -44,6 +45,4 @@ public class ReviewId implements Serializable {
     public int hashCode() {
         return Objects.hash(userId, productId);
     }
-
 }
-

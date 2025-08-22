@@ -1,16 +1,44 @@
-NKHESO
+//NKHESO
 package za.ac.cput.factory;
 
 import org.junit.jupiter.api.Test;
-import za.ac.cput.domain.OrderItem;
+import za.ac.cput.domain.order.Status;
+import za.ac.cput.domain.orderItem.OrderItem;
 import za.ac.cput.domain.order.Order;
-import za.ac.cput.domain.product.Product;
+import za.ac.cput.domain.Product;
+import za.ac.cput.domain.review.Review;
+import za.ac.cput.domain.user.*;
+import za.ac.cput.factory.user.AddressFactory;
+import za.ac.cput.factory.user.CardFactory;
+import za.ac.cput.factory.user.ContactFactory;
+import za.ac.cput.factory.user.UserFactory;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class OrderItemFactoryTest {
+    LocalDate orderDate = LocalDate.now();
+    LocalDate deliveryDate = LocalDate.parse("2025-05-10");
+    Status status = Status.Busy;
+    Card card = CardFactory.createCard(987554456, "Ozow", "Visa_4456", "4456", "Visa");
+    Address shippingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
+    Address billingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
+    Contact contact = ContactFactory.createContact(1, "0987654321", "test@gmail.com");
+    List<Product> wishlistItems = new ArrayList<Product>();
+    List<Review> reviews = new ArrayList<Review>();
 
-    private Order validOrder = new Order() {{ setId(1L); }};
-    private Product validProduct = new Product() {{ setId(10L); }};
+    User user = UserFactory.createUser(1, "Name", "Middle", "Last", "password123", wishlistItems, reviews, card, shippingAddress, billingAddress, contact);
+
+    private Order validOrder =OrderFactory.createOrder(1,user,orderDate,deliveryDate,8000,status);
+
+    private List<String> categories = new ArrayList<>();
+    private List<User> wishlistedUser = new ArrayList<>();
+
+    private Product validProduct = ProductFactory.createProduct(4, "Montego Classic", "Dry Dog Food","placeholder.jpg", 4f, 189.00f, 189.00f, false, 30, 5.0f, "Montego", "Puppy", "Dry", "Dog", "Beef", categories, wishlistedUser);
+
 
     private OrderItem orderItemWithNullOrder = OrderItemFactory.createOrderItem(null, validProduct, 10f, 1);
     private OrderItem orderItemWithNullProduct = OrderItemFactory.createOrderItem(validOrder, null, 10f, 1);

@@ -1,18 +1,22 @@
 package za.ac.cput.controller;
 
-import org.aspectj.weaver.ast.Or;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import za.ac.cput.domain.order.OrderItem;
+import za.ac.cput.domain.Product;
 import za.ac.cput.domain.order.Order;
 import za.ac.cput.domain.order.Status;
-import za.ac.cput.factory.order.OrderFactory;
-import za.ac.cput.factory.order.OrderFactory;
-import za.ac.cput.factory.order.OrderItemFactory;
+import za.ac.cput.domain.review.Review;
+import za.ac.cput.domain.user.*;
+import za.ac.cput.factory.OrderFactory;
+import za.ac.cput.factory.user.AddressFactory;
+import za.ac.cput.factory.user.CardFactory;
+import za.ac.cput.factory.user.ContactFactory;
+import za.ac.cput.factory.user.UserFactory;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +37,18 @@ class OrderControllerTest {
     public static void setUp() {
         LocalDate orderDate = LocalDate.now();
         LocalDate deliveryDate = LocalDate.parse("2025-05-10");
-        OrderItem orderItem = OrderItemFactory.createOrderItem(1,1,100,50,25);
         Status status = Status.Busy;
-        List<OrderItem> orderItems = new ArrayList<>();
-        orderItems.add(orderItem);
-        order = OrderFactory.createOrder(1,1,orderDate,deliveryDate,8000,orderItems,status);
+
+        Card card =  CardFactory.createCard(987554456,"Ozow", "Visa_4456","4456","Visa");
+        Address shippingAddress  = AddressFactory.createAddress(3453,"apartment","Cape Town","237 Nkani Street","7894","7570", Type.Both);
+        Address billingAddress = AddressFactory.createAddress(3453,"apartment","Cape Town","237 Nkani Street","7894","7570", Type.Both);
+        Contact contact = ContactFactory.createContact(1, "0987654321", "test@gmail.com");
+        List<Product> wishlistItems = new ArrayList<Product>();
+        List<Review> reviews = new ArrayList<Review>();
+
+        User user = UserFactory.createUser(1, "Name", "Middle", "Last", "password123", wishlistItems, reviews, card, shippingAddress, billingAddress, contact);
+
+        order = OrderFactory.createOrder(1,user,orderDate,deliveryDate,8000,status);
     }
 
     @Test
@@ -46,13 +57,13 @@ class OrderControllerTest {
         ResponseEntity<Order> postResponse = restTemplate.postForEntity(url,order, Order.class);
         assertNotNull(postResponse);
         Order createdOrder = postResponse.getBody();
-        assertEquals(order.getOrderID(),createdOrder.getOrderID());
+        assertEquals(order.getId(),createdOrder.getId());
         System.out.println("Created " + createdOrder.toString());
     }
 
     @Test
     void b_read() {
-        String url = BASE_URL + "/read/" + order.getOrderID();
+        String url = BASE_URL + "/read/" + order.getId();
         ResponseEntity<Order> readOrder =  this.restTemplate.getForEntity(url, Order.class);
         assertNotNull(readOrder);
         System.out.println(readOrder.toString());
@@ -69,10 +80,10 @@ class OrderControllerTest {
 
     @Test
     void e_delete() {
-        String url = BASE_URL + "/delete/" + order.getOrderID();
+        String url = BASE_URL + "/delete/" + order.getId();
         restTemplate.delete(url);
 
-        String readUrl = BASE_URL + "/read/" + order.getOrderID();
+        String readUrl = BASE_URL + "/read/" + order.getId();
         ResponseEntity<Order> reponse = restTemplate.getForEntity(readUrl, Order.class);
         assertEquals(HttpStatus.NOT_FOUND, reponse.getStatusCode());
         System.out.println("true");

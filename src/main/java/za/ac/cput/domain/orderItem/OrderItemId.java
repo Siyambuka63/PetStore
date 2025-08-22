@@ -1,18 +1,17 @@
-
-package za.ac.cput.domain;
+package za.ac.cput.domain.orderItem;
 
 import jakarta.persistence.Embeddable;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
 public class OrderItemId implements Serializable {
-
     private Long orderId;
     private Long productId;
 
-
-    public OrderItemId() {}
+    protected OrderItemId() {
+    }
 
     public OrderItemId(Long orderId, Long productId) {
         this.orderId = orderId;
@@ -27,6 +26,15 @@ public class OrderItemId implements Serializable {
     public Long getProductId() {
         return productId;
     }
+
+    @Override
+    public String toString() {
+        return "OrderItemId{" +
+                "orderId=" + orderId +
+                ", productId=" + productId +
+                '}';
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

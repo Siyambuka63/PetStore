@@ -5,11 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import za.ac.cput.domain.Product;
-import za.ac.cput.domain.Review;
-import za.ac.cput.domain.user.Address;
-import za.ac.cput.domain.user.Card;
-import za.ac.cput.domain.user.Contact;
-import za.ac.cput.domain.user.User;
+import za.ac.cput.domain.review.Review;
+import za.ac.cput.domain.user.*;
+import za.ac.cput.factory.user.AddressFactory;
+import za.ac.cput.factory.user.CardFactory;
+import za.ac.cput.factory.user.ContactFactory;
 import za.ac.cput.factory.user.UserFactory;
 
 import java.util.ArrayList;
@@ -30,23 +30,12 @@ class UserControllerTest {
 
     @BeforeAll
     static void setUp() {
-        //ToDo make valid wishlist
         List<Product> wishlistItems = new ArrayList<Product>();
-
-        //ToDo make valid reviews
         List<Review> reviews = new ArrayList<Review>();
-
-        //ToDo make valid card
-        Card card = null;
-
-        //ToDo make valid address
-        Address shippingAddress  = null;
-
-        //ToDo make valid address
-        Address billingAddress = null;
-
-        //ToDo make valid contact
-        Contact contact = null;
+        Card card = CardFactory.createCard(987554456, "Ozow", "Visa_4456", "4456", "Visa");
+        Address shippingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
+        Address billingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
+        Contact contact = ContactFactory.createContact(1, "0987654321", "test@gmail.com");
 
         user = UserFactory.createUser(1, "Name", "Middle", "Last", "password123", wishlistItems, reviews, card, shippingAddress, billingAddress, contact);
     }
@@ -63,7 +52,7 @@ class UserControllerTest {
     @Test
     @Order(2)
     void read() {
-        String url = BASE_URL + "/read/" + user.getUserID();
+        String url = BASE_URL + "/read/" + user.getId();
         User readUser = restTemplate.getForObject(url, User.class);
         assertNotNull(readUser);
         System.out.println(readUser);
@@ -82,7 +71,7 @@ class UserControllerTest {
     @Test
     @Order(5)
     void delete() {
-        String url = BASE_URL + "/delete" + user.getUserID();
+        String url = BASE_URL + "/delete" + user.getId();
         restTemplate.delete(url);
         User deletedUser = restTemplate.getForObject(url, User.class);
         assertNull(deletedUser);

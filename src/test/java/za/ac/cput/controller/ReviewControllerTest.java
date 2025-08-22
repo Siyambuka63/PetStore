@@ -5,7 +5,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import za.ac.cput.domain.Review;
+import za.ac.cput.domain.review.Review;
 import za.ac.cput.domain.Product;
 import za.ac.cput.domain.user.User;
 import za.ac.cput.factory.ProductFactory;

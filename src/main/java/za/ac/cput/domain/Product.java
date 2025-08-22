@@ -1,16 +1,17 @@
 package za.ac.cput.domain;
 
 import jakarta.persistence.*;
+import za.ac.cput.domain.user.User;
 
 import java.util.List;
 /*Oluhle Makhaye
-* 222419636
-* product class*/
+ * 222419636
+ * product class*/
 
 @Entity
 public class Product {
     @Id
-    private long productID;
+    private long id;
     private String productName;
     private String imageAddress;
     private String description;
@@ -25,14 +26,21 @@ public class Product {
     private String foodType;
     private String petType;
     private String flavour;
-    @OneToMany
+    @ElementCollection
     private List<String> categories;
+    @ManyToMany
+    @JoinTable(
+            name = "wishlists",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> wishlistedUsers;
 
-    protected Product () {
+    protected Product() {
     }
 
     private Product(Builder builder) {
-        productID = builder.productID;
+        id = builder.productID;
         productName = builder.productName;
         imageAddress = builder.imageAddress;
         description = builder.description;
@@ -48,62 +56,79 @@ public class Product {
         petType = builder.petType;
         flavour = builder.flavour;
         categories = builder.categories;
+        wishlistedUsers = builder.wishlistedUsers;
     }
 
-    public long getProductID() {
-        return productID;
+    public long getId() {
+        return id;
     }
 
     public String getProductName() {
         return productName;
     }
+
     public String getImageAddress() {
         return imageAddress;
     }
+
     public String getDescription() {
         return description;
     }
+
     public float getRating() {
         return rating;
     }
+
     public double getPrice() {
         return price;
     }
+
     public double getSalePrice() {
         return salePrice;
     }
-    public boolean isOnSale() {
-        return onSale;
-    }
+
+    public boolean getOnSale() {return onSale;}
+
     public int getStock() {
         return stock;
     }
+
     public double getWeight() {
         return weight;
     }
+
     public String getBrand() {
         return brand;
     }
+
     public String getLifeStage() {
         return lifeStage;
     }
+
     public String getFoodType() {
         return foodType;
     }
+
     public String getPetType() {
         return petType;
     }
+
     public String getFlavour() {
         return flavour;
     }
+
     public List<String> getCategories() {
         return categories;
+    }
+
+    public List<User> getWishlistedUsers() {
+        return wishlistedUsers;
     }
 
     @Override
     public String toString() {
         return "Product{" +
-                "productID=" + productID +
+                "id=" + id +
                 ", productName='" + productName + '\'' +
                 ", imageAddress='" + imageAddress + '\'' +
                 ", description='" + description + '\'' +
@@ -119,6 +144,7 @@ public class Product {
                 ", petType='" + petType + '\'' +
                 ", flavour='" + flavour + '\'' +
                 ", categories=" + categories +
+                ", wishlistedUsers=" + wishlistedUsers +
                 '}';
     }
 
@@ -139,6 +165,7 @@ public class Product {
         private String petType;
         private String flavour;
         private List<String> categories;
+        private List<User> wishlistedUsers;
 
         public Builder setProductID(long productID) {
             this.productID = productID;
@@ -208,20 +235,25 @@ public class Product {
         public Builder setPetType(String petType) {
             this.petType = petType;
             return this;
-         }
+        }
 
-         public Builder setFlavour(String flavour) {
-             this.flavour = flavour;
-             return this;
-         }
+        public Builder setFlavour(String flavour) {
+            this.flavour = flavour;
+            return this;
+        }
 
-         public Builder setCategories(List<String> categories) {
-             this.categories = categories;
-             return this;
-         }
+        public Builder setCategories(List<String> categories) {
+            this.categories = categories;
+            return this;
+        }
+
+        public Builder setWishlistedUsers(List<User> wishlistedUsers) {
+            this.wishlistedUsers = wishlistedUsers;
+            return this;
+        }
 
         public Builder copy(Product product) {
-            this.productID = product.productID;
+            this.productID = product.id;
             this.productName = product.productName;
             this.imageAddress = product.imageAddress;
             this.description = product.description;
@@ -237,12 +269,12 @@ public class Product {
             this.petType = product.petType;
             this.flavour = product.flavour;
             this.categories = product.categories;
+            this.wishlistedUsers = product.wishlistedUsers;
             return this;
         }
-        public Product build() {return new Product(this);}
+
+        public Product build() {
+            return new Product(this);
+        }
     }
 }
-
-
-
-

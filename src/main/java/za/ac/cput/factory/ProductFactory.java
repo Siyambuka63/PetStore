@@ -3,27 +3,34 @@ package za.ac.cput.factory;
  * 222419636*/
 
 import za.ac.cput.domain.Product;
+import za.ac.cput.domain.user.User;
 import za.ac.cput.util.Helper;
 
 import java.util.List;
 
 public class ProductFactory {
-    public static Product createProduct(long productID, String productName, String description,
-                                        String imageAddress, float rating, double price, double salePrice,
-                                        boolean onSale, int stock, double weight, String brand,
-                                        String lifeStage, String foodType, String petType, String flavour, List<String> categories) {
-
+    public static Product createProduct(long productID,
+                                        String productName,
+                                        String description,
+                                        String imageAddress,
+                                        float rating,
+                                        float price,
+                                        float salePrice,
+                                        boolean onSale,
+                                        int stock,
+                                        float weight,
+                                        String brand,
+                                        String lifeStage,
+                                        String foodType,
+                                        String petType,
+                                        String flavour,
+                                        List<String> categories,
+                                        List<User> wishlistedUsers) {
         if (Helper.isNullOrEmpty(productName) || Helper.isNullOrEmpty(description)) return null;
         if (!Helper.isValidRating(rating)) return null;
-
+        if (!Helper.isValidPrice(price)) return null;
         if (!Helper.isValidPriceVsSale(price, salePrice)) return null;
-        if (stock == 0) {
-            System.err.println("⚠ Warning: Creating product with 0 stock: " + productName);
-        } else if (stock <= 5) {
-            System.out.println("⚠ Info: Low stock warning for product: " + productName + " (stock: " + stock + ")");
-        }
-
-
+        if (stock < 0) return null;
 
         return new Product.Builder()
                 .setProductID(productID)
@@ -42,6 +49,7 @@ public class ProductFactory {
                 .setPetType(petType)
                 .setFlavour(flavour)
                 .setCategories(categories)
+                .setWishlistedUsers(wishlistedUsers)
                 .build();
     }
 }

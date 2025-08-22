@@ -1,49 +1,44 @@
 package za.ac.cput.domain.order;
 
 import jakarta.persistence.*;
+import za.ac.cput.domain.user.User;
 
 import java.time.LocalDate;
-import java.util.List;
+
 /*
      Order class
      Author: Sinovuyo Mathungana (230143725)
 */
 @Entity
 @Table(name = "orders")
-public class Order{
+public class Order {
     @Id
-    private long orderID;
-    private long userID;
+    private long id;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
     private LocalDate orderDate;
     private LocalDate deliveryDate;
     private float price;
     @Enumerated(EnumType.STRING)
     private Status status;
-    @OneToMany(fetch =  FetchType.EAGER)
-    @JoinColumn(name = "orderID")
-    private List<OrderItem> items;
 
+    protected Order() {}
 
-
-    protected Order(){}
-
-    private Order(Builder builder){
-        this.orderID = builder.orderID;
-        this.userID = builder.userID;
+    private Order(Builder builder) {
+        this.id = builder.orderID;
+        this.user = builder.user;
         this.orderDate = builder.orderDate;
         this.deliveryDate = builder.deliveryDate;
         this.price = builder.price;
-        this.items = builder.items;
         this.status = builder.status;
     }
 
-    public long getOrderID() {
-        return orderID;
+    public long getId() {
+        return id;
     }
 
-    public long getUserID() {
-        return userID;
-    }
+    public User getUser() {return user;}
 
     public LocalDate getOrderDate() {
         return orderDate;
@@ -51,10 +46,6 @@ public class Order{
 
     public float getPrice() {
         return price;
-    }
-
-    public List<OrderItem> getItems() {
-        return items;
     }
 
     public LocalDate getDeliveryDate() {
@@ -68,23 +59,21 @@ public class Order{
     @Override
     public String toString() {
         return "Order{" +
-                "orderID=" + orderID +
-                ", userID=" + userID +
+                "id=" + id +
+                ", user=" + user +
                 ", orderDate=" + orderDate +
                 ", deliveryDate=" + deliveryDate +
                 ", price=" + price +
-                ", items=" + items +
                 ", status=" + status +
                 '}';
     }
 
-    public static class Builder{
+    public static class Builder {
+        public User user;
         private long orderID;
-        private long userID;
         private LocalDate orderDate;
         private LocalDate deliveryDate;
         private float price;
-        private List<OrderItem> items;
         private Status status;
 
         public Builder setOrderID(long orderID) {
@@ -92,8 +81,8 @@ public class Order{
             return this;
         }
 
-        public Builder setUserID(long userID) {
-            this.userID = userID;
+        public Builder setUser(User user) {
+            this.user = user;
             return this;
         }
 
@@ -101,17 +90,14 @@ public class Order{
             this.orderDate = orderDate;
             return this;
         }
+
         public Builder setDeliveryDate(LocalDate deliveryDate) {
             this.deliveryDate = deliveryDate;
             return this;
         }
+
         public Builder setPrice(float price) {
             this.price = price;
-            return this;
-        }
-
-        public Builder setItems(List<OrderItem> items) {
-            this.items = items;
             return this;
         }
 
@@ -120,16 +106,18 @@ public class Order{
             return this;
         }
 
-        public Builder copy(Order order){
-            this.orderID = order.orderID;
-            this.userID = order.userID;
+        public Builder copy(Order order) {
+            this.orderID = order.id;
+            this.user = order.user;
             this.orderDate = order.orderDate;
             this.deliveryDate = order.deliveryDate;
             this.price = order.price;
-            this.items = order.items;
             this.status = order.status;
             return this;
         }
-        public Order build(){return new Order(this);}
+
+        public Order build() {
+            return new Order(this);
+        }
     }
 }

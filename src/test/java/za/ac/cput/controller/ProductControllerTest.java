@@ -7,6 +7,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import za.ac.cput.domain.Product;
+import za.ac.cput.domain.user.User;
 import za.ac.cput.factory.ProductFactory;
 
 import java.util.ArrayList;
@@ -30,8 +31,9 @@ class ProductControllerTest {
     static void setUp() {
 
         List<String> categories = new ArrayList<>();
+        List<User> wishlistedUser = new ArrayList<>();
 
-        product = ProductFactory.createProduct(1,"MissDog", "Nibbles","placeholder.jpg", 4f, 249.99, 199.99, true, 23, 1.34, "SaveMor", "Adult", "Dry", "Dog", "Chicken", categories);
+        product = ProductFactory.createProduct(1,"MissDog", "Nibbles","placeholder.jpg", 4f, 249.99f, 199.99f, true, 23, 1.34f, "SaveMor", "Adult", "Dry", "Dog", "Chicken", categories, wishlistedUser);
     }
 
     @Test
@@ -46,7 +48,7 @@ class ProductControllerTest {
     @Test
     @Order(2)
     void read() {
-        String url = BASE_URL + "/read/" + product.getProductID();
+        String url = BASE_URL + "/read/" + product.getId();
         ResponseEntity<Product> readProduct = restTemplate.getForEntity(url, Product.class);
         assertNotNull(readProduct);
         System.out.println(readProduct);
@@ -65,10 +67,10 @@ class ProductControllerTest {
     @Test
     @Order(5)
     void delete() {
-        String url = BASE_URL + "/delete/" + product.getProductID();
+        String url = BASE_URL + "/delete/" + product.getId();
         restTemplate.delete(url);
 
-        String readUrl = BASE_URL + "/read/" + product.getProductID();
+        String readUrl = BASE_URL + "/read/" + product.getId();
         ResponseEntity<Product> reponse = restTemplate.getForEntity(readUrl, Product.class);
         assertEquals(HttpStatus.NOT_FOUND, reponse.getStatusCode());
         System.out.println("true");

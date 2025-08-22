@@ -3,7 +3,12 @@ package za.ac.cput.domain.user;
 //Athenkosi Mekana
 //Address Domain
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
 public class Address {
+    @Id
     private long addressID;
     private String streetAddress;
     private String complexDetail;
@@ -12,10 +17,9 @@ public class Address {
     private String city;
     private String postalCode;
 
-    private Address() {
+    protected Address() {}
 
-    }
- public Address (Builder builder) {
+    public Address(Builder builder) {
         this.addressID = builder.addressID;
         this.streetAddress = builder.streetAddress;
         this.complexDetail = builder.complexDetail;
@@ -24,7 +28,7 @@ public class Address {
         this.city = builder.city;
         this.postalCode = builder.postalCode;
 
- }
+    }
 
     @Override
     public String toString() {
@@ -66,6 +70,7 @@ public class Address {
     public String getPostalCode() {
         return postalCode;
     }
+
     public static class Builder {
         private long addressID;
         private String streetAddress;
@@ -100,27 +105,29 @@ public class Address {
             return this;
         }
 
-        public void setCity(String city) {
+        public Builder setCity(String city) {
             this.city = city;
             return this;
         }
-        public void setPostalCode(String postalCode) {
+
+        public Builder setPostalCode(String postalCode) {
             this.postalCode = postalCode;
             return this;
         }
+
         public Builder copy(Address address) {
-        this.addressID = address.addressID;
-        this.streetAddress = address.streetAddress;
-        this.complexDetail = address.complexDetail;
-        this.suburb = address.suburb;
-        this.type = address.type;
-        this.city = address.city;
-        this.postalCode = address.postalCode;    
-        return this;
+            this.addressID = address.addressID;
+            this.streetAddress = address.streetAddress;
+            this.complexDetail = address.complexDetail;
+            this.suburb = address.suburb;
+            this.type = address.type;
+            this.city = address.city;
+            this.postalCode = address.postalCode;
+            return this;
         }
+
         public Address build() {
-       return new Address(this);
+            return new Address(this);
         }
     }
 }
-

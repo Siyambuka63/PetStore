@@ -38,7 +38,7 @@ class CardServiceImplTest {
     @Test
     @Order(2)
     void read() {
-        Card read = cardService.read(card.getCardId());
+        Card read = cardService.read(card.getId());
         assertNotNull(read);
         System.out.println(read);
     }
@@ -55,8 +55,8 @@ class CardServiceImplTest {
     @Test
     @Order(5)
     void delete() {
-        cardService.delete(card.getCardId());
-        Card deletedCard = cardService.read(card.getCardId());
+        cardService.delete(card.getId());
+        Card deletedCard = cardService.read(card.getId());
         assertNull(deletedCard);
         System.out.println(deletedCard);
     }
@@ -72,7 +72,7 @@ class CardServiceImplTest {
     @Test
     @Disabled
     void findByCardId() {
-        Card foundbyCardId = cardService.findByCardId(card.getCardId());
+        Card foundbyCardId = cardService.findByCardId(card.getId());
         assertNotNull(foundbyCardId);
         System.out.println(foundbyCardId);
     }

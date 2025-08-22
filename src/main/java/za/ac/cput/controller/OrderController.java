@@ -3,17 +3,17 @@ package za.ac.cput.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import za.ac.cput.domain.order.Order;
-import za.ac.cput.service.order.impl.OrderService;
+import za.ac.cput.service.impl.OrderServiceImpl;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/order")
 public class OrderController {
-    private OrderService service;
+    private OrderServiceImpl service;
 
     @Autowired
-    public OrderController(OrderService service) {
+    public OrderController(OrderServiceImpl service) {
         this.service = service;
     }
 
@@ -33,12 +33,10 @@ public class OrderController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public boolean delete(@PathVariable long id){
-        return service.delete(id);
-    }
+    public void delete(@PathVariable long id){service.delete(id);}
+
     @GetMapping("/getAll")
     public List<Order> getAll(){
         return service.getAll();
     }
-
 }

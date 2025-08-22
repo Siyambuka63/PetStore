@@ -1,22 +1,12 @@
 package za.ac.cput.service.user;
 
 import za.ac.cput.domain.user.Address;
-
+import za.ac.cput.service.IService;
 
 import java.util.List;
 
-public interface AddressService {
-    Address create(Address address);
-
-    Address read(Long addressId);
-
-    Address update(Address address);
-
-    void delete(Long addressId);
-
+public interface AddressService extends IService<Address, Long> {
     List<Address> getAll();
 
-    Address findByAddressId(Long addressId);
-
-    Address findByPostalCode(String postalCode);
+    List<Address> findByPostalCode(String postalCode);
 }

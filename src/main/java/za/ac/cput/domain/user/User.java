@@ -1,7 +1,7 @@
 package za.ac.cput.domain.user;
 
 import jakarta.persistence.*;
-import za.ac.cput.domain.Review;
+import za.ac.cput.domain.review.Review;
 import za.ac.cput.domain.Product;
 
 import java.util.List;
@@ -9,12 +9,12 @@ import java.util.List;
 @Entity
 public class User {
     @Id
-    private long userID;
+    private long id;
     private String firstName;
     private String middleName;
     private String lastName;
     private String password;
-    @ManyToMany
+    @ManyToMany(mappedBy = "wishlistedUsers")
     private List<Product> wishlistItems;
     @OneToMany
     private List<Review> reviews;
@@ -22,9 +22,10 @@ public class User {
     @JoinColumn(name = "card_id")
     private Card card;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id")
+    @JoinColumn(name = "shipping_id")
     private Address shippingAddress;
-    @JoinColumn(name = "address_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "billing_id")
     private Address billingAddress;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "contact_id")
@@ -33,7 +34,7 @@ public class User {
     protected User(){}
 
     private User(Builder builder){
-        userID = builder.userID;
+        id = builder.userID;
         firstName = builder.firstName;
         middleName = builder.middleName;
         lastName = builder.lastName;
@@ -46,8 +47,8 @@ public class User {
         contact = builder.contact;
     }
 
-    public long getUserID() {
-        return userID;
+    public long getId() {
+        return id;
     }
 
     public String getFirstName() {
@@ -93,7 +94,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "userID=" + userID +
+                "userID=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", middleName='" + middleName + '\'' +
                 ", lastName='" + lastName + '\'' +
@@ -176,7 +177,7 @@ public class User {
         }
 
         public Builder copy(User user){
-            this.userID = user.userID;
+            this.userID = user.id;
             this.firstName = user.firstName;
             this.middleName = user.middleName;
             this.lastName = user.lastName;

@@ -33,7 +33,7 @@ class ContactServiceImplTest {
     @Test
     @Order(2)
     void read() {
-        Contact read = service.read(contact.getContactId());
+        Contact read = service.read(contact.getId());
         assertNotNull(read);
         System.out.println(read);
     }
@@ -50,8 +50,8 @@ class ContactServiceImplTest {
     @Test
     @Order(5)
     void delete() {
-        service.delete(contact.getContactId());
-        Contact deleted = service.read(contact.getContactId());
+        service.delete(contact.getId());
+        Contact deleted = service.read(contact.getId());
         assertNull(deleted);
         System.out.println(deleted);
     }

@@ -1,40 +1,26 @@
-package za.ac.cput.domain;
+package za.ac.cput.domain.review;
 
-import jakarta.persistence.*;
-import za.ac.cput.domain.Product;
-import za.ac.cput.domain.user.User;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
 
 @Entity
 public class Review {
-
     @EmbeddedId
     private ReviewId id;
-
-    private Product product;
-
     private String review;
     private float rating;
 
-    protected Review() {}
+    protected Review() {
+    }
 
     private Review(Builder builder) {
-        this.user = builder.user;
-        this.product = builder.product;
-        this.id = new ReviewId(user.getUserID(), product.getProductID());
+        this.id = builder.id;
         this.review = builder.review;
         this.rating = builder.rating;
     }
 
     public ReviewId getId() {
         return id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public Product getProduct() {
-        return product;
     }
 
     public String getReview() {
@@ -48,26 +34,19 @@ public class Review {
     @Override
     public String toString() {
         return "Review{" +
-                " user=" + user +
-                ", product=" + product +
+                "id=" + id +
                 ", review='" + review + '\'' +
                 ", rating=" + rating +
                 '}';
     }
 
     public static class Builder {
-        private User user;
-        private Product product;
+        private ReviewId id;
         private String review;
         private float rating;
 
-        public Builder setUser(User user) {
-            this.user = user;
-            return this;
-        }
-
-        public Builder setProduct(Product product) {
-            this.product = product;
+        public Builder setReviewId(ReviewId id) {
+            this.id = id;
             return this;
         }
 
@@ -82,8 +61,7 @@ public class Review {
         }
 
         public Builder copy(Review review) {
-            this.user = review.user;
-            this.product = review.product;
+            this.id = review.id;
             this.review = review.review;
             this.rating = review.rating;
             return this;
