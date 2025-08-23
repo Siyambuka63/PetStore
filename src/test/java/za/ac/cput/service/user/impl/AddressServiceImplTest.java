@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.cput.domain.user.Address;
 import za.ac.cput.domain.user.Contact;
+import za.ac.cput.domain.user.Type;
 import za.ac.cput.factory.user.AddressFactory;
 import za.ac.cput.factory.user.ContactFactory;
 
@@ -22,7 +23,7 @@ class AddressServiceImplTest {
 
     @BeforeAll
     static void setUp() {
-        address = AddressFactory.createAddress(1234, "Flat", "Cape Town", "237 Bee Street", "Kraaifontein", "7570");
+        address = AddressFactory.createAddress(1234, "Flat", "Cape Town", "237 Bee Street", "Kraaifontein", "7570", Type.Both);
     }
         @Test
         @Order(1)
@@ -68,16 +69,8 @@ class AddressServiceImplTest {
 
     @Test
     @Disabled
-    void findByAddressId() {
-        Address foundByAddressId = service.findByAddressId(address.getAddressID());
-        assertNotNull(foundByAddressId);
-        System.out.println(foundByAddressId);
-    }
-
-    @Test
-    @Disabled
     void findByPostalCode() {
-        Address foundByPostalCode = service.findByPostalCode(address.getPostalCode());
+        List<Address> foundByPostalCode = service.findByPostalCode(address.getPostalCode());
         assertNotNull(foundByPostalCode);
         System.out.println(foundByPostalCode);
     }

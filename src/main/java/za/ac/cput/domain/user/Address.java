@@ -4,6 +4,8 @@ package za.ac.cput.domain.user;
 //Address Domain
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 
 @Entity
@@ -13,6 +15,7 @@ public class Address {
     private String streetAddress;
     private String complexDetail;
     private String suburb;
+    @Enumerated(EnumType.STRING)
     private Type type;
     private String city;
     private String postalCode;

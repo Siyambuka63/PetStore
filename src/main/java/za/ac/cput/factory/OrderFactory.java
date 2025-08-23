@@ -18,8 +18,8 @@ public class OrderFactory {
             float price,
             Status status
     ) {
-        if (!Helper.isValidDate(orderDate)
-                || !Helper.isValidDate(deliveryDate)
+        if (orderDate == null
+                || deliveryDate == null
                 || status == null
                 || user == null
                 || !Helper.isValidPrice(price)) {

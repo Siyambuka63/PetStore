@@ -72,7 +72,6 @@ class ProductServiceImplTest {
         }
 
         @Test
-        @Disabled
         void findByProductName() {
             Product foundByProductName = service.findByProductName(product.getProductName());
             assertNotNull(foundByProductName);

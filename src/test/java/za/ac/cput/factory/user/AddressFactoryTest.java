@@ -2,14 +2,15 @@ package za.ac.cput.factory.user;
 
 import org.junit.jupiter.api.*;
 import za.ac.cput.domain.user.Address;
+import za.ac.cput.domain.user.Type;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class AddressFactoryTest {
-    private static final Address a1 = AddressFactory.createAddress(1234, "flat", "Cape Town", "23739 Nkani Street", "Kraaifontein", "7570");
-    private static final Address a2 = AddressFactory.createAddress(3453, "apartment", "Cape Town", "23739 Nkani Street", "Brackenefell", "7570");
-    private static final Address a3 = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570");
+    private static final Address a1 = AddressFactory.createAddress(1234, "flat", "Cape Town", "23739 Nkani Street", "Kraaifontein", "7570", Type.Both);
+    private static final Address a2 = AddressFactory.createAddress(3453, "apartment", "Cape Town", "23739 Nkani Street", "Brackenefell", "7570", Type.Both);
+    private static final Address a3 = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
 
     @Test
     @Order(1)

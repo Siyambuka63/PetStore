@@ -32,13 +32,13 @@ class OrderFactoryTest {
 
         Card card = CardFactory.createCard(987554456, "Ozow", "Visa_4456", "4456", "Visa");
         Address shippingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
-        Address billingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
+        Address billingAddress = AddressFactory.createAddress(3454, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
         Contact contact = ContactFactory.createContact(1, "0987654321", "test@gmail.com");
 
         User user = UserFactory.createUser(1, "Name", "Middle", "Last", "password123", wishlistItems, reviews, card, shippingAddress, billingAddress, contact);
         Order order = OrderFactory.createOrder(1,user,orderDate,deliveryDate,8000,status);
         assertNotNull(order);
-        System.out.println(order.toString());
+        System.out.println(order);
     }
 
     @Test
@@ -49,7 +49,7 @@ class OrderFactoryTest {
 
         Card card = CardFactory.createCard(987554456, "Ozow", "Visa_4456", "4456", "Visa");
         Address shippingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
-        Address billingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
+        Address billingAddress = AddressFactory.createAddress(3454, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
         Contact contact = ContactFactory.createContact(1, "0987654321", "test@gmail.com");
         List<Product> wishlistItems = new ArrayList<Product>();
         List<Review> reviews = new ArrayList<Review>();
@@ -57,8 +57,8 @@ class OrderFactoryTest {
         User user = UserFactory.createUser(1, "Name", "Middle", "Last", "password123", wishlistItems, reviews, card, shippingAddress, billingAddress, contact);
 
         Order orderWithInvalidOrderDate = OrderFactory.createOrder(1,user,null,deliveryDate,8000,status);
-        assertNotNull(orderWithInvalidOrderDate);
-        System.out.println(orderWithInvalidOrderDate.toString());
+        assertNull(orderWithInvalidOrderDate);
+        System.out.println(orderWithInvalidOrderDate);
     }
     @Test
     void c_createOrderWithInvalidDeliveryDate() {
@@ -67,33 +67,17 @@ class OrderFactoryTest {
         Status status = Status.Busy;
         Card card = CardFactory.createCard(987554456, "Ozow", "Visa_4456", "4456", "Visa");
         Address shippingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
-        Address billingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
+        Address billingAddress = AddressFactory.createAddress(3454, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
         Contact contact = ContactFactory.createContact(1, "0987654321", "test@gmail.com");
         List<Product> wishlistItems = new ArrayList<Product>();
         List<Review> reviews = new ArrayList<Review>();
 
         User user = UserFactory.createUser(1, "Name", "Middle", "Last", "password123", wishlistItems, reviews, card, shippingAddress, billingAddress, contact);
         Order orderWithInvalidDeliveryDate = OrderFactory.createOrder(1,user,orderDate,null,8000,status);
-        assertNotNull(orderWithInvalidDeliveryDate);
-        System.out.println(orderWithInvalidDeliveryDate.toString());
+        assertNull(orderWithInvalidDeliveryDate);
+        System.out.println(orderWithInvalidDeliveryDate);
     }
-    @Test
-    void d_createOrderWithoutOrderItems() {
-        LocalDate orderDate = LocalDate.now();
-        LocalDate deliveryDate = LocalDate.parse("2025-05-10");
-        Status status = Status.Busy;
-        Card card = CardFactory.createCard(987554456, "Ozow", "Visa_4456", "4456", "Visa");
-        Address shippingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
-        Address billingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
-        Contact contact = ContactFactory.createContact(1, "0987654321", "test@gmail.com");
-        List<Product> wishlistItems = new ArrayList<Product>();
-        List<Review> reviews = new ArrayList<Review>();
 
-        User user = UserFactory.createUser(1, "Name", "Middle", "Last", "password123", wishlistItems, reviews, card, shippingAddress, billingAddress, contact);
-        Order orderWithInvalidOrderItems = OrderFactory.createOrder(1,user,orderDate,deliveryDate,8000,status);
-        assertNotNull(orderWithInvalidOrderItems);
-        System.out.println(orderWithInvalidOrderItems.toString());
-    }
     @Test
     void e_createOrderWithInvalidStatus() {
         LocalDate orderDate = LocalDate.now();
@@ -101,14 +85,14 @@ class OrderFactoryTest {
         Status status = Status.Busy;
         Card card = CardFactory.createCard(987554456, "Ozow", "Visa_4456", "4456", "Visa");
         Address shippingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
-        Address billingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
+        Address billingAddress = AddressFactory.createAddress(3454, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
         Contact contact = ContactFactory.createContact(1, "0987654321", "test@gmail.com");
         List<Product> wishlistItems = new ArrayList<Product>();
         List<Review> reviews = new ArrayList<Review>();
 
         User user = UserFactory.createUser(1, "Name", "Middle", "Last", "password123", wishlistItems, reviews, card, shippingAddress, billingAddress, contact);
         Order orderWithInvalidStatus = OrderFactory.createOrder(1,user,orderDate,deliveryDate,8000,null);
-        assertNotNull(orderWithInvalidStatus);
-        System.out.println(orderWithInvalidStatus.toString());
+        assertNull(orderWithInvalidStatus);
+        System.out.println(orderWithInvalidStatus);
     }
 }

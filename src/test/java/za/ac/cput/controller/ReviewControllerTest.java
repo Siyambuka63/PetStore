@@ -7,11 +7,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import za.ac.cput.domain.review.Review;
 import za.ac.cput.domain.Product;
-import za.ac.cput.domain.user.User;
+import za.ac.cput.domain.user.*;
 import za.ac.cput.factory.ProductFactory;
 import za.ac.cput.factory.ReviewFactory;
+import za.ac.cput.factory.user.AddressFactory;
+import za.ac.cput.factory.user.CardFactory;
+import za.ac.cput.factory.user.ContactFactory;
 import za.ac.cput.factory.user.UserFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,12 +31,24 @@ class ReviewControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    private final String BASE_URL = "http://localhost:8080/petstore/review";
+    private final String BASE_URL = "http://localhost:8080/petstore/reviews";
 
     @BeforeAll
     static void setUp() {
-        product = ProductFactory.createProduct(1, "Multistage", "Nibbles", "placeholder.jpg", 4f, 249.99, 199.99, true, 23, 1.34, "Jock", "Adult", "Dry", "Dog", "Lamb");
-        user = UserFactory.createUser(1, "Name", "Middle", "Last", "password123");
+        List<String> categories = new ArrayList<>();
+        List<User> wishlistedUser = new ArrayList<>();
+
+        product = ProductFactory.createProduct(1, "Multistage", "Nibbles", "placeholder.jpg", 4f, 249.99f, 199.99f, true, 23, 1.34f, "Jock", "Adult", "Dry", "Dog", "Lamb", categories, wishlistedUser);
+
+        List<Product> wishlistItems = new ArrayList<>();
+        List<Review> reviews = new ArrayList<>();
+        Card card = CardFactory.createCard(987554456, "Ozow", "Visa_4456", "4456", "Visa");
+        Address shippingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
+        Address billingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
+        Contact contact = ContactFactory.createContact(1, "0987654321", "test@gmail.com");
+
+        user = UserFactory.createUser(1, "Name", "Middle", "Last", "password123", wishlistItems, reviews, card, shippingAddress, billingAddress, contact);
+
         review = ReviewFactory.createReview(user, product, "Great product!", 4.7f);
     }
 
@@ -57,7 +73,7 @@ class ReviewControllerTest {
     @Test
     @Order(3)
     void update() {
-        Review updated = new Review.Builder().copy(review).setComment("Updated comment").setRating(4).build();
+        Review updated = new Review.Builder().copy(review).setReview("Updated comment").setRating(4).build();
         String url = BASE_URL + "/update";
         Review result = restTemplate.postForObject(url, updated, Review.class);
         assertNotNull(result);
@@ -78,6 +94,10 @@ class ReviewControllerTest {
     void delete() {
         String url = BASE_URL + "/delete/" + review.getId().getUserId() + "/" + review.getId().getProductId();
         restTemplate.delete(url);
-        System.out.println(review.getId());
+
+        String readUrl = BASE_URL + "/read/" + review.getId().getUserId() + "/" + review.getId().getProductId();
+        Review deletedReview = restTemplate.getForObject(readUrl, Review.class);
+        assertNull(deletedReview);
+        System.out.println(deletedReview);
     }
 }

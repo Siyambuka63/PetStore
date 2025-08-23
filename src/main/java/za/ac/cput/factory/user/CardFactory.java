@@ -6,7 +6,7 @@ import za.ac.cput.util.Helper;
 public class CardFactory {
 
     public static Card createCard(long cardId, String provider, String token, String lastFourDigits, String brand) {
-        if (!Helper.isNullOrEmpty(provider) || Helper.isNullOrEmpty(token) || !Helper.isNullOrEmpty(brand))
+        if (Helper.isNullOrEmpty(provider) || Helper.isNullOrEmpty(token) || Helper.isNullOrEmpty(brand))
             return null;
 
         if (!Helper.isValidLastFourDigits(lastFourDigits)) return null;
