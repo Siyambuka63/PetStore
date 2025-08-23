@@ -47,14 +47,14 @@ class OrderItemControllerTest {
         Address shippingAddress  = AddressFactory.createAddress(3453,"apartment","Cape Town","237 Nkani Street","7894","7570", Type.Both);
         Address billingAddress = AddressFactory.createAddress(3453,"apartment","Cape Town","237 Nkani Street","7894","7570", Type.Both);
         Contact contact = ContactFactory.createContact(1, "0987654321", "test@gmail.com");
-        List<Product> wishlistItems;
-        List<Review> reviews;
+        List<Product> wishlistItems = new ArrayList<>();
+        List<Review> reviews = new ArrayList<>();
         User user = UserFactory.createUser(1, "Name", "Middle", "Last", "password123", wishlistItems, reviews, card, shippingAddress, billingAddress, contact);
 
         Order order = OrderFactory.createOrder(1,user,orderDate,deliveryDate,8000,status);
 
-        List<String> categories;
-        List<User> wishlistedUser;
+        List<String> categories = new ArrayList<>();
+        List<User> wishlistedUser = new ArrayList<>();
         Product product = ProductFactory.createProduct(4, "Montego Classic", "Dry Dog Food","placeholder.jpg", 4f,189.00f, 189.00f, false, 30, 5.0f, "Montego", "Puppy", "Dry", "Dog", "Beef", categories, wishlistedUser);
 
         orderItem = OrderItemFactory.createOrderItem(order, product, 10.0f, 2);

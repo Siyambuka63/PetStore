@@ -71,14 +71,6 @@ class CardServiceImplTest {
 
     @Test
     @Disabled
-    void findByCardId() {
-        Card foundbyCardId = cardService.findByCardId(card.getId());
-        assertNotNull(foundbyCardId);
-        System.out.println(foundbyCardId);
-    }
-
-    @Test
-    @Disabled
     void findByLastFourDigits() {
         Card foundLastFourDigits = cardService.findByLastFourDigits(card.getLastFourDigits());
         assertNotNull(foundLastFourDigits);

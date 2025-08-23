@@ -40,7 +40,7 @@ class CardControllerTest {
     @Test
     @Order(2)
     void read() {
-        String url = BASE_URL + "/read" + card.getCardId();
+        String url = BASE_URL + "/read/" + card.getId();
         ResponseEntity<Card> readCard = restTemplate.getForEntity(url, Card.class);
         assertNotNull(readCard);
         System.out.println(readCard);
@@ -59,9 +59,9 @@ class CardControllerTest {
     @Test
     @Order(5)
     void delete() {
-        String url = BASE_URL + "/delete" + card.getCardId();
+        String url = BASE_URL + "/delete/" + card.getId();
         restTemplate.delete(url);
-        String readUrl = BASE_URL + "/read" + card.getCardId();
+        String readUrl = BASE_URL + "/read/" + card.getId();
         ResponseEntity<Card> readCard = restTemplate.getForEntity(readUrl, Card.class);
         assertEquals(HttpStatus.NOT_FOUND, readCard.getStatusCode());
         System.out.println("true");
@@ -75,5 +75,4 @@ class CardControllerTest {
         assertNotNull(cards);
         System.out.println(cards);
     }
-
 }

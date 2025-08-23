@@ -18,10 +18,6 @@ public class Helper {
         return emailValidator.isValid(email);
     }
 
-    public static boolean isValidDate(LocalDate date) {
-        return date == null;
-    }
-
     public static boolean isValidPriceVsSale(double price, double salePrice) {
         return salePrice < price;
     }
@@ -39,10 +35,10 @@ public class Helper {
     }
 
     public static boolean isValidLastFourDigits(String lastFourDigits) {
-        return lastFourDigits.matches("[0-9]{4}]");
+        return lastFourDigits.matches("\\d{4}");
     }
 
     public static boolean isValidPostalCode(String postalCode) {
-        return postalCode.matches("[0-9]{4}]");
+        return postalCode.matches("\\d{4}");
     }
 }
