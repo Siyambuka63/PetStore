@@ -25,7 +25,7 @@ class OrderItemFactoryTest {
     Status status = Status.Busy;
     Card card = CardFactory.createCard(987554456, "Ozow", "Visa_4456", "4456", "Visa");
     Address shippingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
-    Address billingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
+    Address billingAddress = AddressFactory.createAddress(3454, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
     Contact contact = ContactFactory.createContact(1, "0987654321", "test@gmail.com");
     List<Product> wishlistItems = new ArrayList<Product>();
     List<Review> reviews = new ArrayList<Review>();
@@ -37,8 +37,7 @@ class OrderItemFactoryTest {
     private List<String> categories = new ArrayList<>();
     private List<User> wishlistedUser = new ArrayList<>();
 
-    private Product validProduct = ProductFactory.createProduct(4, "Montego Classic", "Dry Dog Food","placeholder.jpg", 4f, 189.00f, 189.00f, false, 30, 5.0f, "Montego", "Puppy", "Dry", "Dog", "Beef", categories, wishlistedUser);
-
+    private Product validProduct = ProductFactory.createProduct(1,"MissDog", "Nibbles","placeholder.jpg", 4f, 249.99f, 199.99f, true, 23, 1.34f, "SaveMor", "Adult", "Dry", "Dog", "Chicken", categories, wishlistedUser);
 
     private OrderItem orderItemWithNullOrder = OrderItemFactory.createOrderItem(null, validProduct, 10f, 1);
     private OrderItem orderItemWithNullProduct = OrderItemFactory.createOrderItem(validOrder, null, 10f, 1);

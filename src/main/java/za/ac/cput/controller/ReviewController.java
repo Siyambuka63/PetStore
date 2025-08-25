@@ -31,7 +31,7 @@ public class ReviewController {
         return service.read(new ReviewId(userId, productId));
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     public Review update(@RequestBody Review review) {
         return service.update(review);
     }

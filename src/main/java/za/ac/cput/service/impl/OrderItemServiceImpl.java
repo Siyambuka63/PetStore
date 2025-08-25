@@ -30,7 +30,7 @@ public class OrderItemServiceImpl implements OrderItemService {
 
     @Override
     public OrderItem read(OrderItemId id) {
-        return repository.getReferenceById(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override

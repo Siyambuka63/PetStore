@@ -53,6 +53,7 @@ class UserControllerTest {
     @Order(2)
     void read() {
         String url = BASE_URL + "/read/" + user.getId();
+        System.out.println(url);
         User readUser = restTemplate.getForObject(url, User.class);
         assertNotNull(readUser);
         System.out.println(readUser);

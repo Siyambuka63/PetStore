@@ -23,7 +23,7 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public Card read(Long cardId) {
-        return cardRepository.getReferenceById(cardId);
+        return cardRepository.findById(cardId).orElse(null);
     }
 
     @Override

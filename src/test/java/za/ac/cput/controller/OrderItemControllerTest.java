@@ -8,7 +8,6 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import za.ac.cput.domain.order.Status;
 import za.ac.cput.domain.orderItem.OrderItem;
-import za.ac.cput.domain.order.Order;
 import za.ac.cput.domain.Product;
 import za.ac.cput.domain.review.Review;
 import za.ac.cput.domain.user.*;
@@ -35,7 +34,7 @@ class OrderItemControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    private static final String BASE_URL = "http://localhost:8080/orderitem";
+    private static final String BASE_URL = "http://localhost:8080/petstore/order-item";
 
     @BeforeAll
     static void setUp() {
@@ -45,33 +44,34 @@ class OrderItemControllerTest {
 
         Card card =  CardFactory.createCard(987554456,"Ozow", "Visa_4456","4456","Visa");
         Address shippingAddress  = AddressFactory.createAddress(3453,"apartment","Cape Town","237 Nkani Street","7894","7570", Type.Both);
-        Address billingAddress = AddressFactory.createAddress(3453,"apartment","Cape Town","237 Nkani Street","7894","7570", Type.Both);
+        Address billingAddress = AddressFactory.createAddress(3454,"apartment","Cape Town","237 Nkani Street","7894","7570", Type.Both);
         Contact contact = ContactFactory.createContact(1, "0987654321", "test@gmail.com");
         List<Product> wishlistItems = new ArrayList<>();
         List<Review> reviews = new ArrayList<>();
         User user = UserFactory.createUser(1, "Name", "Middle", "Last", "password123", wishlistItems, reviews, card, shippingAddress, billingAddress, contact);
 
-        Order order = OrderFactory.createOrder(1,user,orderDate,deliveryDate,8000,status);
+        za.ac.cput.domain.order.Order order = OrderFactory.createOrder(1,user,orderDate,deliveryDate,8000,status);
+        System.out.println(order);
 
         List<String> categories = new ArrayList<>();
         List<User> wishlistedUser = new ArrayList<>();
-        Product product = ProductFactory.createProduct(4, "Montego Classic", "Dry Dog Food","placeholder.jpg", 4f,189.00f, 189.00f, false, 30, 5.0f, "Montego", "Puppy", "Dry", "Dog", "Beef", categories, wishlistedUser);
+        Product product = ProductFactory.createProduct(1,"MissDog", "Nibbles","placeholder.jpg", 4f, 249.99f, 199.99f, true, 23, 1.34f, "SaveMor", "Adult", "Dry", "Dog", "Chicken", categories, wishlistedUser);
+        System.out.println(product);
 
         orderItem = OrderItemFactory.createOrderItem(order, product, 10.0f, 2);
     }
 
     @Test
-    @org.junit.jupiter.api.Order(1)
+    @Order(1)
     void create() {
         String url = BASE_URL + "/create";
-        ResponseEntity<OrderItem> response = restTemplate.postForEntity(url, orderItem, OrderItem.class);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        System.out.println("Created: " + response.getBody());
+        OrderItem createdOrder = restTemplate.postForObject(url, orderItem, OrderItem.class);
+        assertNotNull(createdOrder);
+        System.out.println(createdOrder);
     }
 
     @Test
-    @org.junit.jupiter.api.Order(2)
+    @Order(2)
     void read() {
         String url = BASE_URL + "/read/" + orderItem.getId().getOrderId() + "/" + orderItem.getId().getProductId();
         ResponseEntity<OrderItem> response = restTemplate.getForEntity(url, OrderItem.class);
@@ -81,7 +81,7 @@ class OrderItemControllerTest {
     }
 
     @Test
-    @org.junit.jupiter.api.Order(3)
+    @Order(3)
     void update() {
         OrderItem updated = new OrderItem.Builder().copy(orderItem).setQuantity(5).setTotalPrice(50.0f).build();
         String url = BASE_URL + "/update";
@@ -93,24 +93,23 @@ class OrderItemControllerTest {
     }
 
     @Test
-    @org.junit.jupiter.api.Order(5)
+    @Order(5)
     void delete() {
         String url = BASE_URL + "/delete/" + orderItem.getId().getOrderId() + "/" + orderItem.getId().getProductId();
         restTemplate.delete(url);
 
         String readUrl = BASE_URL + "/read/" + orderItem.getId().getOrderId() + "/" + orderItem.getId().getProductId();
         ResponseEntity<OrderItem> response = restTemplate.getForEntity(readUrl, OrderItem.class);
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNull(response.getBody());
         System.out.println("Deleted: " + orderItem.getId());
     }
 
     @Test
-    @org.junit.jupiter.api.Order(4)
+    @Order(4)
     void getAll() {
         String url = BASE_URL + "/getAll";
-        ResponseEntity<List> response = restTemplate.getForEntity(url, List.class);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        System.out.println("All Items: " + response.getBody());
+        List<OrderItem> response = restTemplate.getForObject(url, List.class);
+        assertNotNull(response);
+        System.out.println(response);
     }
 }

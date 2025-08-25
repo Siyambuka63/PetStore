@@ -65,7 +65,7 @@ class ContactControllerTest {
 
         String readUrl = BASE_URL + "/read/" + contact.getId();
         ResponseEntity<Contact> reponse = restTemplate.getForEntity(readUrl, Contact.class);
-        assertEquals(HttpStatus.NOT_FOUND, reponse.getStatusCode());
+        assertNull(reponse.getBody());
         System.out.println("true");
     }
 

@@ -27,7 +27,7 @@ public class OrderController {
         return service.read(id);
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     public Order update(@RequestBody Order order){
         return service.update(order);
     }

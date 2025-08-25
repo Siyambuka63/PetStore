@@ -63,7 +63,7 @@ class CardControllerTest {
         restTemplate.delete(url);
         String readUrl = BASE_URL + "/read/" + card.getId();
         ResponseEntity<Card> readCard = restTemplate.getForEntity(readUrl, Card.class);
-        assertEquals(HttpStatus.NOT_FOUND, readCard.getStatusCode());
+        assertNull(readCard.getBody());
         System.out.println("true");
     }
 

@@ -25,7 +25,7 @@ public class ProductServiceImpl implements ProductService {
     public Product create(Product product) {return repository.save(product);}
 
     @Override
-    public Product read(Long id) {return repository.getReferenceById(id);}
+    public Product read(Long id) {return repository.findById(id).orElse(null);}
 
     @Override
     public Product update(Product product) {

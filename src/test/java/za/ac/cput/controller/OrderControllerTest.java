@@ -85,7 +85,7 @@ class OrderControllerTest {
 
         String readUrl = BASE_URL + "/read/" + order.getId();
         ResponseEntity<Order> reponse = restTemplate.getForEntity(readUrl, Order.class);
-        assertEquals(HttpStatus.NOT_FOUND, reponse.getStatusCode());
+        assertNull(reponse.getBody());
         System.out.println(reponse);
     }
 

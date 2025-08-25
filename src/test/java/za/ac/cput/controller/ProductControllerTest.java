@@ -72,8 +72,8 @@ class ProductControllerTest {
 
         String readUrl = BASE_URL + "/read/" + product.getId();
         ResponseEntity<Product> reponse = restTemplate.getForEntity(readUrl, Product.class);
-        assertEquals(HttpStatus.NOT_FOUND, reponse.getStatusCode());
-        System.out.println("true");
+        assertNull(reponse.getBody());
+        System.out.println(reponse.getBody());
     }
 
     @Test
