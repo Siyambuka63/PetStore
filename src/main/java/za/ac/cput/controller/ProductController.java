@@ -29,7 +29,7 @@ public class ProductController {
         return service.read(id);
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     public Product update(@RequestBody Product product) {
         return service.update(product);
     }

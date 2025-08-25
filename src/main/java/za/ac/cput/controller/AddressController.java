@@ -33,7 +33,7 @@ public class AddressController {
         return service.update(address);
     }
 
-    @DeleteMapping("/delete/{contactId}")
+    @DeleteMapping("/delete/{addressId}")
     public void delete(@PathVariable Long addressId) {
         service.delete(addressId);
     }

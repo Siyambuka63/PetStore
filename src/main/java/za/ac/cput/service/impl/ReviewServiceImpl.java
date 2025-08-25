@@ -28,7 +28,7 @@ public class ReviewServiceImpl implements ReviewService {
     public Review create(Review review) { return repository.save(review); }
 
     @Override
-    public Review read(ReviewId id) { return repository.getReferenceById(id);}
+    public Review read(ReviewId id) { return repository.findById(id).orElse(null); }
 
     @Override
     public Review update(Review review) {return repository.save(review);}

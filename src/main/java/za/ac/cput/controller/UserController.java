@@ -28,7 +28,7 @@ public class UserController {
         return service.read(id);
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     public User update(@RequestBody User user) {
         return service.update(user);
     }

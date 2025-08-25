@@ -28,7 +28,7 @@ public class ContactController {
         return service.read(contactId);
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     public Contact update(@RequestBody Contact contact) {
         return service.update(contact);
     }
