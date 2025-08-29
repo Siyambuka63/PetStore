@@ -42,8 +42,8 @@
             <label for="email">Email Address</label>
             <input type="email" id="email" value="johndoe@gmail.com">
 
-            <label for="phone">Postal</label>
-            <input type="text" id="postal" value="0987654321">
+            <label for="phone">Phone</label>
+            <input type="text" id="phone" value="0987654321">
           </div>
 
           <div style="width: 100%">
@@ -56,7 +56,7 @@
               <input type="password" id="password_confirmation">
             </div>
 
-            <div class="details-group" style="margin-top: auto">
+            <div class="details-group" style="margin-top: 50px">
               <h2>Card Details</h2>
               <select>
                 <option>MASTER CARD ending with 8907</option>
@@ -163,7 +163,8 @@ export default {
 
 .sidebar ul {
   list-style: none;
-  padding: 0 5px 0 5px;
+  padding: 5px;
+  margin: 0;
 }
 
 .sidebar ul li a {
@@ -228,6 +229,9 @@ select:focus {
   width: 100%;
   display: flex;
   flex-direction: column;
+  padding: 10px;
+  border-radius: 8px;
+  border: 2px solid #dfe6e9;
 }
 
 button{
