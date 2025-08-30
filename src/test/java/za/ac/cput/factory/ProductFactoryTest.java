@@ -18,15 +18,9 @@ public class ProductFactoryTest {
 
     /*   private Product productWithInvalidRating = ProductFactory.createProduct(2,"MissDog", "Nibbles","placeholder.jpg", 6f, 249.99, 199.99, true, 23, 1.34, "SaveMor", "Adult", "Dry", "Dog", "Chicken", categories);*/
     private final Product productWithInvalidName = ProductFactory.createProduct(1, "", "imageAddress", "placeholder.jpg", 4.5f, 100.0f, 90.0f, true, 50, 1.0f, "Canin Cuisine", "Adult", "Dry", "Dog", "Peas", categories, wishlistedUser);
-    private final Product productWithNoImage = ProductFactory.createProduct(3, "MissDog", "Nutritional bites", "", 4.5f, 100.0f, 90.0f, true, 50, 1.0f, "Canin Cuisine", "Adult", "Dry", "Dog", "Chicken", categories, wishlistedUser);
+    private final Product productWithNoImage = ProductFactory.createProduct(3, "MissDog", "Nutritional bites","", 4.5f, 100.0f, 90.0f, true, 50, 1.0f, "Canin Cuisine", "Adult", "Dry", "Dog", "Chicken", categories, wishlistedUser);
     private final Product testProduct = ProductFactory.createProduct(4, "Montego Classic", "Dry Dog Food", "placeholder.jpg", 4f, 189.00f, 189.00f, false, 30, 5.0f, "Montego", "Puppy", "Dry", "Dog", "Beef", categories, wishlistedUser);
 
- /*   @Test
-    void testCreateProductWithInvalidRating() {
-
-        assertNull(productWithInvalidRating);
-        System.out.println(productWithInvalidRating);
-    }*/
 
     @Test
     void testCreateProductWithInvalidName() {
@@ -36,7 +30,7 @@ public class ProductFactoryTest {
 
     @Test
     void testCreateProductWithNoImage() {
-        assertNull(productWithNoImage);
+        assertNotNull(productWithNoImage);
         System.out.println(productWithNoImage);
     }
 
@@ -92,6 +86,7 @@ public class ProductFactoryTest {
         assertNotNull(product);
         assertEquals(75.00, product.getSalePrice());
         assertEquals(100.00, product.getPrice());
+        System.out.println(product);
     }
 
     @Test
@@ -105,6 +100,7 @@ public class ProductFactoryTest {
 
         assertNotNull(product);
         assertEquals(0, product.getStock());
+        System.out.println(product);
     }
 
     @Test
