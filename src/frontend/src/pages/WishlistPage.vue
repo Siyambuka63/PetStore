@@ -2,45 +2,53 @@
   <HeaderComponent/>
 
   <div class="container">
-    <h1>My Wishlist</h1>
-    <div class="wishlist">
-      <div v-if="items.length === 0">You have no items wishlisted</div>
-      <div v-for="(item, index) in items" :key="index" class="wishlist-item">
-        <div class="left-section">
-          <img class="icon" src="@/assets/logo.png" v-bind:alt="item.name">
-        </div>
+    <sidebar-component/>
+    <div class="main-content">
+      <h1>My Wishlist</h1>
+      <div class="wishlist">
+        <div v-if="items.length === 0">You have no items wishlisted</div>
+        <div v-for="(item, index) in items" :key="index" class="wishlist-item">
+          <div class="left-section">
+            <img class="icon" src="@/assets/logo.png" v-bind:alt="item.name">
+          </div>
 
-        <div class="info">
-          <h3 v-text="item.name"></h3>
-          <p v-if="item.on_sale">
-            Was: <s>R{{ item.price.toFixed(2) }}</s>
-            Now: R{{ item.sale_price.toFixed(2) }}
-          </p>
-          <p v-else v-text="'R' + item.price.toFixed(2)"></p>
-        </div>
+          <div class="info">
+            <h3 v-text="item.name"></h3>
+            <p v-if="item.on_sale">
+              Was: <s>R{{ item.price.toFixed(2) }}</s>
+              Now: R{{ item.sale_price.toFixed(2) }}
+            </p>
+            <p v-else v-text="'R' + item.price.toFixed(2)"></p>
+          </div>
 
-        <div class="rating">
-          <img v-for="i in Math.ceil(item.rating)" :key="'filled-' + i" class = "stars" src="@/assets/star_filled.png" alt="Filled Star">
+          <div class="rating">
+            <img v-for="i in Math.ceil(item.rating)" :key="'filled-' + i" class = "stars" src="@/assets/star_filled.png" alt="Filled Star">
 
-          <img v-for="i in Math.ceil(5- item.rating)" :key="'empty-' + i" class = "stars" src="@/assets/star_empty.png" alt="Empty Star">
-        </div>
+            <img v-for="i in Math.ceil(5- item.rating)" :key="'empty-' + i" class = "stars" src="@/assets/star_empty.png" alt="Empty Star">
+          </div>
 
-        <div class = "buttons">
-          <button v-if = "item.stock >= 1" id="add_button">Add to Cart</button>
-          <p v-else>SOLD OUT</p>
-          <button id="remove_button">Remove</button>
+          <div class = "buttons">
+            <button v-if = "item.stock >= 1" id="add_button">Add to Cart</button>
+            <p v-else>SOLD OUT</p>
+            <button id="remove_button">Remove</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
 </template>
 
 <script>
 import HeaderComponent from "@/components/HeaderComponent.vue";
+import SidebarComponent from "@/components/SidebarComponent.vue";
 
 export default {
   name: "WishlistPage",
-  components: {HeaderComponent},
+  components: {
+    SidebarComponent,
+    HeaderComponent
+  },
   data() {
     return {
       items: [
@@ -81,7 +89,13 @@ export default {
 .container {
   display: flex;
   width: 100%;
+}
+
+/* Main Content */
+.main-content {
+  display: flex;
   flex-direction: column;
+  width: 70%;
   align-items: center;
 }
 

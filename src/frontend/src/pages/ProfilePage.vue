@@ -1,27 +1,8 @@
 <template>
   <HeaderComponent/>
 
-  <div class="layout">
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <div class="my_account">
-        <div class="header">
-          <img src="@/assets/user.png" alt="user"/>
-          <h2>My Account</h2>
-        </div>
-        <div class="list">
-          <ul>
-            <li><a href="" class="active">My Profile</a></li>
-            <li><a href="">My Wishlist</a></li>
-            <li><a href="#">My Reviews</a></li>
-            <li><a href="#">My Orders</a></li>
-            <li><a href="#">Settings</a></li>
-            <li><a href="#">Logout</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
+  <div class="container">
+    <sidebar-component/>
     <!-- Main Content -->
     <main class="main-content">
       <h1>Profile Information</h1>
@@ -110,10 +91,12 @@
 
 <script>
 import HeaderComponent from "@/components/HeaderComponent.vue";
+import SidebarComponent from "@/components/SidebarComponent.vue";
 
 export default {
   name: 'ProfilePage',
   components: {
+    SidebarComponent,
     HeaderComponent
   },
   props: {
@@ -123,67 +106,9 @@ export default {
 </script>
 
 <style scoped>
-/* Layout with sidebar */
-.layout {
+.container {
   display: flex;
   width: 100%;
-}
-
-/* Sidebar */
-.sidebar {
-  width: 20%;
-  margin: 10px;
-  display: flex;
-  flex-direction: column;
-}
-
-.my_account {
-  border-radius: 8px;
-  border: 2px solid #dfe6e9;
-}
-
-.my_account .header {
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-  border-bottom: 2px solid #dfe6e9;
-  padding-left: 20px;
-  display: flex;
-  gap: 10%;
-  align-items: center;
-  background: #0984e3;
-}
-
-.my_account .header h2 {
-  font-size: 16px;
-}
-
-.my_account .header img {
-  height: 20px;
-}
-
-.sidebar ul {
-  list-style: none;
-  padding: 5px;
-  margin: 0;
-}
-
-.sidebar ul li a {
-  text-decoration: none;
-  color: black;
-  font-size: 15px;
-  display: block;
-  padding: 8px 12px;
-  border-radius: 8px;
-  transition: background 0.2s;
-}
-
-.sidebar ul li a:hover {
-  text-decoration: underline;
-  font-weight: bold;
-}
-
-.sidebar ul li a.active {
-  color: #0984e3;
 }
 
 /* Main Content */

@@ -1,26 +1,52 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import * as VueRouter from 'vue-router'
+import { createPinia } from 'pinia'
+import { useAuth } from "@/Auth";
 
 import LogInPage from "./pages/LogInPage.vue";
 import ProfilePage from "./pages/ProfilePage.vue";
 import WishlistPage from "./pages/WishlistPage.vue";
 import SignUpPage from "./pages/SignUpPage.vue";
-createApp(App)
-    .use(VueRouter.createRouter({
-        history: VueRouter.createWebHistory(process.env.BASE_URL),
-        routes: [
-            { path: "/", name: "LogIn",
-                component: LogInPage },
-            {
-            path: '/profile',
-            component: ProfilePage
+
+const router = VueRouter.createRouter({
+    history: VueRouter.createWebHistory(process.env.BASE_URL),
+    routes: [
+        {
+            path: "/",
+            name: "LogIn",
+            component: LogInPage
         },
-            {
-                path: '/wishlist',
-                component: WishlistPage
-            },
-            { path: "/signup", name: "SignUp",
-                component: SignUpPage }]
-    }))
+        {
+            path: '/profile',
+            component: ProfilePage,
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/wishlist',
+            component: WishlistPage,
+            meta: { requiresAuth: true }
+        },
+        {
+            path: "/signup",
+            name: "SignUp",
+            component: SignUpPage
+        }
+    ]
+})
+
+router.beforeEach((to, from, next) => {
+    const user = useAuth()
+
+    if (to.meta.requiresAuth && !user.userId) {
+        // redirect to log in page
+        next({ name: "LogIn" })
+    } else {
+        next()
+    }
+})
+
+createApp(App)
+    .use(createPinia())
+    .use(router)
     .mount('#app')
