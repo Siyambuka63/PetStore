@@ -1,4 +1,5 @@
 <template>
+
   <div class="signup-page">
 
     <h1 class="title">PetShop</h1>
@@ -6,30 +7,13 @@
     <div class="signup-box">
       <h2 class="titles">Create an Account</h2>
       <form @submit.prevent="handleSignUp">
-        <input
-            type="text"
-            v-model="name"
-            placeholder="Full Name"
-            required
-        />
-        <input
-            type="email"
-            v-model="email"
-            placeholder="Email"
-            required
-        />
-        <input
-            type="password"
-            v-model="password"
-            placeholder="Password"
-            required
-        />
-        <input
-            type="password"
-            v-model="confirmPassword"
-            placeholder="Confirm Password"
-            required
-        />
+        <input type="text" v-model="firstName" placeholder="First Name" required />
+        <input type="text" v-model="middleName" placeholder="Middle Name" />
+        <input type="text" v-model="lastName" placeholder="Surname" required />
+        <input type="email" v-model="email" placeholder="Email" required />
+        <input type="text" v-model="phone" placeholder="Phone Number" required />
+        <input type="password" v-model="password" placeholder="Password" required />
+        <input type="password" v-model="confirmPassword" placeholder="Confirm Password" required />
 
         <button type="submit">Sign Up</button>
       </form>
@@ -46,18 +30,22 @@
 <script setup>
 import { ref } from "vue";
 
-const name = ref("");
+const firstName = ref("");
+const middleName = ref("");
+const lastName = ref("");
 const email = ref("");
+const phone = ref("");
 const password = ref("");
 const confirmPassword = ref("");
+
 
 function handleSignUp() {
   if (password.value !== confirmPassword.value) {
     alert("Passwords do not match!");
     return;
   }
+  alert(`Sign up successful! You can now login\nName: ${firstName.value}\nEmail: ${email.value}`);
 
-  alert(`Sign up successful!\nName: ${name.value}\nEmail: ${email.value}`);
 }
 </script>
 
@@ -77,12 +65,14 @@ function handleSignUp() {
   color: #1877f2;
   margin-bottom: 40px;
 }
+
 .titles {
   font-size: 18px;
   font-weight: bold;
-  color: #000000;
-  margin-bottom: 40px;
+  color: #000;
+  margin-bottom: 30px;
 }
+
 .signup-box {
   background-color: #fff;
   padding: 40px 30px;
