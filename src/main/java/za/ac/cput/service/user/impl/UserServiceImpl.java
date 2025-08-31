@@ -31,4 +31,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAll() { return repository.findAll(); }
+    @Override
+    public User create(User user) {
+        return repository.save(user);
+    }
+    @override
+    public User login(String email, String password) {
+        return repository.findByEmailAndPassword(email, password);
+    }
+
 }
