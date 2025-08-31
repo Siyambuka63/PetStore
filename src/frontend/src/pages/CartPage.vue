@@ -63,7 +63,7 @@ const removeFromCart = async (itemId) => {
 const checkout = async () => {
   try {
     const res = await axios.post("http://localhost:8080/petstore/cart/checkout/1");
-    alert("Checkout successful! 🎉 Order status: " + res.data.status);
+    alert("Checkout successful! Order status: " + res.data.status);
     cartItems.value = [];
   } catch (err) {
     console.error("Error during checkout:", err);
