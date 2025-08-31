@@ -17,7 +17,9 @@
       </form>
 
       <div class="links">
-        <p>Already have an account? <router-link to="/">Login</router-link></p>
+        <p>
+          Already have an account? <router-link to="/">Login</router-link>
+        </p>
       </div>
     </div>
   </div>
@@ -29,7 +31,6 @@ import { useAuth } from "@/Auth.js";
 
 const auth = useAuth();
 
-const users = ref([]);
 const firstName = ref("");
 const middleName = ref("");
 const lastName = ref("");
@@ -38,39 +39,39 @@ const phone = ref("");
 const password = ref("");
 const confirmPassword = ref("");
 
-function handleSignUp() {
+async function handleSignUp() {
   if (password.value !== confirmPassword.value) {
     alert("Passwords do not match!");
     return;
   }
 
-  const newUser = {
-    id: users.value.length + 1,
-    firstName: firstName.value,
-    middleName: middleName.value,
-    lastName: lastName.value,
-    email: email.value,
-    phone: phone.value,
-    password: password.value,
-  };
+  try {
+    const response = await fetch("http://localhost:8080/user/create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        firstName: firstName.value,
+        middleName: middleName.value,
+        lastName: lastName.value,
+        password: password.value,
+        contact: { email: email.value, phone: phone.value }
+      })
+    });
 
-  users.value.push(newUser);
-  auth.setUser(newUser);
-  alert(`Sign up successful! User ID: ${newUser.id}`);
+    if (!response.ok) throw new Error("Failed to sign up");
 
+    const newUser = await response.json();
+    auth.setUser(newUser);
 
-  firstName.value = "";
-  middleName.value = "";
-  lastName.value = "";
-  email.value = "";
-  phone.value = "";
-  password.value = "";
-  confirmPassword.value = "";
+    alert(`Sign up successful! User ID: ${newUser.id}`);
+
+    firstName.value = middleName.value = lastName.value = email.value = phone.value = password.value = confirmPassword.value = "";
+  } catch (err) {
+    console.error(err);
+    alert("Sign up failed! Check console for details.");
+  }
 }
 </script>
-
-
-
 
 <style scoped>
 .signup-page {

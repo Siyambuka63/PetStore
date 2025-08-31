@@ -7,12 +7,13 @@
       <form @submit.prevent="handleLogin">
         <input v-model="email" placeholder="Email" required />
         <input type="password" v-model="password" placeholder="Password" required />
-
         <button type="submit">Login</button>
       </form>
 
       <div class="links">
-        <p>Don't have an account? <router-link to="/signup">Sign up</router-link></p>
+        <p>
+          Don't have an account? <router-link to="/signup">Sign up</router-link>
+        </p>
       </div>
     </div>
   </div>
@@ -23,20 +24,34 @@ import { ref } from "vue";
 import { useAuth } from "@/Auth.js";
 
 const auth = useAuth();
-const users = ref([]);
+
 const email = ref("");
 const password = ref("");
 
-function handleLogin() {
-  const user = users.value.find(
-      (u) => u.email === email.value && u.password === password.value
-  );
+async function handleLogin() {
+  try {
+    const response = await fetch("http://localhost:8080/user/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: email.value, password: password.value })
+    });
 
-  if (user) {
+    if (!response.ok) throw new Error("Login failed");
+
+    const user = await response.json();
+    if (!user) {
+      alert("Invalid credentials!");
+      return;
+    }
+
     auth.setUser(user);
-    alert(`Login successful! User ID: ${auth.userID}`);
-  } else {
-    alert("Invalid credentials!");
+    alert(`Login successful! User ID: ${user.id}`);
+
+
+    email.value = password.value = "";
+  } catch (err) {
+    console.error(err);
+    alert("Login failed! Check console for details.");
   }
 }
 </script>
