@@ -41,12 +41,4 @@ public class UserController {
         return service.getAll();
     }
 
-    @PostMapping("/login")
-    public User login(@RequestBody User user) {
-        User foundUser = service.login(user.getEmail(), user.getPassword());
-        if (foundUser != null) {
-            return foundUser;
-        }
-        return null;
-    }
 }
