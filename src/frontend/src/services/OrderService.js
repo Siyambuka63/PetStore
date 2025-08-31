@@ -6,7 +6,6 @@ class OrderService{
     getOrder(){
         return axios.get(`${BASE_URL}/getAll`)
     }
-
 }
 
 export default new OrderService()

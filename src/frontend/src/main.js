@@ -9,6 +9,7 @@ import WishlistPage from "./pages/WishlistPage.vue";
 import SignUpPage from "./pages/SignUpPage.vue";
 import LogInPage from "./pages/LogInPage.vue";
 import ProductsPage from "./pages/ProductsPage.vue";
+import ProductDetailsPage from "./pages/ProductDetailPage.vue";
 import OrdersPage from "@/pages/OrdersPage.vue";
 import OrderItems from "@/pages/OrderItems.vue";
 

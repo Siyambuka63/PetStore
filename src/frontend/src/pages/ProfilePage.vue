@@ -2,84 +2,66 @@
   <HeaderComponent/>
 
   <div class="container">
-    <sidebar-component/>
+    <SidebarComponent/>
     <!-- Main Content -->
     <main class="main-content">
       <h1>Profile Information</h1>
 
-      <form>
+      <form @submit.prevent="updateUser">
         <div class="content">
           <div class="details-group">
             <h2>General Information</h2>
             <label for="firstName">First Name</label>
-            <input type="text" id="firstName" value="John">
+            <input type="text" id="firstName" v-model="firstName">
 
             <label for="middleName">Middle Name</label>
-            <input type="text" id="middleName">
+            <input type="text" id="middleName" v-model="middleName">
 
-            <label for="Surname">Surname</label>
-            <input type="text" id="surname" value="Doe">
+            <label for="surname">Surname</label>
+            <input type="text" id="surname" v-model="lastName">
 
             <label for="email">Email Address</label>
-            <input type="email" id="email" value="johndoe@gmail.com">
+            <input type="email" id="email" v-model="email">
 
             <label for="phone">Phone</label>
-            <input type="text" id="phone" value="0987654321">
+            <input type="text" id="phone" v-model="phone">
           </div>
 
           <div style="width: 100%">
-            <div class="details-group">
-              <h2>Password Reset</h2>
-              <label for="password">New Password</label>
-              <input type="password" id="password">
+          <div class="details-group">
+            <h2>Password Reset</h2>
+            <label for="password">New Password</label>
+            <input type="password" id="password" v-model="password">
 
-              <label for="password_confirmation">Confirm Password</label>
-              <input type="password" id="password_confirmation">
-            </div>
+            <label for="password_confirmation">Confirm Password</label>
+            <input type="password" id="password_confirmation" v-model="passwordConfirmation">
+          </div>
 
-            <div class="details-group" style="margin-top: 50px">
-              <h2>Card Details</h2>
-              <select>
-                <option>MASTER CARD ending with 8907</option>
-              </select>
-              <button>Remove card</button>
-            </div>
+          <div class="details-group" style="margin-top: 50px">
+            <h2>Card Details</h2>
+            <select>
+            <option v-text="user.card.brand + ' ending with ' + user.card.lastFourDigits"></option>
+          </select>
+            <button>Remove card</button>
+          </div>
           </div>
 
           <div class="details-group">
             <h2>Shipping Address</h2>
-            <label for="shipping_street">Street</label>
-            <input type="text" id="shipping_street" value="123 Sam Street">
-
-            <label for="shipping_complex">Complex/Flat/Apartment Detail</label>
-            <input type="text" id="shipping_complex" value="Floor 3A">
-
-            <label for="shipping_suburb">Suburb</label>
-            <input type="text" id="shipping_suburb" value="Place">
-
-            <label for="shipping_city">City</label>
-            <input type="text" id="shipping_city" value="Placers">
-
-            <label for="shipping_postal">Postal</label>
-            <input type="text" id="shipping_postal" value="4567">
+            <input type="text" v-model="shippingStreet" placeholder="Street">
+            <input type="text" v-model="shippingComplex" placeholder="Complex/Flat">
+            <input type="text" v-model="shippingSuburb" placeholder="Suburb">
+            <input type="text" v-model="shippingCity" placeholder="City">
+            <input type="text" v-model="shippingPostal" placeholder="Postal">
           </div>
 
           <div class="details-group">
-            <h2>Billing Address Details</h2>
-            <label for="billing_street">Street</label>
-            <input type="text" id="billing_street" value="123 Sam Street">
-
-            <label for="billing_complex">Complex/Flat/Apartment Detail</label>
-            <input type="text" id="billing_complex" value="Floor 3A">
-
-            <label for="billing_suburb">Suburb</label>
-            <input type="text" id="billing_suburb" value="Place">
-
-            <label for="billing_city">City</label>
-            <input type="text" id="billing_city" value="Placers">
-
-            <label for="postal">Postal</label>
-            <input type="text" id="postal" value="4567">
+            <h2>Billing Address</h2>
+            <input type="text" v-model="billingStreet" placeholder="Street">
+            <input type="text" v-model="billingComplex" placeholder="Complex/Flat">
+            <input type="text" v-model="billingSuburb" placeholder="Suburb">
+            <input type="text" v-model="billingCity" placeholder="City">
+            <input type="text" v-model="billingPostal" placeholder="Postal">
           </div>
         </div>
 
@@ -92,6 +74,8 @@
 <script>
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import SidebarComponent from "@/components/SidebarComponent.vue";
+import {useAuth} from "@/Auth";
+import {getUser, updateUser} from "@/services/ProfileService";
 
 export default {
   name: 'ProfilePage',
@@ -99,10 +83,96 @@ export default {
     SidebarComponent,
     HeaderComponent
   },
-  props: {
-    msg: String
-  }
-}
+  data() {
+    return {
+      user: null,
+      // General
+      firstName: '',
+      middleName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      password: '',
+      passwordConfirmation: '',
+      // Card
+      cardBrand: '',
+      cardLastFour: '',
+      // Shipping
+      shippingStreet: '',
+      shippingComplex: '',
+      shippingSuburb: '',
+      shippingCity: '',
+      shippingPostal: '',
+      // Billing
+      billingStreet: '',
+      billingComplex: '',
+      billingSuburb: '',
+      billingCity: '',
+      billingPostal: ''
+    };
+  },
+  async mounted() {
+    const authUser = useAuth();
+    this.user = await getUser(authUser.userID);
+
+    // Populate form fields with current user values
+    this.firstName = this.user.firstName;
+    this.middleName = this.user.middleName;
+    this.lastName = this.user.lastName;
+    this.email = this.user.contact?.email;
+    this.phone = this.user.contact?.phone;
+    this.cardBrand = this.user.card?.brand;
+    this.cardLastFour = this.user.card?.lastFourDigits;
+    this.shippingStreet = this.user.shippingAddress?.streetAddress;
+    this.shippingComplex = this.user.shippingAddress?.complexDetail;
+    this.shippingSuburb = this.user.shippingAddress?.suburb;
+    this.shippingCity = this.user.shippingAddress?.city;
+    this.shippingPostal = this.user.shippingAddress?.postalCode;
+    this.billingStreet = this.user.billingAddress?.streetAddress;
+    this.billingComplex = this.user.billingAddress?.complexDetail;
+    this.billingSuburb = this.user.billingAddress?.suburb;
+    this.billingCity = this.user.billingAddress?.city;
+    this.billingPostal = this.user.billingAddress?.postalCode;
+  },
+  methods: {
+    async updateUser() {
+      const updatedUser = {
+        id: this.user.id,
+        firstName: this.firstName,
+        middleName: this.middleName,
+        lastName: this.lastName,
+        password: this.password || this.user.password,
+        wishlistItems: this.user.wishlistItems || [],
+        contact: {
+          id: this.user.contact?.id || null,
+          email: this.email,
+          phone: this.phone
+        },
+        shippingAddress: {
+          addressID: this.user.shippingAddress?.addressID,
+          streetAddress: this.shippingStreet,
+          complexDetail: this.shippingComplex,
+          suburb: this.shippingSuburb,
+          type: this.user.shippingAddress?.type || 1,
+          city: this.shippingCity,
+          postalCode: this.shippingPostal
+        },
+        billingAddress: {
+          addressID: this.user.billingAddress?.addressID,
+          streetAddress: this.billingStreet,
+          complexDetail: this.billingComplex,
+          suburb: this.billingSuburb,
+          type: this.user.billingAddress?.type || 2,
+          city: this.billingCity,
+          postalCode: this.billingPostal
+        },
+        card: this.user.card
+      };
+
+      this.user = await updateUser(updatedUser)
+    }
+  },
+};
 </script>
 
 <style scoped>
@@ -159,7 +229,7 @@ select:focus {
   border: 2px solid #dfe6e9;
 }
 
-button{
+button {
   border: none;
   border-radius: 8px;
   padding: 10px;
