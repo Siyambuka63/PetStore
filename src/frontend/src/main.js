@@ -4,10 +4,10 @@ import * as VueRouter from 'vue-router'
 import { createPinia } from 'pinia'
 import { useAuth } from "@/Auth";
 
-import LogInPage from "./pages/LogInPage.vue";
 import ProfilePage from "./pages/ProfilePage.vue";
 import WishlistPage from "./pages/WishlistPage.vue";
 import SignUpPage from "./pages/SignUpPage.vue";
+import LogInPage from "./pages/LogInPage.vue";
 
 const router = VueRouter.createRouter({
     history: VueRouter.createWebHistory(process.env.BASE_URL),
@@ -28,12 +28,19 @@ const router = VueRouter.createRouter({
             meta: { requiresAuth: true }
         },
         {
+            path: '/ProductsPage',
+            component: ProductsPage},
+        {
+            path: '/wishlist',
+            component: WishlistPage
+        },
+        { 
             path: "/signup",
             name: "SignUp",
-            component: SignUpPage
+            component: SignUpPage 
         }
     ]
-})
+ })
 
 router.beforeEach((to, from, next) => {
     const user = useAuth()
