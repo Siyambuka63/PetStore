@@ -2,6 +2,8 @@
 import {orderStore} from "@/services/OrderStore";
 
 const store = orderStore();
+
+let id = store.getOrderId();
 </script>
 <template>
   <HeaderComponent />
@@ -20,84 +22,39 @@ const store = orderStore();
             <li><a href="#">My Profile</a></li>
             <li><a href="#">My Wishlist</a></li>
             <li><a href="#">My Reviews</a></li>
-            <li><a href="#" class="active">My Orders</a></li>
+            <li><a href="/orderPage" class="active">My Orders</a></li>
             <li><a href="#">Settings</a></li>
             <li><a href="#">Logout</a></li>
           </ul>
         </div>
       </div>
 
-      <!-- Sort Orders -->
-      <div class="order_sort">
-        <div class="header">
-          <h2>Sort Orders</h2>
-        </div>
-        <div class="list">
-          <ul>
-            <li>
-              <label>
-                <input type="radio" value="deliveryDate" v-model="pickedSort" />
-                Delivery Date
-              </label>
-            </li>
-            <li>
-              <label>
-                <input type="radio" value="orderDate" v-model="pickedSort" />
-                Order Date
-              </label>
-            </li>
-            <li>
-              <label>
-                <input type="radio" value="Price" v-model="pickedSort" />
-                Price
-              </label>
-            </li>
-          </ul>
-        </div>
-      </div>
+
+
     </div>
 
     <!-- Main Content -->
     <main class="main-content">
       <!-- Title -->
-      <h1 >My Orders</h1>
-
-      <!-- Orders -->
-      <div v-if="sortedOrders.length" class="orders-list">
-        <div v-for="order in sortedOrders" :key="order" class="order-card">
+      <h1 v-if="orderItems.length">Order Items</h1>
+      <!-- Order Items -->
+      <div v-if="orderItems.length" class="orders-list">
+        <div v-for="orderItem in getOrderItems(id)" :key="orderItem.id" class="order-card">
           <div class="order-details">
-            <p><strong>Order ID:</strong> {{ order.id }}</p>
-            <p><strong>Delivery Date:</strong> {{ order.deliveryDate }}</p>
-            <p><strong>Order Date:</strong> {{ order.orderDate }}</p>
-            <p><strong>Price:</strong> R{{ order.price }}</p>
-            <p>
-              <strong>Status:</strong>
-              <span :class="statusClass(order.status)">
-                {{ order.status }}
-              </span>
-            </p>
-            <router-link to="/orderItem">
-            <button @click="store.setOrderId(order.id)">{{buttonText}}</button>
+            <p><strong>Order Item ID:</strong> {{ orderItem.id }}</p>
+            <p><strong>Price Per Item:</strong> R{{ orderItem.pricePerItem }}</p>
+            <p><strong>Quantity:</strong> {{ orderItem.quantity }}</p>
+            <p><strong>Total Price:</strong> R{{ orderItem.totalPrice }}</p>
+            <router-link to="/orderPage">
+              <button>Order details</button>
             </router-link>
-            <!-- Display "1" when this specific order's detail is shown -->
-            <div v-if="showOrderItem === order.id" class="order-detail-content">
-              <div v-if="orderItems.length" class="orders-list">
-              <div v-for="orderItem in getOrderItems(order.id)" :key="orderItem.id" class="order-card">
-                <p><strong>Order:</strong> {{sortedOrders.findIndex(o => o.id === orderItem.id.orderId)+1}}</p>
-                <p><strong>Price Per Item:</strong> {{orderItem.pricePerItem}}</p>
-                <p><strong>Quantity:</strong> {{orderItem.quantity}}</p>
-                <p><strong>Total Price:</strong> {{orderItem.totalPrice}}</p>
-              </div>
-              </div>
-            </div>
-
           </div>
         </div>
       </div>
 
-      <!-- No Orders -->
+      <!-- No Order Items -->
       <div v-else class="no-orders">
-        <p>No orders found.</p>
+        <p>No order items found.</p>
       </div>
     </main>
   </div>
@@ -131,48 +88,14 @@ export default {
     getOrderItems(orderId) {
       return this.orderItems.filter(orderItem => orderItem.id.orderId === orderId);
     },
-    statusClass(status) {
-      switch (status.toLowerCase()) {
-        case "delivered": return "status-delivered";
-        case "busy": return "status-busy";
-        case "cart": return "status-cart";
-        case "cancelled": return "status-cancelled";
-        case "returned": return "status-returned";
-        case "ready": return "status-ready";
-        default: return "status-cart";
-      }
-    },
-    ShowOrderDetail(orderId) {
-      // Toggle the detail view - if clicking the same order, hide it; otherwise show the new one
-      this.showOrderItem = this.showOrderItem === orderId ? null : orderId;
-    }
   },
   created() {
     this.getOrder();
     this.getOrderItem();
   },
 
-  computed: {
-    sortedOrders() {
-      if (!this.pickedSort) return this.orders;
 
-      let sorted = [...this.orders];
 
-      switch (this.pickedSort) {
-        case "deliveryDate":
-          sorted.sort((a, b) => new Date(a.deliveryDate) - new Date(b.deliveryDate));
-          break;
-        case "orderDate":
-          sorted.sort((a, b) => new Date(a.orderDate) - new Date(b.orderDate));
-          break;
-        case "price":
-          sorted.sort((a, b) => a.price - b.price);
-          break;
-      }
-
-      return sorted;
-    }
-  }
 };
 </script>
 
