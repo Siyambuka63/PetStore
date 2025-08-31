@@ -1,7 +1,5 @@
 <template>
-
   <div class="signup-page">
-
     <h1 class="title">PetShop</h1>
 
     <div class="signup-box">
@@ -29,6 +27,7 @@
 
 <script setup>
 import { ref } from "vue";
+import { useAuth } from "@/Auth.js";
 
 const firstName = ref("");
 const middleName = ref("");
@@ -39,15 +38,36 @@ const password = ref("");
 const confirmPassword = ref("");
 
 
+const auth = useAuth();
+
+const users = ref([]);
+
+
 function handleSignUp() {
   if (password.value !== confirmPassword.value) {
     alert("Passwords do not match!");
     return;
   }
-  alert(`Sign up successful! You can now login\nName: ${firstName.value}\nEmail: ${email.value}`);
 
+  const newUser = {
+    id: users.value.length + 1,
+    firstName: firstName.value,
+    middleName: middleName.value,
+    lastName: lastName.value,
+    email: email.value,
+    phone: phone.value,
+    password: password.value
+  };
+
+  users.value.push(newUser);
+
+
+  auth.setUserId(newUser.id);
+
+  alert(`Sign up successful! User ID: ${auth.userID}`);
 }
 </script>
+
 
 <style scoped>
 .signup-page {

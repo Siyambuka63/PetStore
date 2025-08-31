@@ -34,4 +34,17 @@ public class OrderFactory {
                 .setStatus(status)
                 .build();
     }
+
+    public static Order createCart(User user) {
+        if (user == null) {
+            return null;
+        }
+        return new Order.Builder()
+                .setOrderID(System.currentTimeMillis())
+                .setUser(user)
+                .setOrderDate(null)
+                .setPrice(0.0f)
+                .setStatus(Status.Cart)
+                .build();
+    }
 }
