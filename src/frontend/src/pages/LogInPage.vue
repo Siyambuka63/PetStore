@@ -5,15 +5,13 @@
     <div class="login-box">
       <h2 class="titles">Log in to PetShop</h2>
       <form @submit.prevent="handleLogin">
-        <input v-model="email" placeholder="Email" required />
+        <input type="email" v-model="email" placeholder="Email" required />
         <input type="password" v-model="password" placeholder="Password" required />
         <button type="submit">Login</button>
       </form>
 
       <div class="links">
-        <p>
-          Don't have an account? <router-link to="/signup">Sign up</router-link>
-        </p>
+        <p>Don't have an account? <router-link to="/signup">Sign up</router-link></p>
       </div>
     </div>
   </div>
@@ -21,41 +19,33 @@
 
 <script setup>
 import { ref } from "vue";
+import axiosInstance from "@/api/axiosInstance";
 import { useAuth } from "@/Auth.js";
-
-const auth = useAuth();
+import { useRouter } from "vue-router";
 
 const email = ref("");
 const password = ref("");
+const auth = useAuth();
+const router = useRouter();
 
 async function handleLogin() {
   try {
-    const response = await fetch("http://localhost:8080/user/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: email.value, password: password.value })
+    const response = await axiosInstance.post("/auth/login", {
+      email: email.value,
+      password: password.value
     });
 
-    if (!response.ok) throw new Error("Login failed");
+    const user = response.data;
+    auth.setUserId(user.id);
 
-    const user = await response.json();
-    if (!user) {
-      alert("Invalid credentials!");
-      return;
-    }
-
-    auth.setUser(user);
-    alert(`Login successful! User ID: ${user.id}`);
-
-
-    email.value = password.value = "";
+    alert(`Login successful! User ID: ${auth.userID}`);
+    router.push("/products");
   } catch (err) {
     console.error(err);
-    alert("Login failed! Check console for details.");
+    alert(err.response?.data?.message || "Login failed.");
   }
 }
 </script>
-
 
 
 
