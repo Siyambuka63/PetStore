@@ -40,8 +40,9 @@ public class OrderFactory {
             return null;
         }
         return new Order.Builder()
+                .setOrderID(System.currentTimeMillis())
                 .setUser(user)
-                .setOrderDate(LocalDate.now())
+                .setOrderDate(null)
                 .setPrice(0.0f)
                 .setStatus(Status.Cart)
                 .build();
