@@ -76,7 +76,7 @@ export default {
             "Good for shiny fur.",
             "Worth the price."
           ],
-          image: require("https://tse1.mm.bing.net/th/id/OIP.8sUh6mHZbNk3Mwq6JVOouwHaIj?rs=1&pid=ImgDetMain&o=7&rm=3")
+          image: "https://tse1.mm.bing.net/th/id/OIP.8sUh6mHZbNk3Mwq6JVOouwHaIj?rs=1&pid=ImgDetMain&o=7&rm=3"
         },
         {
           id: 2,
@@ -90,7 +90,7 @@ export default {
             "Good for sensitive tummies.",
             "Fresh smell and good quality."
           ],
-          image: require("https://tse3.mm.bing.net/th/id/OIP.v_tG4yQ7CaMal71h67L_ngHaHa?rs=1&pid=ImgDetMain&o=7&rm=3")
+          image: "https://tse3.mm.bing.net/th/id/OIP.v_tG4yQ7CaMal71h67L_ngHaHa?rs=1&pid=ImgDetMain&o=7&rm=3"
         },
         {
           id: 3,
@@ -104,7 +104,7 @@ export default {
             "Water stays clean.",
             "My fish like the taste."
           ],
-          image: require("https://tse2.mm.bing.net/th/id/OIP.zYgn3Gye6CfPFsYZ1kKdxQHaHa?rs=1&pid=ImgDetMain&o=7&rm=3")
+          image: "https://tse2.mm.bing.net/th/id/OIP.zYgn3Gye6CfPFsYZ1kKdxQHaHa?rs=1&pid=ImgDetMain&o=7&rm=3"
         }
       ],
 

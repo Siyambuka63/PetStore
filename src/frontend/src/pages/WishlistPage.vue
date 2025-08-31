@@ -43,7 +43,7 @@
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import SidebarComponent from "@/components/SidebarComponent.vue";
 import {useAuth} from "@/Auth";
-import {getUserWishlistItems, removeItemFromWishlist, removeWishlistUser} from "@/scripts/wishlist";
+import {getUserWishlistItems, removeItemFromWishlist, removeWishlistUser} from "@/services/WishlistService";
 
 export default {
   name: "WishlistPage",
