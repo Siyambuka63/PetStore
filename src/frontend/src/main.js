@@ -9,6 +9,7 @@ import WishlistPage from "./pages/WishlistPage.vue";
 import SignUpPage from "./pages/SignUpPage.vue";
 import LogInPage from "./pages/LogInPage.vue";
 import ProductsPage from "./pages/ProductsPage.vue";
+import ProductDetailsPage from "./pages/ProductDetailsPage.vue";  
 
 const router = VueRouter.createRouter({
     history: VueRouter.createWebHistory(process.env.BASE_URL),
@@ -19,21 +20,24 @@ const router = VueRouter.createRouter({
             component: LogInPage
         },
         {
-            path: '/profile',
+            path: "/profile",
             component: ProfilePage,
             meta: { requiresAuth: true }
         },
         {
-            path: '/wishlist',
+            path: "/wishlist",
             component: WishlistPage,
             meta: { requiresAuth: true }
         },
         {
-            path: '/ProductsPage',
-            component: ProductsPage},
+            path: "/products",
+            name: "Products",
+            component: ProductsPage
+        },
         {
-            path: '/wishlist',
-            component: WishlistPage
+            path: "/product-details",    
+            name: "ProductDetails",
+            component: ProductDetailsPage
         },
         { 
             path: "/signup",
@@ -41,7 +45,7 @@ const router = VueRouter.createRouter({
             component: SignUpPage 
         }
     ]
- })
+})
 
 router.beforeEach((to, from, next) => {
     const user = useAuth()
@@ -57,4 +61,5 @@ router.beforeEach((to, from, next) => {
 createApp(App)
     .use(createPinia())
     .use(router)
-    .mount('#app')
+    .mount('#app')   // ✅ finish mount here
+
