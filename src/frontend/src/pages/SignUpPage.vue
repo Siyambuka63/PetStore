@@ -12,14 +12,11 @@
         <input type="text" v-model="phone" placeholder="Phone Number" required />
         <input type="password" v-model="password" placeholder="Password" required />
         <input type="password" v-model="confirmPassword" placeholder="Confirm Password" required />
-
         <button type="submit">Sign Up</button>
       </form>
 
       <div class="links">
-        <p>
-          Already have an account? <router-link to="/">Login</router-link>
-        </p>
+        <p>Already have an account? <router-link to="/login">Login</router-link></p>
       </div>
     </div>
   </div>
@@ -27,7 +24,13 @@
 
 <script setup>
 import { ref } from "vue";
+import axiosInstance from "@/api/axiosInstance";
 import { useAuth } from "@/Auth.js";
+import { useRouter } from "vue-router";
+
+const auth = useAuth();
+const router = useRouter();
+
 
 const firstName = ref("");
 const middleName = ref("");
@@ -38,33 +41,34 @@ const password = ref("");
 const confirmPassword = ref("");
 
 
-const auth = useAuth();
-
-const users = ref([]);
-
-
-function handleSignUp() {
+async function handleSignUp() {
   if (password.value !== confirmPassword.value) {
     alert("Passwords do not match!");
     return;
   }
 
-  const newUser = {
-    id: users.value.length + 1,
-    firstName: firstName.value,
-    middleName: middleName.value,
-    lastName: lastName.value,
-    email: email.value,
-    phone: phone.value,
-    password: password.value
-  };
+  try {
+    const response = await axiosInstance.post("/auth/signup", {
+      firstName: firstName.value,
+      middleName: middleName.value,
+      lastName: lastName.value,
+      email: email.value,
+      phone: phone.value,
+      password: password.value,
+    });
 
-  users.value.push(newUser);
+    const newUser = response.data;
+    auth.setUserId(newUser.id);
+
+    alert(`Sign up successful! User ID: ${auth.userID}`);
+    router.push("/login");
 
 
-  auth.setUserId(newUser.id);
-
-  alert(`Sign up successful! User ID: ${auth.userID}`);
+    firstName.value = middleName.value = lastName.value = email.value = phone.value = password.value = confirmPassword.value = "";
+  } catch (err) {
+    console.error(err);
+    alert(err.response?.data?.message || "Sign up failed. Check console.");
+  }
 }
 </script>
 

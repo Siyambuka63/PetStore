@@ -7,15 +7,11 @@
       <form @submit.prevent="handleLogin">
         <input type="email" v-model="email" placeholder="Email" required />
         <input type="password" v-model="password" placeholder="Password" required />
-
         <button type="submit">Login</button>
       </form>
 
       <div class="links">
-        <a href="#">Forgot password?</a>
-        <p>
-          Don't have an account? <router-link to="/signup">Sign up</router-link>
-        </p>
+        <p>Don't have an account? <router-link to="/signup">Sign up</router-link></p>
       </div>
     </div>
   </div>
@@ -23,31 +19,34 @@
 
 <script setup>
 import { ref } from "vue";
+import axiosInstance from "@/api/axiosInstance";
 import { useAuth } from "@/Auth.js";
-
+import { useRouter } from "vue-router";
 
 const email = ref("");
 const password = ref("");
-
-
 const auth = useAuth();
+const router = useRouter();
 
+async function handleLogin() {
+  try {
+    const response = await axiosInstance.post("/auth/login", {
+      email: email.value,
+      password: password.value
+    });
 
-const users = ref([]);
-
-function handleLogin() {
-  const user = users.value.find(
-      (u) => u.email === email.value && u.password === password.value
-  );
-
-  if (user) {
+    const user = response.data;
     auth.setUserId(user.id);
+
     alert(`Login successful! User ID: ${auth.userID}`);
-  } else {
-    alert("Invalid credentials!");
+    router.push("/products");
+  } catch (err) {
+    console.error(err);
+    alert(err.response?.data?.message || "Login failed.");
   }
 }
 </script>
+
 
 
 <style scoped>
@@ -66,10 +65,11 @@ function handleLogin() {
   color: #1877f2;
   margin-bottom: 40px;
 }
+
 .titles {
   font-size: 18px;
   font-weight: bold;
-  color: #000;
+  color: #000000;
   margin-bottom: 40px;
 }
 
