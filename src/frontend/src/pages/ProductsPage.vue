@@ -1,43 +1,55 @@
 <template>
-  <HeaderComponent />
+  <div>
+    <HeaderComponent />
 
-  <div class="layout">
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <div class="categories">
-        <div class="header">
-          <img src="@/assets/user.png" alt="pet" />
-          <h2>Categories</h2>
-        </div>
-        <div class="list">
-          <ul>
-            <li><a href="#" class="active">All</a></li>
-            <li><a href="#">Dog Food</a></li>
-            <li><a href="#">Cat Food</a></li>
-            <li><a href="#">Fish Food</a></li>
-          </ul>
+    <div class="layout">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="categories">
+          <div class="header">
+            <img src="@/assets/user.png" alt="pet" />
+            <h2>Categories</h2>
+          </div>
+          <div class="list">
+            <ul>
+              <li><a href="#" class="active">All</a></li>
+              <li><a href="#">Dog Food</a></li>
+              <li><a href="#">Cat Food</a></li>
+              <li><a href="#">Fish Food</a></li>
+            </ul>
+          </div>
         </div>
       </div>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <h1>Products</h1>
+
+        <!-- Loading and error states -->
+        <div v-if="loading">Loading products...</div>
+        <div v-else-if="error">{{ error }}</div>
+
+        <!-- Product list -->
+        <div v-else class="products-grid">
+          <div class="product-card" v-for="product in products" :key="product.id">
+            <img
+                :src="product.imageAddress ? `http://localhost:8082/productImages/${product.imageAddress}` : '/productImages/placeholder.jpg'"
+                :alt="product.productName"
+            />
+            <h2>{{ product.productName }}</h2>
+            <p>{{ product.description }}</p>
+            <span class="price">R{{ product.price.toFixed(2) }}</span>
+            <button>Add to Cart</button>
+          </div>
+        </div>
+      </main>
     </div>
-
-    <!-- Main Content -->
-    <main class="main-content">
-      <h1>Products</h1>
-      <div class="products-grid">
-        <div class="product-card" v-for="product in products" :key="product.id">
-          <img :src="product.image" :alt="product.name" />
-          <h2>{{ product.name }}</h2>
-          <p>{{ product.description }}</p>
-          <span class="price">R{{ product.price }}</span>
-          <button>Add to Cart</button>
-        </div>
-      </div>
-    </main>
   </div>
 </template>
 
 <script>
 import HeaderComponent from "@/components/HeaderComponent.vue";
+import axiosInstance from "@/api/AxiosInstance";
 
 export default {
   name: "ProductsPage",
@@ -46,37 +58,34 @@ export default {
   },
   data() {
     return {
-      products: [
-        {
-          id: 1,
-          name: "Dog Kibble",
-          description: "Nutritious dry food for dogs.",
-          price: 299,
-          image: "/productImages/dogkibbles.jpg",
-        },
-        {
-          id: 2,
-          name: "Cat Tuna Pack",
-          description: "Delicious tuna for cats.",
-          price: 199,
-          image: "/productImages/cattuna.png",
-        },
-        {
-          id: 3,
-          name: "Fish Flakes",
-          description: "Balanced diet for aquarium fish.",
-          price: 99,
-          image: "/productImages/fishflakes.jpg",
-        },
-        {
-          id: 4,
-          name: "Meat and Veges",
-          description: "Wet food for adult dogs",
-          price: 105,
-          image: "/productImages/meat&veg.jpg",
-        },
-      ],
+      products: [],
+      loading: true,
+      error: null,
     };
+  },
+  methods: {
+    async fetchProducts() {
+      try {
+        const response = await axiosInstance.get("/petstore/product/getAll");
+
+        // Handle different backend response shapes
+        if (Array.isArray(response.data)) {
+          this.products = response.data;
+        } else if (response.data.products) {
+          this.products = response.data.products;
+        } else {
+          this.error = "Unexpected response format from server.";
+        }
+      } catch (err) {
+        console.error(err);
+        this.error = "Failed to load products.";
+      } finally {
+        this.loading = false;
+      }
+    },
+  },
+  mounted() {
+    this.fetchProducts();
   },
 };
 </script>

@@ -1,17 +1,14 @@
 import { defineStore } from 'pinia'
 export const useAuth = defineStore('user', {
     state: () => ({
-        userID: null,
-        userEmail: null,
+        userID: null
     }),
     actions: {
-        setUser(user) {
-            this.userID = user.id;
-            this.userEmail = user.email;
+        setUserId(id) {
+            this.userID = id;
         },
         logout() {
             this.userID = null;
-            this.userEmail = null;
         }
     }
 })

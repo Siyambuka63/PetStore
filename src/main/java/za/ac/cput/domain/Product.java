@@ -1,5 +1,6 @@
 package za.ac.cput.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import za.ac.cput.domain.user.User;
 
@@ -9,8 +10,10 @@ import java.util.List;
  * product class*/
 
 @Entity
+@Table(name="product")
 public class Product {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String productName;
     private String imageAddress;
@@ -29,6 +32,7 @@ public class Product {
     @ElementCollection
     private List<String> categories;
     @ManyToMany
+    @JsonIgnore
     @JoinTable(
             name = "wishlists",
             joinColumns = @JoinColumn(name = "product_id"),

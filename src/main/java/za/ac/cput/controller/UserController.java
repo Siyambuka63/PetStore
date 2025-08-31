@@ -43,17 +43,13 @@ public class UserController {
         return service.getAll();
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User newUser = userService.createUser(user);
-        return ResponseEntity.ok(newUser);
-    }
-
-
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody User user) {
-        User loggedIn = userService.login(user.getEmail(), user.getPassword());
-        return ResponseEntity.ok(loggedIn);
-    }
+    public User login(@RequestBody User user) {
+        User foundUser = service.login(user.getEmail(), user.getPassword());
+        if (foundUser != null) {
+            return foundUser;
+        }
+        return null;
+
     }
 }

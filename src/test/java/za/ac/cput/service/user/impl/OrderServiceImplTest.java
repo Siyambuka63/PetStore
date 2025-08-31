@@ -22,8 +22,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest()
 @TestMethodOrder(MethodOrderer.MethodName.class)
@@ -117,5 +116,35 @@ class OrderServiceImplTest {
 
         assertNotNull(service.findByStatus(status));
         System.out.println(service.findByStatus(status));
+    }
+
+    @Test
+    void j_createCartAndGetActiveCart() {
+        // Create a cart using factory method
+        Order cart = OrderFactory.createCart(order.getUser());
+        Order createdCart = service.create(cart);
+
+        assertNotNull(createdCart);
+        assertEquals(Status.Cart, createdCart.getStatus());
+        System.out.println(createdCart);
+
+        // Fetch the active cart for the user
+        Order activeCart = service.getActiveCart(order.getUser());
+        assertNotNull(activeCart);
+        assertEquals(Status.Cart, activeCart.getStatus());
+        System.out.println(activeCart);
+    }
+
+    @Test
+    void k_checkoutCart() {
+        // Ensure there is an active cart
+        Order cart = service.getActiveCart(order.getUser());
+        assertNotNull(cart);
+
+        // Checkout the cart
+        Order checkedOutCart = service.checkoutCart(order.getUser());
+        assertNotNull(checkedOutCart);
+        assertEquals(Status.Pending, checkedOutCart.getStatus());
+        System.out.println(checkedOutCart);
     }
 }
