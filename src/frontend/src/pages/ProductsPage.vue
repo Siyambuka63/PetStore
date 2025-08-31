@@ -32,10 +32,13 @@
         <!-- Product list -->
         <div v-else class="products-grid">
           <div class="product-card" v-for="product in products" :key="product.id">
-            <img :src="product.image" :alt="product.name" />
-            <h2>{{ product.name }}</h2>
+            <img
+                :src="product.imageAddress ? `http://localhost:8082/productImages/${product.imageAddress}` : '/productImages/placeholder.jpg'"
+                :alt="product.productName"
+            />
+            <h2>{{ product.productName }}</h2>
             <p>{{ product.description }}</p>
-            <span class="price">R{{ product.price }}</span>
+            <span class="price">R{{ product.price.toFixed(2) }}</span>
             <button>Add to Cart</button>
           </div>
         </div>
