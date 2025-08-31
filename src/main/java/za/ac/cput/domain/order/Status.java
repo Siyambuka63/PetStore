@@ -6,5 +6,5 @@ public enum Status {
     Ready,
     Busy,
     Cancelled,
-    Returned
+    Pending
 }
