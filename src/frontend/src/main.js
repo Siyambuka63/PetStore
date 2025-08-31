@@ -10,6 +10,8 @@ import SignUpPage from "./pages/SignUpPage.vue";
 import LogInPage from "./pages/LogInPage.vue";
 import ProductsPage from "./pages/ProductsPage.vue";
 import ProductDetailsPage from "./pages/ProductDetailPage.vue";
+import OrdersPage from "@/pages/OrdersPage.vue";
+import OrderItems from "@/pages/OrderItems.vue";
 
 const router = VueRouter.createRouter({
     history: VueRouter.createWebHistory(process.env.BASE_URL),
@@ -19,25 +21,32 @@ const router = VueRouter.createRouter({
             name: "LogIn",
             component: LogInPage
         },
+
         {
-            path: "/profile",
+            path: '/orderPage',
+            component: OrdersPage,
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/orderItem',
+            component: OrderItems
+        },
+        {
+            path: '/profile',
             component: ProfilePage,
             meta: { requiresAuth: true }
         },
         {
-            path: "/wishlist",
+            path: '/wishlist',
             component: WishlistPage,
             meta: { requiresAuth: true }
         },
         {
-            path: "/products",
-            name: "Products",
-            component: ProductsPage
-        },
+            path: '/ProductsPage',
+            component: ProductsPage},
         {
-            path: "/product-details",    
-            name: "ProductDetails",
-            component: ProductDetailsPage
+            path: '/wishlist',
+            component: WishlistPage
         },
         { 
             path: "/signup",
@@ -45,12 +54,12 @@ const router = VueRouter.createRouter({
             component: SignUpPage 
         }
     ]
-})
+ })
 
 router.beforeEach((to, from, next) => {
     const user = useAuth()
 
-    if (to.meta.requiresAuth && !user.userID) {
+    if (to.meta.requiresAuth && !user.userId) {
         // redirect to log in page
         next({ name: "LogIn" })
     } else {
