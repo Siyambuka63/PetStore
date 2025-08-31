@@ -5,4 +5,9 @@ import org.springframework.stereotype.Repository;
 import za.ac.cput.domain.user.*;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> { }
+public interface UserRepository extends JpaRepository<User, Long> {
+
+        User findByEmailAndPassword(String email, String password);
+    }
+
+
