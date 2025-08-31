@@ -1,11 +1,15 @@
-const { defineConfig } = require('@vue/cli-service')
+const { defineConfig } = require('@vue/cli-service');
+
 module.exports = defineConfig({
-  transpileDependencies: true
-})
-
-module.exports = {
+  transpileDependencies: true,
   devServer: {
-    port: 8082
+    port: 3000,
+    proxy: {
+      '/petstore': {
+        target: 'http://localhost:8080',
+        ws: true,
+        changeOrigin: true
+      }
+    }
   }
-};
-
+});

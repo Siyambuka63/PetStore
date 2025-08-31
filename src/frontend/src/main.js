@@ -50,7 +50,7 @@ const router = VueRouter.createRouter({
 router.beforeEach((to, from, next) => {
     const user = useAuth()
 
-    if (to.meta.requiresAuth && !user.userId) {
+    if (to.meta.requiresAuth && !user.userID) {
         // redirect to log in page
         next({ name: "LogIn" })
     } else {
@@ -61,5 +61,4 @@ router.beforeEach((to, from, next) => {
 createApp(App)
     .use(createPinia())
     .use(router)
-    .mount('#app')   // ✅ finish mount here
-
+    .mount('#app')
