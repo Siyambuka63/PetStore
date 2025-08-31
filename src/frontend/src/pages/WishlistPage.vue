@@ -6,17 +6,17 @@
     <div class="main-content">
       <h1>My Wishlist</h1>
       <div class="wishlist">
-        <div v-if="items.length === 0">You have no items wishlisted</div>
+        <div v-if="!items || items.length === 0"> You have no items wishlisted </div>
         <div v-for="(item, index) in items" :key="index" class="wishlist-item">
           <div class="left-section">
-            <img class="icon" src="@/assets/logo.png" v-bind:alt="item.name">
+            <img class="icon" src="@/assets/logo.png" v-bind:alt="item.productName">
           </div>
 
           <div class="info">
-            <h3 v-text="item.name"></h3>
-            <p v-if="item.on_sale">
+            <h3 v-text="item.productName"></h3>
+            <p v-if="item.onSale">
               Was: <s>R{{ item.price.toFixed(2) }}</s>
-              Now: R{{ item.sale_price.toFixed(2) }}
+              Now: R{{ item.salePrice.toFixed(2) }}
             </p>
             <p v-else v-text="'R' + item.price.toFixed(2)"></p>
           </div>
@@ -30,7 +30,7 @@
           <div class = "buttons">
             <button v-if = "item.stock >= 1" id="add_button">Add to Cart</button>
             <p v-else>SOLD OUT</p>
-            <button id="remove_button">Remove</button>
+<!--            <button id="remove_button" @click="removeItem(this.userID, item.id)" >Remove</button>-->
           </div>
         </div>
       </div>
@@ -42,6 +42,8 @@
 <script>
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import SidebarComponent from "@/components/SidebarComponent.vue";
+import {useAuth} from "@/Auth";
+import {getUserWishlistItems, removeItemFromWishlist, removeWishlistUser} from "@/scripts/wishlist";
 
 export default {
   name: "WishlistPage",
@@ -51,36 +53,22 @@ export default {
   },
   data() {
     return {
-      items: [
-        {
-          image: "",
-          name: "Wireless Headphones",
-          on_sale: false,
-          price: 200.0,
-          sale_price: 180.0,
-          rating: 3.5,
-          stock: 3
-        },
-        {
-          image: "",
-          name: "Wired Headphones",
-          on_sale: true,
-          price: 200.0,
-          sale_price: 180.0,
-          rating: 2.5,
-          stock: 3
-        },
-        {
-          image: "",
-          name: "Headphones",
-          on_sale: true,
-          price: 200.0,
-          sale_price: 150.0,
-          rating: 4.5,
-          stock: 3
-        }
-      ]
+      items: [],
+      userID: 55
     };
+  },
+  async mounted() {
+    const user = useAuth();
+
+    this.userID = user.userID;
+    this.items = await getUserWishlistItems(this.userID);
+  },
+  methods: {
+    async removeItem(userId, itemID) {
+      await removeWishlistUser(userId, itemID)
+      const updatedUser = await removeItemFromWishlist(userId, itemID);
+      this.items = await updatedUser.wishlistItems;
+    }
   }
 };
 </script>
@@ -107,10 +95,10 @@ export default {
 
 .wishlist-item {
   display: flex;
-  gap: 10%;
+  width: 100%;
   align-items: center;
-  justify-content: center;
-  padding: 10px;
+  justify-content: space-between;
+  padding: 10px 20px;
   margin: 5px;
   border-radius: 8px;
   border: 2px solid #dfe6e9;

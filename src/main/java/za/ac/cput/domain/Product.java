@@ -1,5 +1,6 @@
 package za.ac.cput.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import za.ac.cput.domain.user.User;
 
@@ -31,6 +32,7 @@ public class Product {
     @ElementCollection
     private List<String> categories;
     @ManyToMany
+    @JsonIgnore
     @JoinTable(
             name = "wishlists",
             joinColumns = @JoinColumn(name = "product_id"),

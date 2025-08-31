@@ -1,5 +1,6 @@
 package za.ac.cput.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import za.ac.cput.domain.review.Review;
 import za.ac.cput.domain.Product;
@@ -9,6 +10,7 @@ import java.util.List;
 @Entity
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String firstName;
     private String middleName;

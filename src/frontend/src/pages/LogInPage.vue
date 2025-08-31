@@ -1,24 +1,12 @@
 <template>
   <div class="login-page">
-
     <h1 class="title">PetShop</h1>
-
 
     <div class="login-box">
       <h2 class="titles">Log in to PetShop</h2>
       <form @submit.prevent="handleLogin">
-        <input
-            type="email"
-            v-model="email"
-            placeholder="Email"
-            required
-        />
-        <input
-            type="password"
-            v-model="password"
-            placeholder="Password"
-            required
-        />
+        <input type="email" v-model="email" placeholder="Email" required />
+        <input type="password" v-model="password" placeholder="Password" required />
 
         <button type="submit">Login</button>
       </form>
@@ -35,17 +23,34 @@
 
 <script setup>
 import { ref } from "vue";
+import { useAuth } from "@/Auth.js";
+
 
 const email = ref("");
 const password = ref("");
 
+
+const auth = useAuth();
+
+
+const users = ref([]);
+
 function handleLogin() {
-  alert(`Login successful!\nEmail: ${email.value}\nPassword: ${password.value}`);
+  const user = users.value.find(
+      (u) => u.email === email.value && u.password === password.value
+  );
+
+  if (user) {
+    auth.setUserId(user.id);
+    alert(`Login successful! User ID: ${auth.userID}`);
+  } else {
+    alert("Invalid credentials!");
+  }
 }
 </script>
 
-<style scoped>
 
+<style scoped>
 .login-page {
   display: flex;
   flex-direction: column;
@@ -64,7 +69,7 @@ function handleLogin() {
 .titles {
   font-size: 18px;
   font-weight: bold;
-  color: #000000;
+  color: #000;
   margin-bottom: 40px;
 }
 
