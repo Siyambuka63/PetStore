@@ -5,17 +5,14 @@
     <div class="login-box">
       <h2 class="titles">Log in to PetShop</h2>
       <form @submit.prevent="handleLogin">
-        <input type="email" v-model="email" placeholder="Email" required />
+        <input v-model="email" placeholder="Email" required />
         <input type="password" v-model="password" placeholder="Password" required />
 
         <button type="submit">Login</button>
       </form>
 
       <div class="links">
-        <a href="#">Forgot password?</a>
-        <p>
-          Don't have an account? <router-link to="/signup">Sign up</router-link>
-        </p>
+        <p>Don't have an account? <router-link to="/signup">Sign up</router-link></p>
       </div>
     </div>
   </div>
@@ -25,15 +22,10 @@
 import { ref } from "vue";
 import { useAuth } from "@/Auth.js";
 
-
+const auth = useAuth();
+const users = ref([]);
 const email = ref("");
 const password = ref("");
-
-
-const auth = useAuth();
-
-
-const users = ref([]);
 
 function handleLogin() {
   const user = users.value.find(
@@ -41,13 +33,15 @@ function handleLogin() {
   );
 
   if (user) {
-    auth.setUserId(user.id);
+    auth.setUser(user);
     alert(`Login successful! User ID: ${auth.userID}`);
   } else {
     alert("Invalid credentials!");
   }
 }
 </script>
+
+
 
 
 <style scoped>
@@ -66,10 +60,11 @@ function handleLogin() {
   color: #1877f2;
   margin-bottom: 40px;
 }
+
 .titles {
   font-size: 18px;
   font-weight: bold;
-  color: #000;
+  color: #000000;
   margin-bottom: 40px;
 }
 

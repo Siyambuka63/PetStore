@@ -5,11 +5,11 @@
     <div class="signup-box">
       <h2 class="titles">Create an Account</h2>
       <form @submit.prevent="handleSignUp">
-        <input type="text" v-model="firstName" placeholder="First Name" required />
-        <input type="text" v-model="middleName" placeholder="Middle Name" />
-        <input type="text" v-model="lastName" placeholder="Surname" required />
-        <input type="email" v-model="email" placeholder="Email" required />
-        <input type="text" v-model="phone" placeholder="Phone Number" required />
+        <input v-model="firstName" placeholder="First Name" required />
+        <input v-model="middleName" placeholder="Middle Name" />
+        <input v-model="lastName" placeholder="Surname" required />
+        <input v-model="email" placeholder="Email" required />
+        <input v-model="phone" placeholder="Phone Number" required />
         <input type="password" v-model="password" placeholder="Password" required />
         <input type="password" v-model="confirmPassword" placeholder="Confirm Password" required />
 
@@ -17,9 +17,7 @@
       </form>
 
       <div class="links">
-        <p>
-          Already have an account? <router-link to="/">Login</router-link>
-        </p>
+        <p>Already have an account? <router-link to="/">Login</router-link></p>
       </div>
     </div>
   </div>
@@ -29,6 +27,9 @@
 import { ref } from "vue";
 import { useAuth } from "@/Auth.js";
 
+const auth = useAuth();
+
+const users = ref([]);
 const firstName = ref("");
 const middleName = ref("");
 const lastName = ref("");
@@ -36,12 +37,6 @@ const email = ref("");
 const phone = ref("");
 const password = ref("");
 const confirmPassword = ref("");
-
-
-const auth = useAuth();
-
-const users = ref([]);
-
 
 function handleSignUp() {
   if (password.value !== confirmPassword.value) {
@@ -56,17 +51,25 @@ function handleSignUp() {
     lastName: lastName.value,
     email: email.value,
     phone: phone.value,
-    password: password.value
+    password: password.value,
   };
 
   users.value.push(newUser);
+  auth.setUser(newUser);
+  alert(`Sign up successful! User ID: ${newUser.id}`);
 
 
-  auth.setUserId(newUser.id);
-
-  alert(`Sign up successful! User ID: ${auth.userID}`);
+  firstName.value = "";
+  middleName.value = "";
+  lastName.value = "";
+  email.value = "";
+  phone.value = "";
+  password.value = "";
+  confirmPassword.value = "";
 }
 </script>
+
+
 
 
 <style scoped>
