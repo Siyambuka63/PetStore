@@ -28,6 +28,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Long id) { repository.deleteById(id); }
+    @Override
+    public User login(String email, String password) {
+        return userRepository.findByEmail(email)
+                .filter(u -> u.getPassword().equals(password))
+                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+    }
+
 
     @Override
     public List<User> getAll() { return repository.findAll(); }
