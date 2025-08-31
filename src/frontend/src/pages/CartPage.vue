@@ -30,23 +30,51 @@
 
 
 <script setup>
-import {ref} from "vue";
+import { ref, computed, onMounted } from "vue";
 import axios from "axios";
 
 const cartItems = ref([]);
 
 // Load active cart from backend
 const loadCart = async () => {
-try {
-const res = await axios.get("http://localhost:8080/petstore/cart/getActiveCart/1");
-if (res.data && res.data.items) {
-cartItems.value = res.data.items;
-} else {
-cartItems.value = [];
-}
-} catch (err) {
-console.error("Error loading cart:", err);
-}
+  try {
+    const res = await axios.get("http://localhost:8080/petstore/cart/getActiveCart/1");
+    if (res.data && res.data.items) {
+      cartItems.value = res.data.items;
+    } else {
+      cartItems.value = [];
+    }
+  } catch (err) {
+    console.error("Error loading cart:", err);
+  }
 };
 
+// Remove an item
+const removeFromCart = async (itemId) => {
+  try {
+    await axios.delete(`http://localhost:8080/petstore/cart/removeItem/${itemId}`);
+    cartItems.value = cartItems.value.filter(item => item.id !== itemId);
+  } catch (err) {
+    console.error("Error removing item:", err);
+  }
+};
+
+// Checkout
+const checkout = async () => {
+  try {
+    const res = await axios.post("http://localhost:8080/petstore/cart/checkout/1");
+    alert("Checkout successful! 🎉 Order status: " + res.data.status);
+    cartItems.value = [];
+  } catch (err) {
+    console.error("Error during checkout:", err);
+  }
+};
+
+onMounted(loadCart);
+
+// Total Price
+const totalPrice = computed(() =>
+    cartItems.value.reduce((sum, item) => sum + item.price * item.quantity, 0)
+);
 </script>
+
