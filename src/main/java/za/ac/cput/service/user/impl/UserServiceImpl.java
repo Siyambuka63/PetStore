@@ -18,26 +18,30 @@ public class UserServiceImpl implements UserService {
     private UserRepository repository;
 
     @Override
-    public User create(User user) { return repository.save(user); }
-
-    @Override
-    public User read(Long id) { return repository.findById(id).orElse(null); }
-
-    @Override
-    public User update(User user) { return repository.save(user); }
-
-    @Override
-    public void delete(Long id) { repository.deleteById(id); }
-
-    @Override
-    public List<User> getAll() { return repository.findAll(); }
-    @Override
     public User create(User user) {
         return repository.save(user);
     }
-    @override
-    public User login(String email, String password) {
-        return repository.findByEmailAndPassword(email, password);
+
+    @Override
+    public User read(Long id) {
+        return repository.findById(id).orElse(null);
     }
 
+    @Override
+    public User update(User user) {
+        return repository.save(user);
+    }
+
+    @Override
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
+
+    @Override
+    public List<User> getAll() {
+        return repository.findAll();
+    }
+
+    public User login(String email, String password) {
+        return repository.findByEmailAndPassword(email, password);
 }
