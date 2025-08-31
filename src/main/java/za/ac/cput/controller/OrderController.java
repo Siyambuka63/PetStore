@@ -6,7 +6,7 @@ import za.ac.cput.domain.order.Order;
 import za.ac.cput.service.impl.OrderServiceImpl;
 
 import java.util.List;
-
+@CrossOrigin("http://localhost:8082/")
 @RestController
 @RequestMapping("/order")
 public class OrderController {
