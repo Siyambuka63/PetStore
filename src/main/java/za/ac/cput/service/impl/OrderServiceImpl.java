@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import za.ac.cput.domain.order.Order;
 import za.ac.cput.domain.order.Status;
+import za.ac.cput.domain.user.User;
+import za.ac.cput.factory.OrderFactory;
 import za.ac.cput.repository.OrderRepository;
 import za.ac.cput.service.OrderService;
 
@@ -64,5 +66,26 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Optional<Order> findByStatus(Status status) {
         return orderRepository.findByStatus(status);
+    }
+
+    @Override
+    public Order getActiveCart(User user) {
+        return orderRepository.findByUserAndStatus(user, Status.Cart)
+                .orElseGet(() -> {
+                    Order cart = OrderFactory.createCart(user);
+                    return orderRepository.save(cart);
+                });
+    }
+    @Override
+    public Order checkoutCart(User user) {
+        Order cart = getActiveCart(user);
+        if (cart.getStatus() != Status.Cart) {
+            throw new IllegalStateException("Order is not in CART status.");
+        }
+        Order updated = new Order.Builder()
+                .copy(cart)
+                .setStatus(Status.Busy)
+                .build();
+        return orderRepository.save(updated);
     }
 }
