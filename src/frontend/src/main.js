@@ -8,6 +8,7 @@ import ProfilePage from "./pages/ProfilePage.vue";
 import WishlistPage from "./pages/WishlistPage.vue";
 import SignUpPage from "./pages/SignUpPage.vue";
 import LogInPage from "./pages/LogInPage.vue";
+import ProductsPage from "./pages/ProductsPage.vue";
 
 const router = VueRouter.createRouter({
     history: VueRouter.createWebHistory(process.env.BASE_URL),
