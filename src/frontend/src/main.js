@@ -9,6 +9,8 @@ import WishlistPage from "./pages/WishlistPage.vue";
 import SignUpPage from "./pages/SignUpPage.vue";
 import LogInPage from "./pages/LogInPage.vue";
 import ProductsPage from "./pages/ProductsPage.vue";
+import OrdersPage from "@/pages/OrdersPage.vue";
+import OrderItems from "@/pages/OrderItems.vue";
 
 const router = VueRouter.createRouter({
     history: VueRouter.createWebHistory(process.env.BASE_URL),
@@ -17,6 +19,16 @@ const router = VueRouter.createRouter({
             path: "/",
             name: "LogIn",
             component: LogInPage
+        },
+
+        {
+            path: '/orderPage',
+            component: OrdersPage,
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/orderItem',
+            component: OrderItems
         },
         {
             path: '/profile',
