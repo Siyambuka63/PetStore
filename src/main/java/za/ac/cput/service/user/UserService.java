@@ -6,5 +6,7 @@ import za.ac.cput.service.IService;
 import java.util.List;
 
 public interface UserService extends IService<User, Long> {
-    List<User> getAll();
+    User createUser(User user);
+    User login(String email, String password);
+    List<User> getAllUsers();
 }
