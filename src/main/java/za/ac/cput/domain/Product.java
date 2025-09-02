@@ -1,5 +1,6 @@
 package za.ac.cput.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import za.ac.cput.domain.user.User;
@@ -29,10 +30,12 @@ public class Product {
     private String foodType;
     private String petType;
     private String flavour;
+
     @ElementCollection
     private List<String> categories;
+
     @ManyToMany
-    @JsonIgnore
+    @JsonBackReference
     @JoinTable(
             name = "wishlists",
             joinColumns = @JoinColumn(name = "product_id"),
