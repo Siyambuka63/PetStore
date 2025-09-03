@@ -8,7 +8,7 @@ import za.ac.cput.domain.user.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-
+boolean existsByEmail(String email);
     @Query("SELECT u FROM User u WHERE u.contact.email = :email AND u.password = :password")
     User findByContactEmailAndPassword(@Param("email") String email, @Param("password") String password);
 }
