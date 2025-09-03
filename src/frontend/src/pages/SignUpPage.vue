@@ -12,6 +12,7 @@
         <input type="text" v-model="phone" placeholder="Phone Number" required value="0987654321"/>
         <input type="password" v-model="password" placeholder="Password" required value="password"/>
         <input type="password" v-model="confirmPassword" placeholder="Confirm Password" required value="password"/>
+        <p v-if="emailError" style="color: red;">{{ emailError }}</p>
         <button type="submit">Sign Up</button>
       </form>
 
@@ -35,11 +36,29 @@ const email = ref("");
 const phone = ref("");
 const password = ref("");
 const confirmPassword = ref("");
-
+const emailError = ref("");
 const auth = useAuth();
 const router = useRouter();
 
-async function handleSignUp() {
+
+  async function isEmailTaken(emailToCheck) {
+    try {
+      const res = await fetch(`http://localhost:8080/petstore/users/email-exists?email=${encodeURIComponent(emailToCheck)}`);
+      const data = await res.json();
+      return data.taken;
+    } catch {
+      return false;
+    }
+  }
+  async function handleSignUp() {
+    emailError.value = "";
+    const taken = await isEmailTaken(email.value);
+    if (taken) {
+      emailError.value = "Email is already taken";
+      return;
+    }
+
+
   await SignUp(
       firstName.value,
       middleName.value,
