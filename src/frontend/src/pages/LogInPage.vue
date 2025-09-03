@@ -19,35 +19,48 @@
 
 <script setup>
 import { ref } from "vue";
-import axiosInstance from "@/api/axiosInstance";
-import { useAuth } from "@/Auth.js";
 import { useRouter } from "vue-router";
+import { useAuth } from "@/Auth.js";
 
-const email = ref("");
-const password = ref("");
-const auth = useAuth();
 const router = useRouter();
+const auth = useAuth();
+
+const email = ref('');
+const password = ref('');
+const error = ref('');
 
 async function handleLogin() {
+  error.value = '';
+
+  const credentials = {
+    email: email.value,
+    password: password.value,
+  };
+
   try {
-    const response = await axiosInstance.post("/auth/login", {
-      email: email.value,
-      password: password.value
+    const res = await fetch('http://localhost:8080/petstore/user/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(credentials),
     });
 
-    const user = response.data;
-    auth.setUserId(user.id);
+    if (!res.ok) {
+      const errRes = await res.json();
+      error.value = errRes.message || 'Login failed';
+      return;
+    }
 
-    alert(`Login successful! User ID: ${auth.userID}`);
-    router.push("/products");
-  } catch (err) {
-    console.error(err);
-    alert(err.response?.data?.message || "Login failed.");
+    const data = await res.json();
+
+    auth.setUserId(data.id);
+
+
+    router.push('/products');
+  } catch (e) {
+    error.value = 'Network error: ' + e.message;
   }
 }
 </script>
-
-
 
 <style scoped>
 .login-page {

@@ -24,54 +24,74 @@
 
 <script setup>
 import { ref } from "vue";
-import axiosInstance from "@/api/axiosInstance";
-import { useAuth } from "@/Auth.js";
 import { useRouter } from "vue-router";
+import { useAuth } from "@/Auth.js";
 
-const auth = useAuth();
 const router = useRouter();
+const auth = useAuth();
 
-
-const firstName = ref("");
-const middleName = ref("");
-const lastName = ref("");
-const email = ref("");
-const phone = ref("");
-const password = ref("");
-const confirmPassword = ref("");
-
+const firstName = ref('');
+const middleName = ref('');
+const lastName = ref('');
+const email = ref('');
+const phone = ref('');
+const password = ref('');
+const confirmPassword = ref('');
+const error = ref('');
+const successMessage = ref('');
 
 async function handleSignUp() {
+  error.value = '';
+  successMessage.value = '';
+
   if (password.value !== confirmPassword.value) {
-    alert("Passwords do not match!");
+    error.value = "Passwords do not match.";
     return;
   }
 
+  const userData = {
+    firstName: firstName.value,
+    middleName: middleName.value,
+    lastName: lastName.value,
+    email: email.value,
+    phone: phone.value,
+    password: password.value,
+  };
+
   try {
-    const response = await axiosInstance.post("/auth/signup", {
-      firstName: firstName.value,
-      middleName: middleName.value,
-      lastName: lastName.value,
-      email: email.value,
-      phone: phone.value,
-      password: password.value,
+    const res = await fetch('http://localhost:8080/petstore/user/create', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(userData),
     });
 
-    const newUser = response.data;
-    auth.setUserId(newUser.id);
+    if (!res.ok) {
+      const errRes = await res.json();
+      error.value = errRes.message || 'Signup failed';
+      return;
+    }
+    const data = await res.json();
+    auth.setUserId(data.id);
+    successMessage.value = 'Signup successful! Redirecting to products...';
 
-    alert(`Sign up successful! User ID: ${auth.userID}`);
-    router.push("/login");
 
+    firstName.value = '';
+    middleName.value = '';
+    lastName.value = '';
+    email.value = '';
+    phone.value = '';
+    password.value = '';
+    confirmPassword.value = '';
 
-    firstName.value = middleName.value = lastName.value = email.value = phone.value = password.value = confirmPassword.value = "";
-  } catch (err) {
-    console.error(err);
-    alert(err.response?.data?.message || "Sign up failed. Check console.");
+    setTimeout(() => {
+      router.push('/products');
+    }, 1500);
+
+  } catch (e) {
+    error.value = 'Network error: ' + e.message;
   }
 }
 </script>
-
 
 <style scoped>
 .signup-page {

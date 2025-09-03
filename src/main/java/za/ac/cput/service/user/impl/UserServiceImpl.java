@@ -32,12 +32,7 @@ public class UserServiceImpl implements UserService {
         return repository.save(user);
     }
 
-    public User login(String email, String password) {
-        return userRepository.findByEmail(email)
-                .filter(u -> u.getPassword().equals(password))
-                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
-    }
-
+    @override
     public void delete(Long id) {
         repository.deleteById(id);
     }
@@ -46,7 +41,8 @@ public class UserServiceImpl implements UserService {
     public List<User> getAll() {
         return repository.findAll();
     }
-
+    @override
     public User login(String email, String password) {
         return repository.findByEmailAndPassword(email, password);
+}
 }
