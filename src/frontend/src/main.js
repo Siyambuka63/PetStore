@@ -52,6 +52,10 @@ const router = VueRouter.createRouter({
             path: "/signup",
             name: "SignUp",
             component: SignUpPage 
+        },
+        {
+            path: "/product",
+            component: ProductDetailsPage
         }
     ]
  })
@@ -59,7 +63,7 @@ const router = VueRouter.createRouter({
 router.beforeEach((to, from, next) => {
     const user = useAuth()
 
-    if (to.meta.requiresAuth && !user.userId) {
+    if (to.meta.requiresAuth && !user.userID) {
         // redirect to log in page
         next({ name: "LogIn" })
     } else {

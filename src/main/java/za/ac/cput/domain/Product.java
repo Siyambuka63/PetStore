@@ -2,6 +2,7 @@ package za.ac.cput.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import za.ac.cput.domain.user.User;
 
@@ -35,7 +36,7 @@ public class Product {
     private List<String> categories;
 
     @ManyToMany
-    @JsonBackReference
+    @JsonIgnore
     @JoinTable(
             name = "wishlists",
             joinColumns = @JoinColumn(name = "product_id"),

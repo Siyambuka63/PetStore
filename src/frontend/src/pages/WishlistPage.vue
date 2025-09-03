@@ -30,7 +30,7 @@
           <div class = "buttons">
             <button v-if = "item.stock >= 1" id="add_button">Add to Cart</button>
             <p v-else>SOLD OUT</p>
-<!--            <button id="remove_button" @click="removeItem(this.userID, item.id)" >Remove</button>-->
+            <button id="remove_button" @click="removeItem(this.userID, item.id)" >Remove</button>
           </div>
         </div>
       </div>
@@ -54,7 +54,7 @@ export default {
   data() {
     return {
       items: [],
-      userID: 55
+      userID: null
     };
   },
   async mounted() {
@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     async removeItem(userId, itemID) {
-      await removeWishlistUser(userId, itemID)
+      await removeWishlistUser(userId, itemID);
       const updatedUser = await removeItemFromWishlist(userId, itemID);
       this.items = await updatedUser.wishlistItems;
     }
@@ -102,6 +102,10 @@ export default {
   margin: 5px;
   border-radius: 8px;
   border: 2px solid #dfe6e9;
+}
+
+.wishlist-item:hover {
+  cursor: pointer;
 }
 
 .left-section {

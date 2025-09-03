@@ -2,12 +2,12 @@
   <HeaderComponent/>
 
   <div class="container">
-    <SidebarComponent/>
+    <sidebar-component/>
     <!-- Main Content -->
     <main class="main-content">
       <h1>Profile Information</h1>
 
-      <form @submit.prevent="updateUser">
+      <form @submit.prevent="handleUpdate">
         <div class="content">
           <div class="details-group">
             <h2>General Information</h2>
@@ -21,29 +21,32 @@
             <input type="text" id="surname" v-model="lastName">
 
             <label for="email">Email Address</label>
-            <input type="email" id="email" v-model="email">
+            <input class="readonly" type="email" id="email" v-model="email" disabled>
 
             <label for="phone">Phone</label>
-            <input type="text" id="phone" v-model="phone">
+            <input class="readonly" type="text" id="phone" v-model="phone" disabled>
           </div>
 
           <div style="width: 100%">
-          <div class="details-group">
-            <h2>Password Reset</h2>
-            <label for="password">New Password</label>
-            <input type="password" id="password" v-model="password">
+            <div class="details-group">
+              <h2>Password Reset</h2>
+              <label for="password">New Password</label>
+              <input type="password" id="password" v-model="password">
 
-            <label for="password_confirmation">Confirm Password</label>
-            <input type="password" id="password_confirmation" v-model="passwordConfirmation">
-          </div>
+              <label for="password_confirmation">Confirm Password</label>
+              <input type="password" id="password_confirmation" v-model="passwordConfirmation">
+            </div>
 
-          <div class="details-group" style="margin-top: 50px">
-            <h2>Card Details</h2>
-            <select>
-            <option v-text="user.card.brand + ' ending with ' + user.card.lastFourDigits"></option>
-          </select>
-            <button>Remove card</button>
-          </div>
+            <div class="details-group" style="margin-top: 50px">
+              <h2>Card Details</h2>
+              <select v-model="selectedCard">
+                <option v-if="cardBrand" :value="cardBrand + ' ending with ' + cardLastFour">
+                  {{ cardBrand }} ending with {{ cardLastFour }}
+                </option>
+              </select>
+
+              <button @click="this.user = handleRemoveCard()">Remove card</button>
+            </div>
           </div>
 
           <div class="details-group">
@@ -53,6 +56,7 @@
             <input type="text" v-model="shippingSuburb" placeholder="Suburb">
             <input type="text" v-model="shippingCity" placeholder="City">
             <input type="text" v-model="shippingPostal" placeholder="Postal">
+            <button @click="this.user = handleRemoveShippingAddress()">Remove address</button>
           </div>
 
           <div class="details-group">
@@ -62,6 +66,7 @@
             <input type="text" v-model="billingSuburb" placeholder="Suburb">
             <input type="text" v-model="billingCity" placeholder="City">
             <input type="text" v-model="billingPostal" placeholder="Postal">
+            <button @click="this.user = handleRemoveBillingAddress()">Remove address</button>
           </div>
         </div>
 
@@ -75,7 +80,7 @@
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import SidebarComponent from "@/components/SidebarComponent.vue";
 import {useAuth} from "@/Auth";
-import {getUser, updateUser} from "@/services/ProfileService";
+import {getUser, removeBillingAddress, removeCard, removeShippingAddress, updateUser} from "@/services/ProfileService";
 
 export default {
   name: 'ProfilePage',
@@ -95,6 +100,7 @@ export default {
       password: '',
       passwordConfirmation: '',
       // Card
+      selectedCard: null,
       cardBrand: '',
       cardLastFour: '',
       // Shipping
@@ -115,61 +121,68 @@ export default {
     const authUser = useAuth();
     this.user = await getUser(authUser.userID);
 
-    // Populate form fields with current user values
-    this.firstName = this.user.firstName;
-    this.middleName = this.user.middleName;
-    this.lastName = this.user.lastName;
-    this.email = this.user.contact?.email;
-    this.phone = this.user.contact?.phone;
-    this.cardBrand = this.user.card?.brand;
-    this.cardLastFour = this.user.card?.lastFourDigits;
-    this.shippingStreet = this.user.shippingAddress?.streetAddress;
-    this.shippingComplex = this.user.shippingAddress?.complexDetail;
-    this.shippingSuburb = this.user.shippingAddress?.suburb;
-    this.shippingCity = this.user.shippingAddress?.city;
-    this.shippingPostal = this.user.shippingAddress?.postalCode;
-    this.billingStreet = this.user.billingAddress?.streetAddress;
-    this.billingComplex = this.user.billingAddress?.complexDetail;
-    this.billingSuburb = this.user.billingAddress?.suburb;
-    this.billingCity = this.user.billingAddress?.city;
-    this.billingPostal = this.user.billingAddress?.postalCode;
+    if(this.user){
+      // Populate form fields with current user values
+      this.firstName = this.user.firstName;
+      this.middleName = this.user.middleName;
+      this.lastName = this.user.lastName;
+
+      this.email = this.user.contact.email;
+      this.phone = this.user.contact.phone;
+
+      if(this.user.card){
+        this.cardBrand = this.user.card.brand;
+        this.cardLastFour = this.user.card.lastFourDigits;
+      }
+
+      if (this.user.shippingAddress){
+        this.shippingStreet = this.user.shippingAddress.streetAddress;
+        this.shippingComplex = this.user.shippingAddress.complexDetail;
+        this.shippingSuburb = this.user.shippingAddress.suburb;
+        this.shippingCity = this.user.shippingAddress.city;
+        this.shippingPostal = this.user.shippingAddress.postalCode;
+      }
+
+      if (this.user.billingAddress){
+        this.billingStreet = this.user.billingAddress.streetAddress;
+        this.billingComplex = this.user.billingAddress.complexDetail;
+        this.billingSuburb = this.user.billingAddress.suburb;
+        this.billingCity = this.user.billingAddress.city;
+        this.billingPostal = this.user.billingAddress.postalCode;
+      }
+    }
   },
   methods: {
-    async updateUser() {
-      const updatedUser = {
-        id: this.user.id,
-        firstName: this.firstName,
-        middleName: this.middleName,
-        lastName: this.lastName,
-        password: this.password || this.user.password,
-        wishlistItems: this.user.wishlistItems || [],
-        contact: {
-          id: this.user.contact?.id || null,
-          email: this.email,
-          phone: this.phone
-        },
-        shippingAddress: {
-          addressID: this.user.shippingAddress?.addressID,
-          streetAddress: this.shippingStreet,
-          complexDetail: this.shippingComplex,
-          suburb: this.shippingSuburb,
-          type: this.user.shippingAddress?.type || 1,
-          city: this.shippingCity,
-          postalCode: this.shippingPostal
-        },
-        billingAddress: {
-          addressID: this.user.billingAddress?.addressID,
-          streetAddress: this.billingStreet,
-          complexDetail: this.billingComplex,
-          suburb: this.billingSuburb,
-          type: this.user.billingAddress?.type || 2,
-          city: this.billingCity,
-          postalCode: this.billingPostal
-        },
-        card: this.user.card
-      };
+    async handleRemoveShippingAddress(){
+      this.user = await removeShippingAddress(this.user);
+    },
+    async handleRemoveBillingAddress(){
+      this.user = await removeBillingAddress(this.user);
+    },
+    async handleRemoveCard(){
+      this.user = await removeCard(this.user);
+    },
+    async handleUpdate() {
+      this.user = await updateUser(
+          this.user,
+          this.firstName,
+          this.middleName,
+          this.lastName,
+          this.password,
+          this.passwordConfirmation,
+          this.shippingStreet,
+          this.shippingComplex,
+          this.shippingSuburb,
+          this.shippingCity,
+          this.shippingPostal,
+          this.billingStreet,
+          this.billingComplex,
+          this.billingSuburb,
+          this.billingCity,
+          this.billingPostal
+      );
 
-      this.user = await updateUser(updatedUser)
+
     }
   },
 };
