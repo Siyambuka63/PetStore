@@ -1,6 +1,7 @@
 package za.ac.cput.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import za.ac.cput.domain.review.Review;
@@ -19,7 +20,6 @@ public class User {
     private String email;
     private String password;
 
-    @JsonManagedReference
     @ManyToMany(mappedBy = "wishlistedUsers")
     private List<Product> wishlistItems;
 

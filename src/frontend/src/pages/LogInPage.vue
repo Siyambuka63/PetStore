@@ -19,7 +19,7 @@
 
 <script setup>
 import { ref } from "vue";
-import axiosInstance from "@/api/axiosInstance";
+import axiosInstance from "@/api/AxiosInstance";
 import { useAuth } from "@/Auth.js";
 import { useRouter } from "vue-router";
 
