@@ -9,7 +9,7 @@ import za.ac.cput.service.impl.ProductServiceImpl;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:8082")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/product")
 public class ProductController {

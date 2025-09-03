@@ -19,9 +19,9 @@
 
 <script setup>
 import { ref } from "vue";
-import axiosInstance from "@/api/AxiosInstance";
 import { useAuth } from "@/Auth.js";
 import { useRouter } from "vue-router";
+import {LogIn} from "@/services/UserService";
 
 const email = ref("");
 const password = ref("");
@@ -29,25 +29,9 @@ const auth = useAuth();
 const router = useRouter();
 
 async function handleLogin() {
-  try {
-    const response = await axiosInstance.post("/auth/login", {
-      email: email.value,
-      password: password.value
-    });
-
-    const user = response.data;
-    auth.setUserId(user.id);
-
-    alert(`Login successful! User ID: ${auth.userID}`);
-    router.push("/products");
-  } catch (err) {
-    console.error(err);
-    alert(err.response?.data?.message || "Login failed.");
-  }
+  await LogIn(auth, router, email.value, password.value);
 }
 </script>
-
-
 
 <style scoped>
 .login-page {

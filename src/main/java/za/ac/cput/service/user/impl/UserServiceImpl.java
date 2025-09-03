@@ -33,7 +33,6 @@ public class UserServiceImpl implements UserService {
     public List<User> getAll() { return repository.findAll(); }
 
     public User login(String email, String password) {
-        return repository.findByEmailAndPassword(email, password);
+        return repository.findByContactEmailAndPassword(email, password);
     }
-
 }

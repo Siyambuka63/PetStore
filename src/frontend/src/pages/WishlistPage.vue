@@ -9,7 +9,8 @@
         <div v-if="!items || items.length === 0"> You have no items wishlisted </div>
         <div v-for="(item, index) in items" :key="index" class="wishlist-item">
           <div class="left-section">
-            <img class="icon" src="@/assets/logo.png" v-bind:alt="item.productName">
+            <img class="icon" v-if="item.image_address" :src="require(`@/assets/${item.image_address}`)" v-bind:alt="item.productName">
+            <img class="icon" v-else src="@/assets/logo.png" v-bind:alt="item.productName">
           </div>
 
           <div class="info">
@@ -30,7 +31,7 @@
           <div class = "buttons">
             <button v-if = "item.stock >= 1" id="add_button">Add to Cart</button>
             <p v-else>SOLD OUT</p>
-            <button id="remove_button" @click="removeItem(this.userID, item.id)" >Remove</button>
+<!--            <button id="remove_button" @click="removeItem(this.userID, item.id)" >Remove</button>-->
           </div>
         </div>
       </div>
