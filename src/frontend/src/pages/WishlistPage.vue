@@ -9,7 +9,8 @@
         <div v-if="!items || items.length === 0"> You have no items wishlisted </div>
         <div v-for="(item, index) in items" :key="index" class="wishlist-item">
           <div class="left-section">
-            <img class="icon" src="@/assets/logo.png" v-bind:alt="item.productName">
+            <img class="icon" v-if="item.image_address" :src="require(`@/assets/${item.image_address}`)" v-bind:alt="item.productName">
+            <img class="icon" v-else src="@/assets/logo.png" v-bind:alt="item.productName">
           </div>
 
           <div class="info">
@@ -54,7 +55,7 @@ export default {
   data() {
     return {
       items: [],
-      userID: 55
+      userID: null
     };
   },
   async mounted() {
@@ -65,7 +66,7 @@ export default {
   },
   methods: {
     async removeItem(userId, itemID) {
-      await removeWishlistUser(userId, itemID)
+      await removeWishlistUser(userId, itemID);
       const updatedUser = await removeItemFromWishlist(userId, itemID);
       this.items = await updatedUser.wishlistItems;
     }
@@ -102,6 +103,10 @@ export default {
   margin: 5px;
   border-radius: 8px;
   border: 2px solid #dfe6e9;
+}
+
+.wishlist-item:hover {
+  cursor: pointer;
 }
 
 .left-section {

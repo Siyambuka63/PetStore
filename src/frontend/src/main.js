@@ -17,11 +17,14 @@ const router = VueRouter.createRouter({
     history: VueRouter.createWebHistory(process.env.BASE_URL),
     routes: [
         {
-            path: "/",
+            path: "/login",
             name: "LogIn",
             component: LogInPage
         },
-
+        {
+            path: '/',
+            component: ProductsPage
+        },
         {
             path: '/orderPage',
             component: OrdersPage,
@@ -52,6 +55,10 @@ const router = VueRouter.createRouter({
             path: "/signup",
             name: "SignUp",
             component: SignUpPage 
+        },
+        {
+            path: "/product",
+            component: ProductDetailsPage
         }
     ]
  })
@@ -59,7 +66,7 @@ const router = VueRouter.createRouter({
 router.beforeEach((to, from, next) => {
     const user = useAuth()
 
-    if (to.meta.requiresAuth && !user.userId) {
+    if (to.meta.requiresAuth && !user.userID) {
         // redirect to log in page
         next({ name: "LogIn" })
     } else {

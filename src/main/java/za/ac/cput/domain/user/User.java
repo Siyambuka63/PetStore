@@ -1,7 +1,5 @@
 package za.ac.cput.domain.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import za.ac.cput.domain.review.Review;
 import za.ac.cput.domain.Product;
@@ -16,10 +14,8 @@ public class User {
     private String firstName;
     private String middleName;
     private String lastName;
-    private String email;
     private String password;
 
-    @JsonManagedReference
     @ManyToMany(mappedBy = "wishlistedUsers")
     private List<Product> wishlistItems;
 
@@ -49,7 +45,6 @@ public class User {
         firstName = builder.firstName;
         middleName = builder.middleName;
         lastName = builder.lastName;
-        email = builder.email;
         password = builder.password;
         wishlistItems = builder.wishlistItems;
         reviews = builder.reviews;
@@ -74,8 +69,6 @@ public class User {
     public String getLastName() {
         return lastName;
     }
-
-    public String getEmail() {return email;}
 
     public String getPassword() {
         return password;
@@ -112,7 +105,6 @@ public class User {
                 ", firstName='" + firstName + '\'' +
                 ", middleName='" + middleName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", wishlistItems=" + wishlistItems +
                 ", reviews=" + reviews +
@@ -128,7 +120,6 @@ public class User {
         private String firstName;
         private String middleName;
         private String lastName;
-        private String email;
         private String password;
         private List<Product> wishlistItems;
         private List<Review> reviews;
@@ -154,11 +145,6 @@ public class User {
 
         public Builder setLastName(String lastName) {
             this.lastName = lastName;
-            return this;
-        }
-
-        public Builder setEmail(String email) {
-            this.email = email;
             return this;
         }
 
@@ -192,17 +178,11 @@ public class User {
             return this;
         }
 
-        public Builder setContact(Contact contact) {
-            this.contact = contact;
-            return this;
-        }
-
         public Builder copy(User user){
             this.userID = user.id;
             this.firstName = user.firstName;
             this.middleName = user.middleName;
             this.lastName = user.lastName;
-            this.email = user.email;
             this.password = user.password;
             this.wishlistItems = user.wishlistItems;
             this.reviews = user.reviews;

@@ -8,7 +8,8 @@ module.exports = defineConfig({
       '/petstore': {
         target: 'http://localhost:8080',
         ws: true,
-        changeOrigin: true
+        changeOrigin: true,
+        secure: false
       }
     }
   }

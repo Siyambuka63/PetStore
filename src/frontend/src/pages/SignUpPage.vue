@@ -5,13 +5,14 @@
     <div class="signup-box">
       <h2 class="titles">Create an Account</h2>
       <form @submit.prevent="handleSignUp">
-        <input type="text" v-model="firstName" placeholder="First Name" required />
+        <input type="text" v-model="firstName" placeholder="First Name" required value="Name"/>
         <input type="text" v-model="middleName" placeholder="Middle Name" />
-        <input type="text" v-model="lastName" placeholder="Surname" required />
-        <input type="email" v-model="email" placeholder="Email" required />
-        <input type="text" v-model="phone" placeholder="Phone Number" required />
-        <input type="password" v-model="password" placeholder="Password" required />
-        <input type="password" v-model="confirmPassword" placeholder="Confirm Password" required />
+        <input type="text" v-model="lastName" placeholder="Surname" required value="Surname"/>
+        <input type="email" v-model="email" placeholder="Email" required value="email@gmail.com"/>
+        <input type="text" v-model="phone" placeholder="Phone Number" required value="0987654321"/>
+        <input type="password" v-model="password" placeholder="Password" required value="password"/>
+        <input type="password" v-model="confirmPassword" placeholder="Confirm Password" required value="password"/>
+        <p v-if="emailError" style="color: red;">{{ emailError }}</p>
         <button type="submit">Sign Up</button>
       </form>
 
@@ -24,13 +25,9 @@
 
 <script setup>
 import { ref } from "vue";
-import axiosInstance from "@/api/axiosInstance";
-import { useAuth } from "@/Auth.js";
+import { SignUp } from "@/services/UserService";
+import { useAuth } from "@/Auth";
 import { useRouter } from "vue-router";
-
-const auth = useAuth();
-const router = useRouter();
-
 
 const firstName = ref("");
 const middleName = ref("");
@@ -39,39 +36,42 @@ const email = ref("");
 const phone = ref("");
 const password = ref("");
 const confirmPassword = ref("");
+const emailError = ref("");
+const auth = useAuth();
+const router = useRouter();
 
 
-async function handleSignUp() {
-  if (password.value !== confirmPassword.value) {
-    alert("Passwords do not match!");
-    return;
+  async function isEmailTaken(emailToCheck) {
+    try {
+      const res = await fetch(`http://localhost:8080/petstore/users/email-exists?email=${encodeURIComponent(emailToCheck)}`);
+      const data = await res.json();
+      return data.taken;
+    } catch {
+      return false;
+    }
   }
-
-  try {
-    const response = await axiosInstance.post("/auth/signup", {
-      firstName: firstName.value,
-      middleName: middleName.value,
-      lastName: lastName.value,
-      email: email.value,
-      phone: phone.value,
-      password: password.value,
-    });
-
-    const newUser = response.data;
-    auth.setUserId(newUser.id);
-
-    alert(`Sign up successful! User ID: ${auth.userID}`);
-    router.push("/login");
+  async function handleSignUp() {
+    emailError.value = "";
+    const taken = await isEmailTaken(email.value);
+    if (taken) {
+      emailError.value = "Email is already taken";
+      return;
+    }
 
 
-    firstName.value = middleName.value = lastName.value = email.value = phone.value = password.value = confirmPassword.value = "";
-  } catch (err) {
-    console.error(err);
-    alert(err.response?.data?.message || "Sign up failed. Check console.");
-  }
+  await SignUp(
+      firstName.value,
+      middleName.value,
+      lastName.value,
+      email.value,
+      phone.value,
+      password.value,
+      confirmPassword.value,
+      auth,
+      router
+  );
 }
 </script>
-
 
 <style scoped>
 .signup-page {

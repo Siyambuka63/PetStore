@@ -11,6 +11,7 @@ import za.ac.cput.service.impl.ReviewServiceImpl;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/reviews")
 public class ReviewController {

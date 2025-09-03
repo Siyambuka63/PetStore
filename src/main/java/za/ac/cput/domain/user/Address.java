@@ -3,14 +3,12 @@ package za.ac.cput.domain.user;
 //Athenkosi Mekana
 //Address Domain
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Address {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long addressID;
     private String streetAddress;
     private String complexDetail;

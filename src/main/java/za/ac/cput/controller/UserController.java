@@ -7,6 +7,7 @@ import za.ac.cput.service.user.impl.UserServiceImpl;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -45,4 +46,8 @@ public class UserController {
     public User login(@RequestBody User user) {
         return service.login(user.getContact().getEmail(), user.getPassword());
     }
+    @GetMapping("/email-exists")
+        public Map<String, Boolean> checkEmailExists(@RequestParam String email) {
+            boolean taken = userRepository.existsByEmail(email);
+            return Collections.singletonMap("taken", taken);
 }
