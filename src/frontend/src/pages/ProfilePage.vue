@@ -81,6 +81,7 @@ import HeaderComponent from "@/components/HeaderComponent.vue";
 import SidebarComponent from "@/components/SidebarComponent.vue";
 import {useAuth} from "@/Auth";
 import {getUser, removeBillingAddress, removeCard, removeShippingAddress, updateUser} from "@/services/ProfileService";
+import { useRouter } from "vue-router";
 
 export default {
   name: 'ProfilePage',
@@ -114,7 +115,8 @@ export default {
       billingComplex: '',
       billingSuburb: '',
       billingCity: '',
-      billingPostal: ''
+      billingPostal: '',
+      router: useRouter()
     };
   },
   async mounted() {
@@ -154,13 +156,13 @@ export default {
   },
   methods: {
     async handleRemoveShippingAddress(){
-      this.user = await removeShippingAddress(this.user);
+      this.user = await removeShippingAddress(this.user, this.router);
     },
     async handleRemoveBillingAddress(){
-      this.user = await removeBillingAddress(this.user);
+      this.user = await removeBillingAddress(this.user, this.router);
     },
     async handleRemoveCard(){
-      this.user = await removeCard(this.user);
+      this.user = await removeCard(this.user, this.router);
     },
     async handleUpdate() {
       this.user = await updateUser(
@@ -179,10 +181,9 @@ export default {
           this.billingComplex,
           this.billingSuburb,
           this.billingCity,
-          this.billingPostal
+          this.billingPostal,
+          this.router
       );
-
-
     }
   },
 };

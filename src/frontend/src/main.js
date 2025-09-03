@@ -17,11 +17,14 @@ const router = VueRouter.createRouter({
     history: VueRouter.createWebHistory(process.env.BASE_URL),
     routes: [
         {
-            path: "/",
+            path: "/login",
             name: "LogIn",
             component: LogInPage
         },
-
+        {
+            path: '/',
+            component: ProductsPage
+        },
         {
             path: '/orderPage',
             component: OrdersPage,

@@ -10,6 +10,7 @@ import za.ac.cput.service.impl.OrderServiceImpl;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/cart")
 public class CartController {

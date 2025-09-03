@@ -39,7 +39,6 @@ public class UserFactory {
                 .setCard(card)
                 .setShippingAddress(shippingAddress)
                 .setBillingAddress(billingAddress)
-                .setContact(contact)
                 .build();
     }
 }
