@@ -38,7 +38,7 @@ const cartItems = ref([]);
 // Load active cart from backend
 const loadCart = async () => {
   try {
-    const res = await axios.get("http://localhost:8080/petstore/cart/getActiveCart/1");
+    const res = await axios.get("/petstore/cart/getActiveCart/1");
     if (res.data && res.data.items) {
       cartItems.value = res.data.items;
     } else {
@@ -52,7 +52,7 @@ const loadCart = async () => {
 // Remove an item
 const removeFromCart = async (itemId) => {
   try {
-    await axios.delete(`http://localhost:8080/petstore/cart/removeItem/${itemId}`);
+    await axios.delete(`/petstore/cart/removeItem/${itemId}`);
     cartItems.value = cartItems.value.filter(item => item.id !== itemId);
   } catch (err) {
     console.error("Error removing item:", err);
@@ -62,7 +62,7 @@ const removeFromCart = async (itemId) => {
 // Checkout
 const checkout = async () => {
   try {
-    const res = await axios.post("http://localhost:8080/petstore/cart/checkout/1");
+    const res = await axios.post("/petstore/cart/checkout/1");
     alert("Checkout successful! Order status: " + res.data.status);
     cartItems.value = [];
   } catch (err) {
@@ -83,7 +83,7 @@ const totalPrice = computed(() =>
   max-width: 800px;
   margin: 40px auto;
   padding: 20px;
-  background: #fefafa; /* matches your palette */
+  background: #fefafa;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   font-family: "Roboto", sans-serif;
