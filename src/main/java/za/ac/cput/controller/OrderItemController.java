@@ -44,4 +44,9 @@ public class OrderItemController {
     public List<OrderItem> getAll() {
         return service.getAll();
     }
+
+    @GetMapping("/getByOrderId/{orderId}")
+    public List<OrderItem> read(@PathVariable Long orderId) {
+        return service.findByOrderId(orderId);
+    }
 }

@@ -3,18 +3,24 @@ package za.ac.cput.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import za.ac.cput.domain.order.Order;
+import za.ac.cput.domain.order.Status;
+import za.ac.cput.domain.user.User;
 import za.ac.cput.service.impl.OrderServiceImpl;
+import za.ac.cput.service.user.impl.UserServiceImpl;
 
+import java.time.LocalDate;
 import java.util.List;
 @CrossOrigin("http://localhost:3000")
 @RestController
 @RequestMapping("/order")
 public class OrderController {
     private OrderServiceImpl service;
+    private UserServiceImpl userService;
 
     @Autowired
-    public OrderController(OrderServiceImpl service) {
+    public OrderController(OrderServiceImpl service, UserServiceImpl userService) {
         this.service = service;
+        this.userService = userService;
     }
 
     @PostMapping("/create")
@@ -38,5 +44,24 @@ public class OrderController {
     @GetMapping("/getAll")
     public List<Order> getAll(){
         return service.getAll();
+    }
+
+    @GetMapping("getCart/{userId}")
+    public Order getCart(@PathVariable long userId){
+        Order cart = service.getCart(userId);
+        if (cart == null) {
+            User user = userService.read(userId);
+            System.out.println(user);
+            if (user == null) {
+                return null;
+            }
+
+            cart = service.create(new Order.Builder()
+                    .setOrderDate(LocalDate.now())
+                    .setStatus(Status.Cart)
+                    .setUser(user)
+                    .build());
+        }
+        return cart;
     }
 }

@@ -12,6 +12,7 @@ import ProductsPage from "./pages/ProductsPage.vue";
 import ProductDetailsPage from "./pages/ProductDetailPage.vue";
 import OrdersPage from "@/pages/OrdersPage.vue";
 import OrderItems from "@/pages/OrderItems.vue";
+import CartPage from "@/pages/CartPage.vue";
 
 const router = VueRouter.createRouter({
     history: VueRouter.createWebHistory(process.env.BASE_URL),
@@ -59,6 +60,10 @@ const router = VueRouter.createRouter({
         {
             path: "/product",
             component: ProductDetailsPage
+        },
+        {
+            path: "/cart",
+            component: CartPage
         }
     ]
  })
