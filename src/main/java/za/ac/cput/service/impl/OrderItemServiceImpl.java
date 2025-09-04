@@ -47,4 +47,8 @@ public class OrderItemServiceImpl implements OrderItemService {
     public List<OrderItem> getAll() {
         return repository.findAll();
     }
+
+    public List<OrderItem> findByOrderId(Long orderId) {
+        return repository.findByOrderId(orderId);
+    }
 }

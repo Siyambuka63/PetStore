@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @Table(name = "orders")
 public class Order {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
