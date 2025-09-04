@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const BASE_URL = "http://localhost:8080/petstore/order-item"
+const BASE_URL = "/petstore/order-item"
 
 class OrderItemService{
     getOrderItem(){

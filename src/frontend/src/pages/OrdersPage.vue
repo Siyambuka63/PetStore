@@ -4,7 +4,7 @@ import {orderStore} from "@/services/OrderStore";
 const store = orderStore();
 </script>
 <template>
-  <HeaderComponent />
+  <HeaderComponent/>
 
   <div class="layout">
     <!-- Sidebar -->
@@ -17,12 +17,12 @@ const store = orderStore();
         </div>
         <div class="list">
           <ul>
-            <li><a href="#">My Profile</a></li>
-            <li><a href="#">My Wishlist</a></li>
-            <li><a href="#">My Reviews</a></li>
-            <li><a href="#" class="active">My Orders</a></li>
-            <li><a href="#">Settings</a></li>
-            <li><a href="#">Logout</a></li>
+            <li><router-link to="/profile">My Profile</router-link></li>
+            <li><router-link to="/wishlist">My Wishlist</router-link></li>
+            <li><router-link to="/reviews">My Reviews</router-link></li>
+            <li><router-link to="/orders">My Orders</router-link></li>
+            <li><router-link to="/settings">Settings</router-link></li>
+            <li><router-link to="/logout">Logout</router-link></li>
           </ul>
         </div>
       </div>
