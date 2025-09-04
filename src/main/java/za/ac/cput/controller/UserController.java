@@ -3,7 +3,10 @@ package za.ac.cput.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import za.ac.cput.domain.user.User;
+import za.ac.cput.repository.user.UserRepository;
 import za.ac.cput.service.user.impl.UserServiceImpl;
+import java.util.Collections;
+import java.util.Map;
 
 import java.util.List;
 
@@ -13,6 +16,8 @@ import java.util.List;
 public class UserController {
 
     private UserServiceImpl service;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     public UserController(UserServiceImpl service) {
@@ -50,4 +55,5 @@ public class UserController {
         public Map<String, Boolean> checkEmailExists(@RequestParam String email) {
             boolean taken = userRepository.existsByEmail(email);
             return Collections.singletonMap("taken", taken);
+}
 }
