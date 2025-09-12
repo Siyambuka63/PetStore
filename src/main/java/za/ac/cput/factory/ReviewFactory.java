@@ -21,8 +21,8 @@ public class ReviewFactory {
                 .build();
     }
 
-    public static Review createReview(long userId, long productId, String review, float rating) {
-        ReviewId reviewId = new ReviewId(userId, productId);
+    public static Review createReview(String email, long productId, String review, float rating) {
+        ReviewId reviewId = new ReviewId(email, productId);
 
         return createReview(reviewId, review, rating);
     }
@@ -31,6 +31,6 @@ public class ReviewFactory {
         if (user == null) return null;
         if (product == null) return null;
 
-        return createReview(user.getId(), product.getId(), review, rating);
+        return createReview(user.getEmail(), product.getId(), review, rating);
     }
 }

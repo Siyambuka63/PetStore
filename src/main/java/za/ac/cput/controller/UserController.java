@@ -11,7 +11,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-
     private UserServiceImpl service;
 
     @Autowired
@@ -24,18 +23,23 @@ public class UserController {
         return service.create(user);
     }
 
-    @GetMapping("/read/{id}")
-    public User read(@PathVariable long id) {
-        return service.read(id);
+    @GetMapping("/read/{email}")
+    public User read(@PathVariable String email) {
+        return service.read(email);
     }
 
     @PostMapping("/update")
     public User update(@RequestBody User user) {
-        return service.update(user);
+        System.out.println(user);
+        User updated = service.update(user);
+        System.out.println(updated);
+        return updated;
     }
 
-    @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable long id) { service.delete(id); }
+    @DeleteMapping("/delete/{email}")
+    public void delete(@PathVariable String email) {
+        service.delete(email);
+    }
 
     @GetMapping("/getAll")
     public List<User> getAll() {
@@ -44,10 +48,6 @@ public class UserController {
 
     @PostMapping("/login")
     public User login(@RequestBody User user) {
-        return service.login(user.getContact().getEmail(), user.getPassword());
+        return service.login(user.getEmail(), user.getPassword());
     }
-    @GetMapping("/email-exists")
-        public Map<String, Boolean> checkEmailExists(@RequestParam String email) {
-            boolean taken = userRepository.existsByEmail(email);
-            return Collections.singletonMap("taken", taken);
 }

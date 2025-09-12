@@ -4,10 +4,8 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.cput.domain.user.Address;
-import za.ac.cput.domain.user.Contact;
 import za.ac.cput.domain.user.Type;
 import za.ac.cput.factory.user.AddressFactory;
-import za.ac.cput.factory.user.ContactFactory;
 
 import java.util.List;
 

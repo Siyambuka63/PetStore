@@ -27,7 +27,7 @@ const router = VueRouter.createRouter({
             component: ProductsPage
         },
         {
-            path: '/orderPage',
+            path: '/orders',
             component: OrdersPage,
             meta: { requiresAuth: true }
         },
@@ -46,11 +46,8 @@ const router = VueRouter.createRouter({
             meta: { requiresAuth: true }
         },
         {
-            path: '/ProductsPage',
-            component: ProductsPage},
-        {
-            path: '/wishlist',
-            component: WishlistPage
+            path: '/products',
+            component: ProductsPage
         },
         { 
             path: "/signup",
@@ -71,7 +68,7 @@ const router = VueRouter.createRouter({
 router.beforeEach((to, from, next) => {
     const user = useAuth()
 
-    if (to.meta.requiresAuth && !user.userID) {
+    if (to.meta.requiresAuth && !user.getEmail()) {
         // redirect to log in page
         next({ name: "LogIn" })
     } else {

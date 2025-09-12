@@ -29,10 +29,10 @@
           </div>
 
           <div class = "buttons">
-            <button v-if="item.stock > 0 && item.on_Sale" class="add_button" @click="handleAddItem(userID, item.id, item.salePrice, 1)">Add to Cart</button>
-            <button v-else-if=item.stock > 0" class="add_button" @click="handleAddItem(userID, item.id, item.price, 1)">Add to Cart</button>
+            <button v-if="item.stock > 0 && item.on_Sale" id="add_button" @click="handleAddItem(userID, item.id, item.salePrice, 1)">Add to Cart</button>
+            <button v-else-if="item.stock > 0" id="add_button" @click="handleAddItem(userID, item.id, item.price, 1)">Add to Cart</button>
             <p v-else>SOLD OUT</p>
-<!--            <button id="remove_button" @click="removeItem(this.userID, item.id)" >Remove</button>-->
+            <button id="remove_button" @click="removeItem(this.userID, item.id)" >Remove</button>
           </div>
         </div>
       </div>
