@@ -21,18 +21,19 @@ public class UserServiceImpl implements UserService {
     public User create(User user) { return repository.save(user); }
 
     @Override
-    public User read(Long id) { return repository.findById(id).orElse(null); }
+    public User read(String email) { return repository.findById(email).orElse(null); }
 
     @Override
     public User update(User user) { return repository.save(user); }
 
     @Override
-    public void delete(Long id) { repository.deleteById(id); }
+    public void delete(String email) { repository.deleteById(email); }
 
     @Override
     public List<User> getAll() { return repository.findAll(); }
 
+    @Override
     public User login(String email, String password) {
-        return repository.findByContactEmailAndPassword(email, password);
+        return repository.findByEmailAndPassword(email, password);
     }
 }

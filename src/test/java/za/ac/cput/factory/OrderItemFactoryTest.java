@@ -10,7 +10,6 @@ import za.ac.cput.domain.review.Review;
 import za.ac.cput.domain.user.*;
 import za.ac.cput.factory.user.AddressFactory;
 import za.ac.cput.factory.user.CardFactory;
-import za.ac.cput.factory.user.ContactFactory;
 import za.ac.cput.factory.user.UserFactory;
 
 import java.time.LocalDate;
@@ -26,18 +25,15 @@ class OrderItemFactoryTest {
     Card card = CardFactory.createCard(987554456, "Ozow", "Visa_4456", "4456", "Visa");
     Address shippingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
     Address billingAddress = AddressFactory.createAddress(3454, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
-    Contact contact = ContactFactory.createContact(1, "0987654321", "test@gmail.com");
-    List<Product> wishlistItems = new ArrayList<Product>();
     List<Review> reviews = new ArrayList<Review>();
 
-    User user = UserFactory.createUser(1, "Name", "Middle", "Last", "password123", wishlistItems, reviews, card, shippingAddress, billingAddress, contact);
+    User user = UserFactory.createUser("Name", "Middle", "Last", "password123", reviews, card, shippingAddress, billingAddress, "test@gmail.com", "0987654321");
 
     private Order validOrder =OrderFactory.createOrder(1,user,orderDate,deliveryDate,8000,status);
 
     private List<String> categories = new ArrayList<>();
-    private List<User> wishlistedUser = new ArrayList<>();
 
-    private Product validProduct = ProductFactory.createProduct(1,"MissDog", "Nibbles","placeholder.jpg", 4f, 249.99f, 199.99f, true, 23, 1.34f, "SaveMor", "Adult", "Dry", "Dog", "Chicken", categories, wishlistedUser);
+    private Product validProduct = ProductFactory.createProduct(1,"MissDog", "Nibbles","placeholder.jpg", 4f, 249.99f, 199.99f, true, 23, 1.34f, "SaveMor", "Adult", "Dry", "Dog", "Chicken", categories);
 
     private OrderItem orderItemWithNullOrder = OrderItemFactory.createOrderItem(null, validProduct, 10f, 1);
     private OrderItem orderItemWithNullProduct = OrderItemFactory.createOrderItem(validOrder, null, 10f, 1);

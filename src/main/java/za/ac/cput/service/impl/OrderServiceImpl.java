@@ -68,8 +68,8 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findByStatus(status);
     }
 
-    public Order getCart(long userId) {
-        return orderRepository.findByUserIdAndStatus(userId, Status.Cart)
+    public Order getCart(String email) {
+        return orderRepository.findByUserEmailAndStatus(email, Status.Cart)
                 .orElse(null);
     }
 

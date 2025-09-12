@@ -7,20 +7,18 @@ import java.util.Objects;
 
 @Embeddable
 public class ReviewId implements Serializable {
-    private Long userId;
+    private String email;
     private Long productId;
 
     protected ReviewId() {
     }
 
-    public ReviewId(Long userId, Long productId) {
-        this.userId = userId;
+    public ReviewId(String email, Long productId) {
+        this.email = email;
         this.productId = productId;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
+    public String getEmail() {return email;}
 
     public Long getProductId() {
         return productId;
@@ -29,7 +27,7 @@ public class ReviewId implements Serializable {
     @Override
     public String toString() {
         return "ReviewId{" +
-                "userId=" + userId +
+                "email='" + email + '\'' +
                 ", productId=" + productId +
                 '}';
     }
@@ -38,11 +36,11 @@ public class ReviewId implements Serializable {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         ReviewId reviewId = (ReviewId) o;
-        return Objects.equals(userId, reviewId.userId) && Objects.equals(productId, reviewId.productId);
+        return Objects.equals(email, reviewId.email) && Objects.equals(productId, reviewId.productId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, productId);
+        return Objects.hash(email, productId);
     }
 }

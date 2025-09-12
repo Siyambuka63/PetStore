@@ -27,9 +27,6 @@ let id = store.getOrderId();
           </ul>
         </div>
       </div>
-
-
-
     </div>
 
     <!-- Main Content -->
@@ -62,7 +59,7 @@ let id = store.getOrderId();
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import OrderService from "@/services/OrderService";
 import OrderItemService from "@/services/OrderItemService";
-import ProductService from "@/services/ProductService";
+//import ProductService from "@/services/ProductService";
 export default {
   name: "UserOrders",
   components: { HeaderComponent },
@@ -89,9 +86,9 @@ export default {
       return this.orderItems.filter(orderItem => orderItem.id.orderId === orderId);
     },
     getProducts() {
-      ProductService.getProduct().then(response => {
-        this.products = response.data;
-      })
+      // ProductService.getProduct().then(response => {
+      //   this.products = response.data;
+      // })
     }
   },
   created() {

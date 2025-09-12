@@ -29,14 +29,14 @@ class CartControllerTest {
 
     @BeforeAll
     static void setUp() {
-        user = new User.Builder().setUserID(1L).build();
+        user = new User.Builder().setEmail("test@gmail.com").build();
         cart = OrderFactory.createCart(user);
     }
 
     @Test
     @Order(1)
     void create() {
-        String url = BASE_URL + "/create"+user.getId();
+        String url = BASE_URL + "/create"+user.getEmail();
         ResponseEntity<Order> response = restTemplate.postForEntity(url,null,Order.class);
         assertNotNull(response.getBody());
         assertEquals(Status.Cart, response.getBody().getClass());

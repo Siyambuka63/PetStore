@@ -33,15 +33,6 @@ public class Product {
     @ElementCollection
     private List<String> categories;
 
-    @ManyToMany
-    @JsonIgnore
-    @JoinTable(
-            name = "wishlists",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private List<User> wishlistedUsers;
-
     protected Product() {
     }
 
@@ -62,7 +53,6 @@ public class Product {
         petType = builder.petType;
         flavour = builder.flavour;
         categories = builder.categories;
-        wishlistedUsers = builder.wishlistedUsers;
     }
 
     public long getId() {
@@ -127,10 +117,6 @@ public class Product {
         return categories;
     }
 
-    public List<User> getWishlistedUsers() {
-        return wishlistedUsers;
-    }
-
     @Override
     public String toString() {
         return "Product{" +
@@ -150,7 +136,6 @@ public class Product {
                 ", petType='" + petType + '\'' +
                 ", flavour='" + flavour + '\'' +
                 ", categories=" + categories +
-                ", wishlistedUsers=" + wishlistedUsers +
                 '}';
     }
 
@@ -171,7 +156,6 @@ public class Product {
         private String petType;
         private String flavour;
         private List<String> categories;
-        private List<User> wishlistedUsers;
 
         public Builder setProductID(long productID) {
             this.productID = productID;
@@ -253,11 +237,6 @@ public class Product {
             return this;
         }
 
-        public Builder setWishlistedUsers(List<User> wishlistedUsers) {
-            this.wishlistedUsers = wishlistedUsers;
-            return this;
-        }
-
         public Builder copy(Product product) {
             this.productID = product.id;
             this.productName = product.productName;
@@ -275,7 +254,6 @@ public class Product {
             this.petType = product.petType;
             this.flavour = product.flavour;
             this.categories = product.categories;
-            this.wishlistedUsers = product.wishlistedUsers;
             return this;
         }
 

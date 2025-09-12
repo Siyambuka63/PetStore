@@ -38,7 +38,7 @@ const cartItems = ref([]);
 // Load active cart from backend
 const loadCart = async () => {
   try {
-    const res = await axios.get("http://localhost:8080/petstore/cart/getActiveCart/1");
+    const res = await axios.get("http://localhost:8080/petstore/order-item/getByOrderId/0");
     if (res.data && res.data.items) {
       cartItems.value = res.data.items;
     } else {

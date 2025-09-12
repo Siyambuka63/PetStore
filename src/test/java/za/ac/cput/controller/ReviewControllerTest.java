@@ -12,7 +12,6 @@ import za.ac.cput.factory.ProductFactory;
 import za.ac.cput.factory.ReviewFactory;
 import za.ac.cput.factory.user.AddressFactory;
 import za.ac.cput.factory.user.CardFactory;
-import za.ac.cput.factory.user.ContactFactory;
 import za.ac.cput.factory.user.UserFactory;
 
 import java.util.ArrayList;
@@ -36,18 +35,15 @@ class ReviewControllerTest {
     @BeforeAll
     static void setUp() {
         List<String> categories = new ArrayList<>();
-        List<User> wishlistedUser = new ArrayList<>();
 
-        product = ProductFactory.createProduct(1, "Multistage", "Nibbles", "placeholder.jpg", 4f, 249.99f, 199.99f, true, 23, 1.34f, "Jock", "Adult", "Dry", "Dog", "Lamb", categories, wishlistedUser);
+        product = ProductFactory.createProduct(1, "Multistage", "Nibbles", "placeholder.jpg", 4f, 249.99f, 199.99f, true, 23, 1.34f, "Jock", "Adult", "Dry", "Dog", "Lamb", categories);
 
         List<Product> wishlistItems = new ArrayList<>();
         List<Review> reviews = new ArrayList<>();
         Card card = CardFactory.createCard(987554456, "Ozow", "Visa_4456", "4456", "Visa");
         Address shippingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
         Address billingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
-        Contact contact = ContactFactory.createContact(1, "0987654321", "test@gmail.com");
-
-        user = UserFactory.createUser(1, "Name", "Middle", "Last", "password123", wishlistItems, reviews, card, shippingAddress, billingAddress, contact);
+        user = UserFactory.createUser("Name", "Middle", "Last", "password123", reviews, card, shippingAddress, billingAddress, "test@gmail.com", "0987654321");
 
         review = ReviewFactory.createReview(user, product, "Great product!", 4.7f);
     }
@@ -64,7 +60,7 @@ class ReviewControllerTest {
     @Test
     @Order(2)
     void read() {
-        String url = BASE_URL + "/read/" + review.getId().getUserId() + "/" + review.getId().getProductId();
+        String url = BASE_URL + "/read/" + review.getId().getEmail() + "/" + review.getId().getProductId();
         Review readReview = restTemplate.getForObject(url, Review.class);
         assertNotNull(readReview);
         System.out.println(readReview);
@@ -92,10 +88,10 @@ class ReviewControllerTest {
     @Test
     @Order(5)
     void delete() {
-        String url = BASE_URL + "/delete/" + review.getId().getUserId() + "/" + review.getId().getProductId();
+        String url = BASE_URL + "/delete/" + review.getId().getEmail() + "/" + review.getId().getProductId();
         restTemplate.delete(url);
 
-        String readUrl = BASE_URL + "/read/" + review.getId().getUserId() + "/" + review.getId().getProductId();
+        String readUrl = BASE_URL + "/read/" + review.getId().getEmail() + "/" + review.getId().getProductId();
         Review deletedReview = restTemplate.getForObject(readUrl, Review.class);
         assertNull(deletedReview);
         System.out.println(deletedReview);

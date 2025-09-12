@@ -24,8 +24,7 @@ public class ProductFactory {
                                         String foodType,
                                         String petType,
                                         String flavour,
-                                        List<String> categories,
-                                        List<User> wishlistedUsers) {
+                                        List<String> categories) {
         if (Helper.isNullOrEmpty(productName) || Helper.isNullOrEmpty(description)) return null;
         if (!Helper.isValidRating(rating)) return null;
         if (!Helper.isValidPrice(price)) return null;
@@ -49,7 +48,6 @@ public class ProductFactory {
                 .setPetType(petType)
                 .setFlavour(flavour)
                 .setCategories(categories)
-                .setWishlistedUsers(wishlistedUsers)
                 .build();
     }
 }

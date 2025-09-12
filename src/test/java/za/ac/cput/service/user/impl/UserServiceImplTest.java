@@ -8,7 +8,6 @@ import za.ac.cput.domain.review.Review;
 import za.ac.cput.domain.user.*;
 import za.ac.cput.factory.user.AddressFactory;
 import za.ac.cput.factory.user.CardFactory;
-import za.ac.cput.factory.user.ContactFactory;
 import za.ac.cput.factory.user.UserFactory;
 
 import java.util.ArrayList;
@@ -32,9 +31,8 @@ class UserServiceImplTest {
         Card card = CardFactory.createCard(987554456, "Ozow", "Visa_4456", "4456", "Visa");
         Address shippingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
         Address billingAddress = AddressFactory.createAddress(3454, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
-        Contact contact = ContactFactory.createContact(1, "0987654321", "test@gmail.com");
 
-        user = UserFactory.createUser(1, "Name", "Middle", "Last", "password123", wishlistItems, reviews, card, shippingAddress, billingAddress, contact);
+        user = UserFactory.createUser("Name", "Middle", "Last", "password123", reviews, card, shippingAddress, billingAddress, "test@gmail.com", "0987654321");
     }
 
     @Test
@@ -48,9 +46,9 @@ class UserServiceImplTest {
     @Test
     @Order(2)
     void read() {
-        User readUser = service.read(user.getId());
+        User readUser = service.read(user.getEmail());
         assertNotNull(readUser);
-        System.out.println(readUser.getId());
+        System.out.println(readUser.getEmail());
     }
 
     @Test
@@ -65,8 +63,8 @@ class UserServiceImplTest {
     @Test
     @Order(5)
     void delete() {
-        service.delete(user.getId());
-        User deletedUser = service.read(user.getId());
+        service.delete(user.getEmail());
+        User deletedUser = service.read(user.getEmail());
         assertNull(deletedUser);
         System.out.println(deletedUser);
     }

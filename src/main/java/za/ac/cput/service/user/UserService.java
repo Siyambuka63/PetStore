@@ -5,7 +5,7 @@ import za.ac.cput.service.IService;
 
 import java.util.List;
 
-public interface UserService extends IService<User, Long> {
+public interface UserService extends IService<User, String> {
     User login(String email, String password);
     List<User> getAll();
 }
