@@ -30,10 +30,7 @@ public class UserController {
 
     @PostMapping("/update")
     public User update(@RequestBody User user) {
-        System.out.println(user);
-        User updated = service.update(user);
-        System.out.println(updated);
-        return updated;
+        return service.update(user);
     }
 
     @DeleteMapping("/delete/{email}")
