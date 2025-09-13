@@ -133,14 +133,17 @@
         <!-- Password Reset -->
         <div class="details-group">
           <h2>Password Reset</h2>
-          <label for="passwordOld">Old Password</label>
-          <input type="password" id="passwordOld" v-model="passwordOld">
+          <form @submit.prevent="handleResetPassword">
+            <label for="passwordOld">Old Password</label>
+            <input type="password" id="passwordOld" v-model="passwordOld">
 
-          <label for="password">New Password</label>
-          <input type="password" id="password" v-model="password">
+            <label for="password">New Password</label>
+            <input type="password" id="password" v-model="password">
 
-          <label for="password_confirmation">Confirm New Password</label>
-          <input type="password" id="password_confirmation" v-model="passwordConfirmation">
+            <label for="password_confirmation">Confirm New Password</label>
+            <input type="password" id="password_confirmation" v-model="passwordConfirmation">
+            <button type="submit">Reset Password</button>
+          </form>
         </div>
 
         <!-- Card -->
@@ -157,27 +160,28 @@
 
         <div v-else class="details-group" style="margin-top: 50px">
           <h2>Add Card</h2>
+          <form @submit.prevent="handleAddCard">
+            <label for="cardBrand">Brand</label>
+            <select v-model="selectedCard" id="cardBrand">
+              <option value="MasterCard"> MasterCard</option>
+              <option value="Visa"> Visa</option>
+            </select>
 
-          <label for="cardBrand">Brand</label>
-          <select v-model="selectedCard" id="cardBrand">
-            <option value="MasterCard"> MasterCard</option>
-            <option value="Visa"> Visa</option>
-          </select>
+            <label for="cardholder">Cardholder</label>
+            <input type="text" id="cardholder" v-model="cardHolder">
 
-          <label for="cardholder">Cardholder</label>
-          <input type="text" id="cardholder" v-model="cardHolder">
+            <label for="cardNumber">Card number</label>
+            <input type="text" id="cardNumber" v-model="cardNumber">
 
-          <label for="cardNumber">Card number</label>
-          <input type="text" id="cardNumber" v-model="cardNumber">
+            <div>
+              <label for="cardExpiry">Card Expiration</label>
+              <input type="month" id="cardExpiry" v-model="cardExpiry" placeholder="MM/YY">
 
-          <div>
-            <label for="cardExpiry">Card Expiration</label>
-            <input type="text" id="cardExpiry" v-model="cardExpiry" placeholder="MM/YY">
-
-            <label for="cvv">CVV</label>
-            <input type="text" id="cvv" v-model="cardCvv">
-          </div>
-          <button type="button">Add card</button>
+              <label for="cvv">CVV</label>
+              <input type="text" id="cvv" v-model="cardCvv">
+            </div>
+            <button type="submit">Add card</button>
+          </form>
         </div>
       </div>
     </div>
@@ -189,11 +193,11 @@ import HeaderComponent from "@/components/HeaderComponent.vue";
 import SidebarComponent from "@/components/SidebarComponent.vue";
 import {useAuth} from "@/Auth";
 import {
-  addAddress,
+  addAddress, addCard,
   getUser,
   removeBillingAddress,
   removeCard,
-  removeShippingAddress, updateBillingAddress, updateShippingAddress,
+  removeShippingAddress, resetPassword, updateBillingAddress, updateShippingAddress,
   updateUser
 } from "@/services/ProfileService";
 import {useRouter} from "vue-router";
@@ -233,7 +237,7 @@ export default {
       billingSuburb: '',
       billingCity: '',
       billingPostal: '',
-      // Address
+      // Add Address
       street: '',
       complex: '',
       suburb: '',
@@ -308,7 +312,7 @@ export default {
       );
     },
     async handleRemoveCard() {
-      this.user = await removeCard(this.user);
+      this.user = await removeCard(this.user, this.router);
     },
     async handleUpdate() {
       this.user = await updateUser(
@@ -330,6 +334,26 @@ export default {
           this.complex,
           this.isShipping,
           this.isBilling,
+          this.router
+      )
+    },
+    async handleAddCard(){
+      this.user = await addCard(
+          this.user,
+          this.selectedCard,
+          this.cardHolder,
+          this.cardNumber,
+          this.cardExpiry,
+          this.cardCvv,
+          this.router
+      )
+    },
+    async handleResetPassword(){
+      this.user = await resetPassword(
+          this.user,
+          this.passwordOld,
+          this.password,
+          this.passwordConfirmation,
           this.router
       )
     }
