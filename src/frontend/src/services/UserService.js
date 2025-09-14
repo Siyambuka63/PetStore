@@ -1,5 +1,5 @@
 export async function isValidEmail(email){
-    const response = await fetch(`http://localhost:8080/petstore/contact/findByEmail/${email}`);
+    const response = await fetch(`http://localhost:8080/petstore/user/email-exists/${encodeURIComponent(email)}`);
     try {
         await response.json();
         return false;
@@ -19,10 +19,10 @@ export async function SignUp(firstName, middleName, lastName, email, phone, pass
         return;
     }
 
-    // if (await isValidEmail(email)) {
-    //     alert("Email address is taken");
-    //     return;
-    // }
+     if (await isValidEmail(email)) {
+       alert("Email address is taken");
+        return;
+     }
 
     try {
         parseInt(phone);
@@ -37,7 +37,7 @@ export async function SignUp(firstName, middleName, lastName, email, phone, pass
     user.middleName = middleName;
     user.lastName = lastName;
     user.password = password;
-    user.phone = phone;
+    user.phoneNumber = phone;
     user.email = email;
 
     const response = await fetch(`http://localhost:8080/petstore/user/create`, {
@@ -63,6 +63,7 @@ export async function LogIn(auth, router, email, password){
 
     try {
         const signedUser = await response.json();
+        auth.setUserEmail(signedUser.email);
         auth.setUserId(signedUser.id);
         console.log(signedUser.id)
         router.push("/")

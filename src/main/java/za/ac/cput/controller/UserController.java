@@ -6,6 +6,8 @@ import za.ac.cput.domain.user.User;
 import za.ac.cput.service.user.impl.UserServiceImpl;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Collections;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -47,4 +49,10 @@ public class UserController {
     public User login(@RequestBody User user) {
         return service.login(user.getEmail(), user.getPassword());
     }
+    @GetMapping("/email-exists/{email}")
+    public Map<String, Boolean> emailExists(@PathVariable String email) {
+        boolean exists = service.read(email) != null;
+        return Collections.singletonMap("taken", exists);
+    }
+
 }

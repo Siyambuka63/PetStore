@@ -25,7 +25,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { SignUp } from "@/services/UserService";
+import { SignUp, isValidEmail } from "@/services/UserService";
 import { useAuth } from "@/Auth";
 import { useRouter } from "vue-router";
 
@@ -41,23 +41,16 @@ const auth = useAuth();
 const router = useRouter();
 
 
-  async function isEmailTaken(emailToCheck) {
-    try {
-      const res = await fetch(`http://localhost:8080/petstore/users/email-exists?email=${encodeURIComponent(emailToCheck)}`);
-      const data = await res.json();
-      return data.taken;
-    } catch {
-      return false;
-    }
-  }
-  async function handleSignUp() {
-    emailError.value = "";
-    const taken = await isEmailTaken(email.value);
-    if (taken) {
-      emailError.value = "Email is already taken";
-      return;
-    }
 
+async function handleSignUp() {
+  emailError.value = "";
+
+
+  const taken = await isValidEmail(email.value);
+  if (taken) {
+    emailError.value = "Email address is already taken";
+    return;
+  }
 
   await SignUp(
       firstName.value,
