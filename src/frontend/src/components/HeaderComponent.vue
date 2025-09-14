@@ -15,14 +15,15 @@
       />
     </div>
 
-    <!-- Right Section -->
     <div class="right-section">
-      <router-link class="tab" to="/profile">Account</router-link>
-      <router-link class="tab" to="/wishlist">Wishlist</router-link>
+      <div class="tab" @click="goToProfile">Account</div>
+      <div class="tab" @click="goToWishlist">Wishlist</div>
       <div class="tab cart" @click="toggleCart">
         Cart ({{ cart.length }})
       </div>
     </div>
+
+
 
     <!-- Cart Dropdown -->
     <div v-if="showCart" class="cart-dropdown">
@@ -37,9 +38,40 @@
   </div>
 </template>
 
+<!--<script>-->
+<!--import {useAuth} from "@/Auth";-->
+<!--import {getCartItems} from "@/services/CartService";-->
+
+<!--export default {-->
+<!--  name: "HeaderComponent",-->
+<!--  data() {-->
+<!--    return {-->
+<!--      searchQuery: "",-->
+<!--      showCart: false,-->
+<!--      cart: []-->
+<!--    };-->
+<!--  },-->
+<!--  methods: {-->
+<!--    toggleCart() {-->
+<!--      this.showCart = !this.showCart;-->
+<!--    }-->
+<!--  },-->
+<!--  async mounted() {-->
+<!--    const authUser = useAuth();-->
+
+<!--    if (authUser.userID) {-->
+<!--      this.cart = await getCartItems(authUser.userID);-->
+<!--    }-->
+<!--  }-->
+<!--};-->
+<!--</script>-->
+
+
+
+
 <script>
-import {useAuth} from "@/Auth";
-import {getCartItems} from "@/services/CartService";
+import { useAuth } from "@/Auth";
+import { getCartItems } from "@/services/CartService";
 
 export default {
   name: "HeaderComponent",
@@ -47,23 +79,50 @@ export default {
     return {
       searchQuery: "",
       showCart: false,
-      cart: []
+      cart: [],
+      userID: null, // track logged-in user
     };
   },
   methods: {
     toggleCart() {
       this.showCart = !this.showCart;
+    },
+
+    // Navigate to Profile page, requires login
+    goToProfile() {
+      if (this.userID) {
+        this.$router.push("/profile");
+      } else {
+        this.$router.push("/login");
+      }
+    },
+
+    // Navigate to Wishlist page, requires login
+    goToWishlist() {
+      if (this.userID) {
+        this.$router.push("/wishlist");
+      } else {
+        this.$router.push("/login");
+      }
     }
   },
   async mounted() {
     const authUser = useAuth();
+    this.userID = authUser.userID; // store userID in the component
 
-    if (authUser.userID) {
-      this.cart = await getCartItems(authUser.userID);
+    if (this.userID) {
+      this.cart = await getCartItems(this.userID);
     }
   }
 };
 </script>
+
+
+
+
+
+
+
 
 <style scoped>
 .header {

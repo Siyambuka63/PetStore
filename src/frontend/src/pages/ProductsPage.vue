@@ -1,55 +1,59 @@
 <template>
   <div>
+    <!-- Simple header -->
     <HeaderComponent />
 
-    <div class="layout">
-      <!-- Sidebar -->
-      <div class="sidebar">
-        <div class="categories">
-          <div class="header">
-            <img src="@/assets/user.png" alt="pet" />
-            <h2>Categories</h2>
-          </div>
-          <div class="list">
-            <ul>
-              <li><a href="#" class="active">All</a></li>
-              <li><a href="#">Dog Food</a></li>
-              <li><a href="#">Cat Food</a></li>
-              <li><a href="#">Fish Food</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
+    <main>
+      <h1>Products</h1>
 
-      <!-- Main Content -->
-      <main class="main-content">
-        <h1>Products</h1>
+      <!-- Show loading or error -->
+      <p v-if="loading">Loading products...</p>
+      <p v-else-if="error">{{ error }}</p>
 
-        <!-- Loading and error states -->
-        <div v-if="loading">Loading products...</div>
-        <div v-else-if="error">{{ error }}</div>
+      <!-- Show products -->
+      <div v-else class="products">
+        <div v-for="product in products" :key="product.id" class="product-card">
 
-        <!-- Product list -->
-        <div v-else class="products-grid">
-          <div class="product-card" v-for="product in products" :key="product.id">
-            <img v-if="product.imageAddress"
-                :src="product.imageAddress ? `http://localhost:8082/productImages/${product.imageAddress}` : '/productImages/placeholder.jpg'"
-                :alt="product.productName"
-            />
-            <img v-else src="@/assets/logo.png" v-bind:alt="product.productName">
-            <span class="price" v-if="product.onSale">
-              Was: <s>R{{ product.price.toFixed(2) }}</s>
+          <!-- Product image -->
+          <img
+              :src="product.imageAddress
+              ? '/productImages/' + product.imageAddress
+              : '/productImages/placeholder.jpg'"
+              :alt="product.productName"
+          />
+
+          <!-- Product price -->
+          <p class="price">
+            <span v-if="product.onSale">
+              Was: <s>R{{ product.price.toFixed(2) }}</s><br>
               Now: R{{ product.salePrice.toFixed(2) }}
             </span>
-            <span class ="price" v-else v-text="'R' + product.price.toFixed(2)"></span>
-            <p>{{ product.description }}</p>
-            <button v-if="product.stock > 0 && product.on_Sale" class="cart" @click="handleAddItem(userID, product.id, product.salePrice, 1)">Add to Cart</button>
-            <button v-else-if="product.stock > 0" class="cart" @click="handleAddItem(userID, product.id, product.price, 1)">Add to Cart</button>
-            <button class="wishlist" @click="handleAddItemToWishlist(userID, product.id)">Add to Wishlist</button>
-          </div>
+            <span v-else>
+              R{{ product.price.toFixed(2) }}
+            </span>
+          </p>
+
+          <!-- Description -->
+          <p>{{ product.description }}</p>
+
+          <!-- Rating -->
+          <p><strong>Rating:</strong> {{ product.rating }}</p>
+
+          <!-- Add to cart -->
+          <button
+              @click="handleAddItem(userID, product.id, product.onSale ? product.salePrice : product.price, 1)"
+          >
+            Add to Cart
+          </button>
+
+          <!-- Add to wishlist -->
+          <button @click="handleAddItemToWishlist(userID, product.id)">
+            Add to Wishlist
+          </button>
+
         </div>
-      </main>
-    </div>
+      </div>
+    </main>
   </div>
 </template>
 
@@ -74,22 +78,32 @@ export default {
     };
   },
   methods: {
-    async handleAddItem(userID, productID, price, quantity){
-      //const router = useRouter();
-
-      if (userID) {
-        await addItem(userID, productID, price, quantity);
+    async handleAddItem(productID, price, quantity){
+      if (this.userID) {
+        await addItem(this.userID, productID, price, quantity);
       } else {
-        await this.$router.push("/login");
+         this.$router.push("/login");
       }
     },
-    async handleAddItemToWishlist(userID, productID){
-      //const router = useRouter();
-
-      if (userID) {
-        await addItemToWishlist(userID, productID);
+    goToProfile() {
+      if (this.userID) {
+        this.$router.push("/profile");
       } else {
-        await this.$router.push("/login");
+        this.$router.push("/login");
+      }
+    },
+    async handleAddItemToWishlist(productID){
+      if (this.userID) {
+        await addItemToWishlist(this.userID, productID);
+      } else {
+         this.$router.push("/login");
+      }
+    },
+    goToWishlist() {
+      if (this.userID) {
+        this.$router.push("/wishlist");
+      } else {
+        this.$router.push("/login");
       }
     },
     async fetchProducts() {
