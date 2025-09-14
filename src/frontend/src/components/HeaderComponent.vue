@@ -17,12 +17,12 @@
 
     <!-- Right Section -->
     <div class="right-section">
-      <router-link class="tab" to="/profile">Account</router-link>
-      <router-link class="tab" to="/wishlist">Wishlist</router-link>
-      <div class="tab cart" @click="toggleCart">
-        Cart ({{ cart.length }})
-      </div>
+    <router-link class="tab" to="/profile">Account</router-link>
+    <router-link class="tab" to="/wishlist">Wishlist</router-link>
+    <div class="tab cart" @click="toggleCart"> Cart ({{ cart.length }}) </div>
     </div>
+
+
 
     <!-- Cart Dropdown -->
     <div v-if="showCart" class="cart-dropdown">
@@ -63,6 +63,7 @@ export default {
   }
 };
 </script>
+
 
 <style scoped>
 .header {

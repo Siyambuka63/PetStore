@@ -8,7 +8,7 @@ import za.ac.cput.domain.orderItem.OrderItemId;
 import za.ac.cput.service.impl.OrderItemServiceImpl;
 
 import java.util.List;
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/order-item")
 public class OrderItemController {
