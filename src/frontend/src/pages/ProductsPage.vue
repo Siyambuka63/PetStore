@@ -40,14 +40,12 @@
           <p><strong>Rating:</strong> {{ product.rating }}</p>
 
           <!-- Add to cart -->
-          <button
-              @click="handleAddItem(userID, product.id, product.onSale ? product.salePrice : product.price, 1)"
-          >
+          <button>
             Add to Cart
           </button>
 
           <!-- Add to wishlist -->
-          <button @click="handleAddItemToWishlist(userID, product.id)">
+          <button>
             Add to Wishlist
           </button>
 
