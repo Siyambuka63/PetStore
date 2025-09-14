@@ -455,7 +455,7 @@ export default {
 
 .tabs {
   border-radius: 8px;
-  border: 2px solid #dfe6e9;
+  border: 2px solid #ccc;
   display: flex;
   gap: 30px;
   width: 100%;
@@ -478,7 +478,7 @@ input[type="text"], input[type="email"], input[type="password"], input[type="mon
   width: calc(100% - 20px);
   padding: 6px 10px;
   border-radius: 8px;
-  border: 2px solid #dfe6e9;
+  border: 2px solid #ccc;
   margin-bottom: 10px;
 }
 
@@ -491,7 +491,7 @@ select, option {
   width: 100%;
   padding: 6px 10px;
   border-radius: 8px;
-  border: 2px solid #dfe6e9;
+  border: 2px solid #ccc;
 }
 
 select:focus {
@@ -510,7 +510,7 @@ select:focus {
   flex-direction: column;
   padding: 10px;
   border-radius: 8px;
-  border: 2px solid #dfe6e9;
+  border: 2px solid #ccc;
   background-color: white;
 }
 
@@ -518,7 +518,7 @@ select:focus {
   padding: 10px;
   width: 70%;
   border-radius: 8px;
-  border: 2px solid #dfe6e9;
+  border: 2px solid #ccc;
   background-color: white;
   justify-self: center;
 }
