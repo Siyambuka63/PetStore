@@ -1,11 +1,6 @@
 export async function isEmailTaken(email){
     const response = await fetch(`http://localhost:8080/petstore/user/email-exists/${encodeURIComponent(email)}`);
-    try {
-        await response.json();
-        return false;
-    } catch (e) {
-        return true;
-    }
+    return await response.json();
 }
 
 export async function SignUp(firstName, middleName, lastName, email, phone, password, confirmPassword){
@@ -49,8 +44,7 @@ export async function SignUp(firstName, middleName, lastName, email, phone, pass
         throw new Error(errorMsg || "Failed to create user");
     }
 
-    const newUser = await response.json();
-    return newUser;
+    return await response.json();
 
 }
 
@@ -67,9 +61,7 @@ export async function LogIn(auth, router, email, password){
     try {
         const signedUser = await response.json();
         auth.setUserEmail(signedUser.email);
-        auth.setUserId(signedUser.id);
-        console.log(signedUser.id)
-        router.push("/")
+        router.push("/");
     } catch (e) {
         alert("Log in failed. Invalid credentials.");
     }
