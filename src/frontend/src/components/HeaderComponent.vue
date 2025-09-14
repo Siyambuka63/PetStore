@@ -2,7 +2,7 @@
   <div class="header">
     <!-- Left Section -->
     <div class="left-section">
-      <router-link to="/"><img src="@/assets/logo.png" alt="Logo" class="logo" /></router-link>
+      <router-link to="/" class="logo">PetShop</router-link>
     </div>
 
     <!-- Center Section -->
@@ -45,7 +45,6 @@ export default {
   name: "HeaderComponent",
   data() {
     return {
-      searchQuery: "",
       showCart: false,
       cart: []
     };
@@ -58,8 +57,8 @@ export default {
   async mounted() {
     const authUser = useAuth();
 
-    if (authUser.userID) {
-      this.cart = await getCartItems(authUser.userID);
+    if (authUser.getEmail()) {
+      this.cart = await getCartItems(authUser.getEmail());
     }
   }
 };
@@ -111,7 +110,11 @@ export default {
 }
 
 .logo {
-  height: 80px;
+  font-size: 40px;
+  padding: 20px 0;
+  text-decoration: none;
+  color: white;
+  cursor: pointer;
 }
 
 /* Cart dropdown */
