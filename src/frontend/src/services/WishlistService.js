@@ -1,62 +1,34 @@
-export async function getUser(userID) {
-    const response = await fetch(`/petstore/user/read/${userID}`);
-    await console.log(response);
-    return await response.json();
+import axios from "axios";
+
+export async function getUserWishlistItems(email) {
+    const items = [];
+    const response = await axios.get(`/petstore/wishlist/findbyContactEmail/${email}`);
+    const data = await response.data;
+    console.log(data);
+
+    for (let item of data) {
+        const response = await axios.get(`/petstore/product/read/${item.id.productId}`);
+        const data = await response.data;
+        items.push(data);
+        console.log("item: " + item);
+    }
+
+    return items;
 }
 
-export async function getUserWishlistItems(userID) {
-    const user = await getUser(userID);
-    return user["wishlistItems"] || [];
-}
-
-export async function addItemToWishlist(userID, itemID) {
-    const user = await getUser(userID);
-
-    user.wishlistItems.push({ id: itemID });
-
-    const response = await fetch(`/petstore/user/update`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(user)
+export async function addItemToWishlist(email, itemID) {
+    await axios.post('petstore/wishlist/create', {
+        id: {
+            contactId: email,
+            productId: itemID
+        }
     });
 
-    return await response.json();
+    return await getUserWishlistItems(email);
 }
 
-export async function removeItemFromWishlist(userID, itemID) {
-    let user = await getUser(userID);
+export async function removeItemFromWishlist(email, itemID) {
+    await axios.delete(`petstore/wishlist/delete/${email}/${itemID}`);
 
-    user.wishlistItems = user.wishlistItems.filter(item => item.id !== itemID);
-
-    console.log(user.wishlistItems);
-
-    const response = await fetch(`/petstore/user/update`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(user)
-    });
-
-    return await response.json();
-}
-
-export async function getProduct (itemID){
-    const response = await fetch(`/petstore/product/read/${itemID}`);
-    return await response.json();
-}
-
-export async function removeWishlistUser (userID, itemID){
-    let product = await getProduct(itemID);
-    console.log(product);
-
-    product.wishlistedUsers = product.wishlistedUsers.filter(user => user.id !== userID);
-
-    console.log(product.wishlistedUsers);
-
-    const response = await fetch(`/petstore/product/update`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(product)
-    });
-
-    await response.json();
+    return await getUserWishlistItems(email);
 }

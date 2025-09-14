@@ -32,7 +32,7 @@
           <label for="phone">Phone</label>
           <input type="text" id="phone" v-model="phone">
 
-          <button type="submit">Save Changes</button>
+          <button type="submit" id="add_button">Save Changes</button>
         </form>
       </section>
 
@@ -57,8 +57,8 @@
             <label for="shippingPostal">Postal</label>
             <input type="text" v-model="shippingPostal" id="shippingPostal" placeholder="e.g. 7786">
 
-            <button type="submit">Save changes</button>
-            <button type="button" @click="handleRemoveShippingAddress" class="remove-btn">Remove address</button>
+            <button type="submit" id="add_button">Save changes</button>
+            <button type="button" @click="handleRemoveShippingAddress" id="remove_button">Remove address</button>
           </form>
         </div>
 
@@ -85,8 +85,8 @@
             <label for="billingPostal">Postal</label>
             <input type="text" v-model="billingPostal" id="billingPostal" placeholder="e.g. 8001">
 
-            <button type="submit">Save changes</button>
-            <button type="button" @click="handleRemoveBillingAddress" class="remove-btn">Remove address</button>
+            <button type="submit" id="add_button">Save changes</button>
+            <button type="button" @click="handleRemoveBillingAddress" id="remove_button">Remove address</button>
           </form>
         </div>
 
@@ -94,7 +94,7 @@
           <p>You have no billing address</p>
         </div>
 
-        <button type="button" @click="showAddAddress">Add Address</button>
+        <button type="button" @click="showAddAddress" id="add_button">Add Address</button>
       </section>
 
       <!-- Password Reset Section -->
@@ -109,7 +109,7 @@
 
           <label for="password_confirmation">Confirm New Password</label>
           <input type="password" id="password_confirmation" v-model="passwordConfirmation">
-          <button type="submit">Reset Password</button>
+          <button type="submit" id="add_button">Reset Password</button>
         </form>
       </section>
 
@@ -123,12 +123,12 @@
             </option>
           </select>
 
-          <button type="button" @click="handleRemoveCard" class="remove-btn">Remove card</button>
+          <button type="button" @click="handleRemoveCard" id="remove_button">Remove card</button>
         </div>
 
         <div v-else class="details-group">
           <p>You have no card</p>
-          <button type="button" @click="showAddCard">Add Card</button>
+          <button type="button" @click="showAddCard" id="add_button">Add Card</button>
         </div>
       </section>
 
@@ -160,7 +160,7 @@
               <label for="billing"> Save as billing address </label><br>
             </div>
 
-            <button type="submit">Save changes</button>
+            <button type="submit" id="add_button">Save changes</button>
           </form>
         </div>
       </div>
@@ -190,7 +190,7 @@
             <label for="cvv">CVV</label>
             <input type="text" id="cvv" placeholder="e.g 123" v-model="cardCvv">
 
-            <button type="submit">Add card</button>
+            <button type="submit" id="add_button">Add card</button>
           </form>
         </div>
       </div>
@@ -536,24 +536,26 @@ select:focus {
 button {
   border: none;
   border-radius: 8px;
+  margin: 5px;
   padding: 10px;
+  color: white;
+  width: 100px;
+}
+
+#add_button {
   background: #0984e3;
-  color: white;
-  margin: 2px 50px 2px 2px;
 }
 
-.remove-btn {
-  background: white;
-  color: #0984e3;
-  border: 2px solid #0984e3;
-  margin: 0;
-}
-
-button:hover {
+#add_button:active, #add_button:hover {
   background: #0652DD;
-  color: white;
-  border: none;
-  margin: 2px 50px 2px 2px;
+}
+
+#remove_button {
+  background: #FF2D2D;
+}
+
+#remove_button:active, #remove_button:hover {
+  background: red;
 }
 
 h1, h2 {
