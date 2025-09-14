@@ -47,7 +47,7 @@ const router = VueRouter.createRouter({
         },
         {
             path: '/products',
-            component: ProductsPage
+            redirect: "/"
         },
         { 
             path: "/signup",
@@ -61,6 +61,10 @@ const router = VueRouter.createRouter({
         {
             path: "/cart",
             component: CartPage
+        },
+        {
+            path: "/logout",
+            name: "logout"
         }
     ]
  })
@@ -68,12 +72,17 @@ const router = VueRouter.createRouter({
 router.beforeEach((to, from, next) => {
     const user = useAuth()
 
-    if (to.meta.requiresAuth && !user.getEmail()) {
-        // redirect to log in page
-        next({ name: "LogIn" })
-    } else {
-        next()
+    if (to.name === "logout") {
+        user.logout()
+        console.log(user.getEmail())
+        return next("/")
     }
+
+    if (to.meta.requiresAuth && !user.getEmail()) {
+        return next({ name: "LogIn" })
+    }
+
+    next()
 })
 
 createApp(App)
