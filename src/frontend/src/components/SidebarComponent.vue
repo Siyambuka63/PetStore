@@ -10,9 +10,7 @@
         <ul>
           <li><router-link to="/profile">My Profile</router-link></li>
           <li><router-link to="/wishlist">My Wishlist</router-link></li>
-          <li><router-link to="/reviews">My Reviews</router-link></li>
           <li><router-link to="/orders">My Orders</router-link></li>
-          <li><router-link to="/settings">Settings</router-link></li>
           <li><router-link to="/logout">Logout</router-link></li>
         </ul>
       </div>

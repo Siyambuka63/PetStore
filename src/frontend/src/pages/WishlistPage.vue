@@ -32,7 +32,7 @@
             <button v-if="item.stock > 0 && item.on_Sale" id="add_button" @click="handleAddItem(userID, item.id, item.salePrice, 1)">Add to Cart</button>
             <button v-else-if="item.stock > 0" id="add_button" @click="handleAddItem(userID, item.id, item.price, 1)">Add to Cart</button>
             <p v-else>SOLD OUT</p>
-            <button id="remove_button" @click="removeItem(this.userID, item.id)" >Remove</button>
+            <button id="remove_button" @click="removeItem(item.id)" >Remove</button>
           </div>
         </div>
       </div>
@@ -45,7 +45,7 @@
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import SidebarComponent from "@/components/SidebarComponent.vue";
 import {useAuth} from "@/Auth";
-import {getUserWishlistItems, removeItemFromWishlist, removeWishlistUser} from "@/services/WishlistService";
+import {getUserWishlistItems, removeItemFromWishlist} from "@/services/WishlistService";
 
 export default {
   name: "WishlistPage",
@@ -56,20 +56,18 @@ export default {
   data() {
     return {
       items: [],
-      userID: null
+      email: null
     };
   },
   async mounted() {
     const user = useAuth();
 
-    this.userID = user.userID;
-    this.items = await getUserWishlistItems(this.userID);
+    this.email = user.getEmail();
+    this.items = await getUserWishlistItems(this.email);
   },
   methods: {
-    async removeItem(userId, itemID) {
-      await removeWishlistUser(userId, itemID);
-      const updatedUser = await removeItemFromWishlist(userId, itemID);
-      this.items = await updatedUser.wishlistItems;
+    async removeItem(itemID) {
+      this.items = await removeItemFromWishlist(this.email, itemID);
     }
   }
 };
@@ -103,7 +101,7 @@ export default {
   padding: 10px 20px;
   margin: 5px;
   border-radius: 8px;
-  border: 2px solid #dfe6e9;
+  border: 2px solid #ccc;
 }
 
 .wishlist-item:hover {
