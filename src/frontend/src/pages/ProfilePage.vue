@@ -1,153 +1,121 @@
 <template>
   <HeaderComponent/>
 
-  <div class="container">
+  <div class="container" id="container">
     <sidebar-component/>
 
-    <!-- Main Content -->
     <div class="main-content">
-      <!-- The Modal -->
-      <div id="id01" class="modal">
-  <span onclick="document.getElementById('id01').style.display='none'"
-        class="close" title="Close Modal">&times;</span>
-
-        <!-- Modal Content -->
-        <h2>Add Address</h2>
-        <form @submit.prevent="handleAddAddress">
-          <label for="street">Street address</label>
-          <input type="text" v-model="street" id="street" placeholder="e.g. 123 Place Street">
-
-          <label for="complex">Complex/Flat</label>
-          <input type="text" v-model="complex" id="complex" placeholder="e.g. Block 4B">
-
-          <label for="suburb">Suburb</label>
-          <input type="text" v-model="suburb" id="suburb" placeholder="e.g. Lentegeur">
-
-          <label for="city">City</label>
-          <input type="text" v-model="city" id="city" placeholder="e.g. Cape Town">
-
-          <label for="postal">Postal</label>
-          <input type="text" v-model="postal" id="postal" placeholder="e.g. 7786">
-          <div>
-            <input type="checkbox" name="shipping" v-model="isShipping">
-            <label for="Shipping"> Save as shipping address </label><br>
-            <input type="checkbox" name="billing" v-model="isBilling">
-            <label for="billing"> Save as billing address </label><br>
-          </div>
-
-          <button type="submit">Save changes</button>
-        </form>
+      <!-- Tabs -->
+      <div class="tabs">
+        <div class="tab" @click="selectSection(0)" id="tab0" style="color: #0984e3">General</div>
+        <div class="tab" @click="selectSection(1)" id="tab1" style="color: black">Address</div>
+        <div class="tab" @click="selectSection(2)" id="tab2" style="color: black">Password</div>
+        <div class="tab" @click="selectSection(3)" id="tab3" style="color: black">Card</div>
       </div>
 
-      <div class="content">
-        <!-- Tabs -->
-        <div class="tabs">
-          <div class="tab">General</div>
-          <div class="tab">Address</div>
-          <div class="tab">Card</div>
-          <div class="tab">Password</div>
-        </div>
+      <!-- General Section -->
+      <section class="details-group" id="general" style="display: flex">
+        <h2>General Information</h2>
+        <form @submit.prevent="handleUpdate">
+          <label for="firstName">First Name</label>
+          <input type="text" id="firstName" v-model="firstName">
 
-        <!-- General Info -->
-        <div class="details-group">
-          <h2>General Information</h2>
-          <form @submit.prevent="handleUpdate">
-            <label for="firstName">First Name</label>
-            <input type="text" id="firstName" v-model="firstName">
+          <label for="middleName">Middle Name</label>
+          <input type="text" id="middleName" v-model="middleName">
 
-            <label for="middleName">Middle Name</label>
-            <input type="text" id="middleName" v-model="middleName">
+          <label for="surname">Surname</label>
+          <input type="text" id="surname" v-model="lastName">
 
-            <label for="surname">Surname</label>
-            <input type="text" id="surname" v-model="lastName">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" v-model="email" disabled>
 
-            <label for="email">Email Address</label>
-            <input type="email" id="email" v-model="email" disabled>
+          <label for="phone">Phone</label>
+          <input type="text" id="phone" v-model="phone">
 
-            <label for="phone">Phone</label>
-            <input type="text" id="phone" v-model="phone">
+          <button type="submit">Save Changes</button>
+        </form>
+      </section>
 
-            <button type="submit">Save Changes</button>
+      <!-- Address Section -->
+      <section class="address" id="address" style="display: none">
+        <!-- Shipping Info -->
+        <div v-if="shippingStreet" class="details-group">
+          <h2>Shipping Address</h2>
+          <form @submit.prevent="handleUpdateShippingAddress">
+            <label for="shippingStreet">Street address</label>
+            <input type="text" v-model="shippingStreet" id="shippingStreet" placeholder="e.g. 123 Place Street">
+
+            <label for="shippingComplex">Complex/Flat</label>
+            <input type="text" v-model="shippingComplex" id="shippingComplex" placeholder="e.g. Block 4B">
+
+            <label for="shippingSuburb">Suburb</label>
+            <input type="text" v-model="shippingSuburb" id="shippingSuburb" placeholder="e.g. Lentegeur">
+
+            <label for="shippingCity">City</label>
+            <input type="text" v-model="shippingCity" id="shippingCity" placeholder="e.g. Cape Town">
+
+            <label for="shippingPostal">Postal</label>
+            <input type="text" v-model="shippingPostal" id="shippingPostal" placeholder="e.g. 7786">
+
+            <button type="submit">Save changes</button>
+            <button type="button" @click="handleRemoveShippingAddress" class="remove-btn">Remove address</button>
           </form>
         </div>
 
-        <div>
-          <!-- Shipping -->
-          <div v-if="shippingStreet" class="details-group">
-            <h2>Shipping Address</h2>
-            <form @submit.prevent="handleUpdateShippingAddress">
-              <label for="shippingStreet">Street address</label>
-              <input type="text" v-model="shippingStreet" id="shippingStreet" placeholder="e.g. 123 Place Street">
-
-              <label for="shippingComplex">Complex/Flat</label>
-              <input type="text" v-model="shippingComplex" id="shippingComplex" placeholder="e.g. Block 4B">
-
-              <label for="shippingSuburb">Suburb</label>
-              <input type="text" v-model="shippingSuburb" id="shippingSuburb" placeholder="e.g. Lentegeur">
-
-              <label for="shippingCity">City</label>
-              <input type="text" v-model="shippingCity" id="shippingCity" placeholder="e.g. Cape Town">
-
-              <label for="shippingPostal">Postal</label>
-              <input type="text" v-model="shippingPostal" id="shippingPostal" placeholder="e.g. 7786">
-
-              <button type="submit">Save changes</button>
-              <button type="button" @click="handleRemoveShippingAddress">Remove address</button>
-            </form>
-          </div>
-
-          <div v-else class="details-group">
-            <p>You have no shipping address</p>
-          </div>
-
-          <!-- Billing -->
-          <div v-if="billingStreet" class="details-group">
-            <h2>Billing Address</h2>
-            <form @submit.prevent="handleUpdateBillingAddress">
-              <label for="billingStreet">Street address</label>
-              <input type="text" v-model="billingStreet" id="billingStreet" placeholder="e.g. 456 Oak Avenue">
-
-              <label for="billingComplex">Complex/Flat</label>
-              <input type="text" v-model="billingComplex" id="billingComplex" placeholder="e.g. Apartment 12C">
-
-              <label for="billingSuburb">Suburb</label>
-              <input type="text" v-model="billingSuburb" id="billingSuburb" placeholder="e.g. Constantia">
-
-              <label for="billingCity">City</label>
-              <input type="text" v-model="billingCity" id="billingCity" placeholder="e.g. Cape Town">
-
-              <label for="billingPostal">Postal</label>
-              <input type="text" v-model="billingPostal" id="billingPostal" placeholder="e.g. 8001">
-
-              <button type="submit">Save changes</button>
-              <button type="button" @click="handleRemoveBillingAddress">Remove address</button>
-            </form>
-          </div>
-
-          <div v-else class="details-group">
-            <p>You have no billing address</p>
-          </div>
-          <button type="button">Add Address</button>
+        <div v-else class="details-group">
+          <p>You have no shipping address</p>
         </div>
 
-        <!-- Password Reset -->
-        <div class="details-group">
-          <h2>Password Reset</h2>
-          <form @submit.prevent="handleResetPassword">
-            <label for="passwordOld">Old Password</label>
-            <input type="password" id="passwordOld" v-model="passwordOld">
+        <!-- Billing Info -->
+        <div v-if="billingStreet" class="details-group">
+          <h2>Billing Address</h2>
+          <form @submit.prevent="handleUpdateBillingAddress">
+            <label for="billingStreet">Street address</label>
+            <input type="text" v-model="billingStreet" id="billingStreet" placeholder="e.g. 456 Oak Avenue">
 
-            <label for="password">New Password</label>
-            <input type="password" id="password" v-model="password">
+            <label for="billingComplex">Complex/Flat</label>
+            <input type="text" v-model="billingComplex" id="billingComplex" placeholder="e.g. Apartment 12C">
 
-            <label for="password_confirmation">Confirm New Password</label>
-            <input type="password" id="password_confirmation" v-model="passwordConfirmation">
-            <button type="submit">Reset Password</button>
+            <label for="billingSuburb">Suburb</label>
+            <input type="text" v-model="billingSuburb" id="billingSuburb" placeholder="e.g. Constantia">
+
+            <label for="billingCity">City</label>
+            <input type="text" v-model="billingCity" id="billingCity" placeholder="e.g. Cape Town">
+
+            <label for="billingPostal">Postal</label>
+            <input type="text" v-model="billingPostal" id="billingPostal" placeholder="e.g. 8001">
+
+            <button type="submit">Save changes</button>
+            <button type="button" @click="handleRemoveBillingAddress" class="remove-btn">Remove address</button>
           </form>
         </div>
 
-        <!-- Card -->
-        <div v-if="cardBrand" class="details-group" style="margin-top: 50px">
+        <div v-else class="details-group">
+          <p>You have no billing address</p>
+        </div>
+
+        <button type="button" @click="showAddAddress">Add Address</button>
+      </section>
+
+      <!-- Password Reset Section -->
+      <section class="details-group" id="password" style="display: none">
+        <h2>Password Reset</h2>
+        <form @submit.prevent="handleResetPassword">
+          <label for="passwordOld">Old Password</label>
+          <input type="password" id="passwordOld" v-model="passwordOld">
+
+          <label for="password">New Password</label>
+          <input type="password" id="password" v-model="password">
+
+          <label for="password_confirmation">Confirm New Password</label>
+          <input type="password" id="password_confirmation" v-model="passwordConfirmation">
+          <button type="submit">Reset Password</button>
+        </form>
+      </section>
+
+      <!-- Card Section -->
+      <section id="card" style="display: none">
+        <div v-if="cardBrand" class="details-group">
           <h2>Card Details</h2>
           <select v-model="selectedCard">
             <option v-if="cardBrand" :value="cardBrand + ' ending with ' + cardLastFour">
@@ -155,11 +123,54 @@
             </option>
           </select>
 
-          <button type="button" @click="handleRemoveCard">Remove card</button>
+          <button type="button" @click="handleRemoveCard" class="remove-btn">Remove card</button>
         </div>
 
-        <div v-else class="details-group" style="margin-top: 50px">
+        <div v-else class="details-group">
+          <p>You have no card</p>
+          <button type="button" @click="showAddCard">Add Card</button>
+        </div>
+      </section>
+
+      <!-- Add Address Form -->
+      <div id="addAddress" class="formContainer">
+        <div class="form-group">
+          <span @click="closeAddAddress" class="close" title="Close Modal">&times;</span>
+          <h2>Add Address</h2>
+          <p>Fill in Address detail</p>
+          <form @submit.prevent="handleAddAddress">
+            <label for="street">Street address</label>
+            <input type="text" v-model="street" id="street" placeholder="e.g. 123 Place Street">
+
+            <label for="complex">Complex/Flat</label>
+            <input type="text" v-model="complex" id="complex" placeholder="e.g. Block 4B">
+
+            <label for="suburb">Suburb</label>
+            <input type="text" v-model="suburb" id="suburb" placeholder="e.g. Lentegeur">
+
+            <label for="city">City</label>
+            <input type="text" v-model="city" id="city" placeholder="e.g. Cape Town">
+
+            <label for="postal">Postal</label>
+            <input type="text" v-model="postal" id="postal" placeholder="e.g. 7786">
+            <div>
+              <input type="checkbox" name="shipping" v-model="isShipping">
+              <label for="Shipping"> Save as shipping address </label><br>
+              <input type="checkbox" name="billing" v-model="isBilling">
+              <label for="billing"> Save as billing address </label><br>
+            </div>
+
+            <button type="submit">Save changes</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Add Card Form -->
+      <div id="addCard" class="formContainer">
+        <div class="form-group">
+          <span @click="closeAddCard" class="close">&times;</span>
           <h2>Add Card</h2>
+          <p>Fill in Card detail</p>
           <form @submit.prevent="handleAddCard">
             <label for="cardBrand">Brand</label>
             <select v-model="selectedCard" id="cardBrand">
@@ -168,18 +179,17 @@
             </select>
 
             <label for="cardholder">Cardholder</label>
-            <input type="text" id="cardholder" v-model="cardHolder">
+            <input type="text" id="cardholder" v-model="cardHolder" placeholder="Mr A Man">
 
             <label for="cardNumber">Card number</label>
-            <input type="text" id="cardNumber" v-model="cardNumber">
+            <input type="text" id="cardNumber" v-model="cardNumber" placeholder="5112345678901234">
 
-            <div>
-              <label for="cardExpiry">Card Expiration</label>
-              <input type="month" id="cardExpiry" v-model="cardExpiry" placeholder="MM/YY">
+            <label for="cardExpiry">Card Expiration</label>
+            <input type="month" id="cardExpiry" v-model="cardExpiry" placeholder="e.g November 2000">
 
-              <label for="cvv">CVV</label>
-              <input type="text" id="cvv" v-model="cardCvv">
-            </div>
+            <label for="cvv">CVV</label>
+            <input type="text" id="cvv" placeholder="e.g 123" v-model="cardCvv">
+
             <button type="submit">Add card</button>
           </form>
         </div>
@@ -193,11 +203,15 @@ import HeaderComponent from "@/components/HeaderComponent.vue";
 import SidebarComponent from "@/components/SidebarComponent.vue";
 import {useAuth} from "@/Auth";
 import {
-  addAddress, addCard,
+  addAddress,
+  addCard,
   getUser,
   removeBillingAddress,
   removeCard,
-  removeShippingAddress, resetPassword, updateBillingAddress, updateShippingAddress,
+  removeShippingAddress,
+  resetPassword,
+  updateBillingAddress,
+  updateShippingAddress,
   updateUser
 } from "@/services/ProfileService";
 import {useRouter} from "vue-router";
@@ -324,7 +338,7 @@ export default {
           this.router
       );
     },
-    async handleAddAddress(){
+    async handleAddAddress() {
       this.user = await addAddress(
           this.user,
           this.street,
@@ -337,7 +351,7 @@ export default {
           this.router
       )
     },
-    async handleAddCard(){
+    async handleAddCard() {
       this.user = await addCard(
           this.user,
           this.selectedCard,
@@ -348,7 +362,7 @@ export default {
           this.router
       )
     },
-    async handleResetPassword(){
+    async handleResetPassword() {
       this.user = await resetPassword(
           this.user,
           this.passwordOld,
@@ -356,6 +370,58 @@ export default {
           this.passwordConfirmation,
           this.router
       )
+    },
+    showAddAddress() {
+      document.getElementById('addAddress').style.display = 'block';
+      document.body.style.overflowY = 'hidden';
+    },
+    closeAddAddress() {
+      document.getElementById('addAddress').style.display = 'none';
+      document.body.style.overflowY = 'auto';
+    },
+    showAddCard() {
+      document.getElementById('addCard').style.display = 'block';
+      document.body.style.overflowY = 'hidden';
+    },
+    closeAddCard() {
+      document.getElementById('addCard').style.display = 'none';
+      document.body.style.overflowY = 'auto';
+    },
+    selectSection(section) {
+      const general = document.getElementById('general');
+      const address = document.getElementById('address');
+      const password = document.getElementById('password');
+      const card = document.getElementById('card');
+
+      general.style.display = 'none';
+      address.style.display = 'none';
+      password.style.display = 'none';
+      card.style.display = 'none';
+
+      const tabs = []
+      for (let i = 0; i <= 3; i++) {
+        tabs.push(document.getElementById('tab' + i));
+        tabs[i].style.color = 'black';
+      }
+
+      switch (section) {
+        case 0:
+          general.style.display = 'flex';
+          tabs[0].style.color = '#0984e3';
+          break;
+        case 1:
+          address.style.display = 'grid';
+          tabs[1].style.color = '#0984e3';
+          break;
+        case 2:
+          password.style.display = 'flex';
+          tabs[2].style.color = '#0984e3';
+          break;
+        case 3:
+          card.style.display = 'flex';
+          tabs[3].style.color = '#0984e3';
+          break;
+      }
     }
   }
 };
@@ -375,20 +441,48 @@ export default {
   width: 70%;
 }
 
-.content {
-  gap: 50px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+.formContainer {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  align-content: center;
 }
 
-input[type="text"], input[type="email"], input[type="password"] {
+.tabs {
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  display: flex;
+  gap: 30px;
+  width: 100%;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.tab {
+  transition: background 0.2s;
+}
+
+.tab:hover {
+  text-decoration: underline;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+input[type="text"], input[type="email"], input[type="password"], input[type="month"] {
   width: calc(100% - 20px);
   padding: 6px 10px;
   border-radius: 8px;
-  border: 2px solid #dfe6e9;
+  border: 2px solid #ccc;
+  margin-bottom: 10px;
 }
 
-input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus, input[type="month"]:focus {
   border-color: #0984e3;
   outline: none;
 }
@@ -397,7 +491,7 @@ select, option {
   width: 100%;
   padding: 6px 10px;
   border-radius: 8px;
-  border: 2px solid #dfe6e9;
+  border: 2px solid #ccc;
 }
 
 select:focus {
@@ -405,14 +499,38 @@ select:focus {
   outline: none;
 }
 
+.address {
+  gap: 10px 50px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
 .details-group {
-  gap: 10px;
   width: 100%;
-  display: flex;
   flex-direction: column;
   padding: 10px;
   border-radius: 8px;
-  border: 2px solid #dfe6e9;
+  border: 2px solid #ccc;
+  background-color: white;
+}
+
+.form-group {
+  padding: 10px;
+  width: 70%;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  background-color: white;
+  justify-self: center;
+}
+
+.close {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  cursor: pointer;
 }
 
 button {
@@ -421,10 +539,21 @@ button {
   padding: 10px;
   background: #0984e3;
   color: white;
+  margin: 2px 50px 2px 2px;
+}
+
+.remove-btn {
+  background: white;
+  color: #0984e3;
+  border: 2px solid #0984e3;
+  margin: 0;
 }
 
 button:hover {
   background: #0652DD;
+  color: white;
+  border: none;
+  margin: 2px 50px 2px 2px;
 }
 
 h1, h2 {

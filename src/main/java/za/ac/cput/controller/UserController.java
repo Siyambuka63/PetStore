@@ -47,4 +47,10 @@ public class UserController {
     public User login(@RequestBody User user) {
         return service.login(user.getEmail(), user.getPassword());
     }
+
+    @GetMapping("/email-exists/{email}")
+    public boolean emailExists(@PathVariable String email) {
+        User user = service.read(email);
+        return user != null;
+    }
 }

@@ -1,14 +1,9 @@
-export async function isValidEmail(email){
-    const response = await fetch(`http://localhost:8080/petstore/contact/findByEmail/${email}`);
-    try {
-        await response.json();
-        return false;
-    } catch (e) {
-        return true;
-    }
+export async function isEmailTaken(email){
+    const response = await fetch(`http://localhost:8080/petstore/user/email-exists/${encodeURIComponent(email)}`);
+    return await response.json();
 }
 
-export async function SignUp(firstName, middleName, lastName, email, phone, password, confirmPassword, auth, router){
+export async function SignUp(firstName, middleName, lastName, email, phone, password, confirmPassword){
     if (password !== confirmPassword) {
         alert("Passwords do not match!");
         return;
@@ -19,14 +14,13 @@ export async function SignUp(firstName, middleName, lastName, email, phone, pass
         return;
     }
 
-    // if (await isValidEmail(email)) {
-    //     alert("Email address is taken");
-    //     return;
-    // }
+     if (await isEmailTaken(email)) {
+         throw new Error("Email address is already taken");
+     }
 
     try {
         parseInt(phone);
-        if (phone.length !== 10 || phone[0] !== '0') alert("Invalid billing postal code");
+        if (phone.length !== 10 || phone[0] !== '0') alert("Invalid number");
     } catch (e) {
         alert("Invalid billing postal code");
         return;
@@ -37,7 +31,7 @@ export async function SignUp(firstName, middleName, lastName, email, phone, pass
     user.middleName = middleName;
     user.lastName = lastName;
     user.password = password;
-    user.phone = phone;
+    user.phoneNumber = phone;
     user.email = email;
 
     const response = await fetch(`http://localhost:8080/petstore/user/create`, {
@@ -45,10 +39,13 @@ export async function SignUp(firstName, middleName, lastName, email, phone, pass
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(user)
     });
+    if (!response.ok) {
+        const errorMsg = await response.text();
+        throw new Error(errorMsg || "Failed to create user");
+    }
 
-    await router.push("/login");
-    const newUser = await response.json();
-    auth.userID = newUser.userID;
+    return await response.json();
+
 }
 
 export async function LogIn(auth, router, email, password){
@@ -63,9 +60,8 @@ export async function LogIn(auth, router, email, password){
 
     try {
         const signedUser = await response.json();
-        auth.setUserId(signedUser.id);
-        console.log(signedUser.id)
-        router.push("/")
+        auth.setUserEmail(signedUser.email);
+        router.push("/");
     } catch (e) {
         alert("Log in failed. Invalid credentials.");
     }
