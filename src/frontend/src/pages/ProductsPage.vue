@@ -85,25 +85,11 @@ export default {
          this.$router.push("/login");
       }
     },
-    goToProfile() {
-      if (this.userID) {
-        this.$router.push("/profile");
-      } else {
-        this.$router.push("/login");
-      }
-    },
     async handleAddItemToWishlist(productID){
       if (this.userID) {
         await addItemToWishlist(this.userID, productID);
       } else {
          this.$router.push("/login");
-      }
-    },
-    goToWishlist() {
-      if (this.userID) {
-        this.$router.push("/wishlist");
-      } else {
-        this.$router.push("/login");
       }
     },
     async fetchProducts() {
@@ -137,81 +123,6 @@ export default {
 </script>
 
 <style scoped>
-.layout {
-  display: flex;
-  width: 100%;
-}
-
-/* Sidebar */
-.sidebar {
-  width: 20%;
-  margin: 10px;
-  display: flex;
-  flex-direction: column;
-}
-
-.categories {
-  border-radius: 8px;
-  border: 2px solid #dfe6e9;
-}
-
-.categories .header {
-  border-bottom: 2px solid #dfe6e9;
-  padding-left: 20px;
-  display: flex;
-  gap: 10%;
-  align-items: center;
-  background: #0984e3;
-}
-
-.categories .header h2 {
-  font-size: 16px;
-  color: white;
-}
-
-.categories .header img {
-  height: 20px;
-}
-
-.sidebar ul {
-  list-style: none;
-  padding: 5px;
-  margin: 0;
-}
-
-.sidebar ul li a {
-  text-decoration: none;
-  color: black;
-  font-size: 15px;
-  display: block;
-  padding: 8px 12px;
-  border-radius: 8px;
-  transition: background 0.2s;
-}
-
-.sidebar ul li a:hover {
-  text-decoration: underline;
-  font-weight: bold;
-}
-
-.sidebar ul li a.active {
-  color: #0984e3;
-}
-
-/* Main Content */
-.main-content {
-  padding: 10px 30px;
-  display: flex;
-  flex-direction: column;
-  width: 70%;
-}
-
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* responsive grid */
-  gap: 20px;
-  margin-top: 20px;
-}
 
 .product-card {
   border: 1px solid #dfe6e9;
