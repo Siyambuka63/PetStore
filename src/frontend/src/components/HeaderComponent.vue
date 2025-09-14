@@ -92,6 +92,17 @@ export default {
   color: #0652DD;
 }
 
+.center-section {
+  text-align: center;
+}
+
+.search-bar {
+  width: 500px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: none;
+}
+
 .left-section {
   display: flex;
   justify-content: flex-end;
