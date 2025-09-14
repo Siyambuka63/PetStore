@@ -1,4 +1,4 @@
-export async function isValidEmail(email){
+export async function isEmailTaken(email){
     const response = await fetch(`http://localhost:8080/petstore/user/email-exists/${encodeURIComponent(email)}`);
     try {
         await response.json();
@@ -8,7 +8,7 @@ export async function isValidEmail(email){
     }
 }
 
-export async function SignUp(firstName, middleName, lastName, email, phone, password, confirmPassword, auth, router){
+export async function SignUp(firstName, middleName, lastName, email, phone, password, confirmPassword){
     if (password !== confirmPassword) {
         alert("Passwords do not match!");
         return;
@@ -19,14 +19,13 @@ export async function SignUp(firstName, middleName, lastName, email, phone, pass
         return;
     }
 
-     if (await isValidEmail(email)) {
-       alert("Email address is taken");
-        return;
+     if (await isEmailTaken(email)) {
+         throw new Error("Email address is already taken");
      }
 
     try {
         parseInt(phone);
-        if (phone.length !== 10 || phone[0] !== '0') alert("Invalid billing postal code");
+        if (phone.length !== 10 || phone[0] !== '0') alert("Invalid number");
     } catch (e) {
         alert("Invalid billing postal code");
         return;
@@ -45,10 +44,14 @@ export async function SignUp(firstName, middleName, lastName, email, phone, pass
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(user)
     });
+    if (!response.ok) {
+        const errorMsg = await response.text();
+        throw new Error(errorMsg || "Failed to create user");
+    }
 
-    await router.push("/login");
     const newUser = await response.json();
-    auth.userID = newUser.userID;
+    return newUser;
+
 }
 
 export async function LogIn(auth, router, email, password){
