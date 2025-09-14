@@ -2,7 +2,7 @@
   <div class="header">
     <!-- Left Section -->
     <div class="left-section">
-      <router-link to="/"><img src="@/assets/logo.png" alt="Logo" class="logo" /></router-link>
+      <router-link to="/" class="logo">PetShop</router-link>
     </div>
 
     <!-- Center Section -->
@@ -17,12 +17,12 @@
 
     <!-- Right Section -->
     <div class="right-section">
-      <router-link class="tab" to="/profile">Account</router-link>
-      <router-link class="tab" to="/wishlist">Wishlist</router-link>
-      <div class="tab cart" @click="toggleCart">
-        Cart ({{ cart.length }})
-      </div>
+    <router-link class="tab" to="/profile">Account</router-link>
+    <router-link class="tab" to="/wishlist">Wishlist</router-link>
+    <div class="tab cart" @click="toggleCart"> Cart ({{ cart.length }}) </div>
     </div>
+
+
 
     <!-- Cart Dropdown -->
     <div v-if="showCart" class="cart-dropdown">
@@ -45,7 +45,6 @@ export default {
   name: "HeaderComponent",
   data() {
     return {
-      searchQuery: "",
       showCart: false,
       cart: []
     };
@@ -58,12 +57,13 @@ export default {
   async mounted() {
     const authUser = useAuth();
 
-    if (authUser.userID) {
-      this.cart = await getCartItems(authUser.userID);
+    if (authUser.getEmail()) {
+      this.cart = await getCartItems(authUser.getEmail());
     }
   }
 };
 </script>
+
 
 <style scoped>
 .header {
@@ -111,7 +111,11 @@ export default {
 }
 
 .logo {
-  height: 80px;
+  font-size: 40px;
+  padding: 20px 0;
+  text-decoration: none;
+  color: white;
+  cursor: pointer;
 }
 
 /* Cart dropdown */

@@ -1,55 +1,59 @@
 <template>
   <div>
+    <!-- Simple header -->
     <HeaderComponent />
 
-    <div class="layout">
-      <!-- Sidebar -->
-      <div class="sidebar">
-        <div class="categories">
-          <div class="header">
-            <img src="@/assets/user.png" alt="pet" />
-            <h2>Categories</h2>
-          </div>
-          <div class="list">
-            <ul>
-              <li><a href="#" class="active">All</a></li>
-              <li><a href="#">Dog Food</a></li>
-              <li><a href="#">Cat Food</a></li>
-              <li><a href="#">Fish Food</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
+    <main>
+      <h1>Products</h1>
 
-      <!-- Main Content -->
-      <main class="main-content">
-        <h1>Products</h1>
+      <!-- Show loading or error -->
+      <p v-if="loading">Loading products...</p>
+      <p v-else-if="error">{{ error }}</p>
 
-        <!-- Loading and error states -->
-        <div v-if="loading">Loading products...</div>
-        <div v-else-if="error">{{ error }}</div>
+      <!-- Show products -->
+      <div v-else class="products">
+        <div v-for="product in products" :key="product.id" class="product-card">
 
-        <!-- Product list -->
-        <div v-else class="products-grid">
-          <div class="product-card" v-for="product in products" :key="product.id">
-            <img v-if="product.imageAddress"
-                :src="product.imageAddress ? `http://localhost:8082/productImages/${product.imageAddress}` : '/productImages/placeholder.jpg'"
-                :alt="product.productName"
-            />
-            <img v-else src="@/assets/logo.png" v-bind:alt="product.productName">
-            <span class="price" v-if="product.onSale">
-              Was: <s>R{{ product.price.toFixed(2) }}</s>
+          <!-- Product image -->
+          <img
+              :src="product.imageAddress
+              ? '/productImages/' + product.imageAddress
+              : '/productImages/placeholder.jpg'"
+              :alt="product.productName"
+          />
+
+          <!-- Product price -->
+          <p class="price">
+            <span v-if="product.onSale">
+              Was: <s>R{{ product.price.toFixed(2) }}</s><br>
               Now: R{{ product.salePrice.toFixed(2) }}
             </span>
-            <span class ="price" v-else v-text="'R' + product.price.toFixed(2)"></span>
-            <p>{{ product.description }}</p>
-            <button v-if="product.stock > 0 && product.on_Sale" class="cart" @click="handleAddItem(userID, product.id, product.salePrice, 1)">Add to Cart</button>
-            <button v-else-if="product.stock > 0" class="cart" @click="handleAddItem(userID, product.id, product.price, 1)">Add to Cart</button>
-            <button class="wishlist" @click="handleAddItemToWishlist(userID, product.id)">Add to Wishlist</button>
-          </div>
+            <span v-else>
+              R{{ product.price.toFixed(2) }}
+            </span>
+          </p>
+
+          <!-- Description -->
+          <p>{{ product.description }}</p>
+
+          <!-- Rating -->
+          <p><strong>Rating:</strong> {{ product.rating }}</p>
+
+          <!-- Add to cart -->
+          <button
+              @click="handleAddItem(userID, product.id, product.onSale ? product.salePrice : product.price, 1)"
+          >
+            Add to Cart
+          </button>
+
+          <!-- Add to wishlist -->
+          <button @click="handleAddItemToWishlist(userID, product.id)">
+            Add to Wishlist
+          </button>
+
         </div>
-      </main>
-    </div>
+      </div>
+    </main>
   </div>
 </template>
 
@@ -74,22 +78,18 @@ export default {
     };
   },
   methods: {
-    async handleAddItem(userID, productID, price, quantity){
-      //const router = useRouter();
-
-      if (userID) {
-        await addItem(userID, productID, price, quantity);
+    async handleAddItem(productID, price, quantity){
+      if (this.userID) {
+        await addItem(this.userID, productID, price, quantity);
       } else {
-        await this.$router.push("/login");
+         this.$router.push("/login");
       }
     },
-    async handleAddItemToWishlist(userID, productID){
-      //const router = useRouter();
-
-      if (userID) {
-        await addItemToWishlist(userID, productID);
+    async handleAddItemToWishlist(productID){
+      if (this.userID) {
+        await addItemToWishlist(this.userID, productID);
       } else {
-        await this.$router.push("/login");
+         this.$router.push("/login");
       }
     },
     async fetchProducts() {
@@ -123,81 +123,6 @@ export default {
 </script>
 
 <style scoped>
-.layout {
-  display: flex;
-  width: 100%;
-}
-
-/* Sidebar */
-.sidebar {
-  width: 20%;
-  margin: 10px;
-  display: flex;
-  flex-direction: column;
-}
-
-.categories {
-  border-radius: 8px;
-  border: 2px solid #dfe6e9;
-}
-
-.categories .header {
-  border-bottom: 2px solid #dfe6e9;
-  padding-left: 20px;
-  display: flex;
-  gap: 10%;
-  align-items: center;
-  background: #0984e3;
-}
-
-.categories .header h2 {
-  font-size: 16px;
-  color: white;
-}
-
-.categories .header img {
-  height: 20px;
-}
-
-.sidebar ul {
-  list-style: none;
-  padding: 5px;
-  margin: 0;
-}
-
-.sidebar ul li a {
-  text-decoration: none;
-  color: black;
-  font-size: 15px;
-  display: block;
-  padding: 8px 12px;
-  border-radius: 8px;
-  transition: background 0.2s;
-}
-
-.sidebar ul li a:hover {
-  text-decoration: underline;
-  font-weight: bold;
-}
-
-.sidebar ul li a.active {
-  color: #0984e3;
-}
-
-/* Main Content */
-.main-content {
-  padding: 10px 30px;
-  display: flex;
-  flex-direction: column;
-  width: 70%;
-}
-
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* responsive grid */
-  gap: 20px;
-  margin-top: 20px;
-}
 
 .product-card {
   border: 1px solid #dfe6e9;
