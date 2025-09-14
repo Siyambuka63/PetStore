@@ -1,15 +1,11 @@
 import { defineStore } from 'pinia'
 export const useAuth = defineStore('user', {
     state: () => ({
-        email: "test@gmail.com"
+        email: null
     }),
     actions: {
         getEmail(){
-          if (this.email) {
-              return this.email;
-          } else {
-              this.$router.push("/login");
-          }
+            return this.email;
         },
         setUserEmail(email) {
             this.email = email;
