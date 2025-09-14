@@ -1,17 +1,18 @@
 <template>
   <div class="cart-container">
     <h2 class="cart-title">My Cart</h2>
+    <button v-on:click="navigateTo('products')">View Products</button>
 
     <!-- Cart Items -->
     <div v-if="cartItems.length > 0" class="cart-items">
-      <div v-for="item in cartItems" :key="item.id" class="cart-item">
+      <div v-for="item in cartItems" :key="item.productId" class="cart-item">
         <img :src="item.imageUrl" alt="product" class="cart-img" />
         <div class="cart-details">
           <h3>{{ item.productName }}</h3>
           <p>Price: R{{ item.price.toFixed(2) }}</p>
           <p>Quantity: {{ item.quantity }}</p>
         </div>
-        <button @click="removeFromCart(item.id)" class="remove-btn">Remove</button>
+        <button v-on:click="removeFromCart(item.productId)" class="remove-btn">Remove</button>
       </div>
     </div>
 
@@ -23,7 +24,7 @@
     <!-- Cart Summary -->
     <div class="cart-summary" v-if="cartItems.length > 0">
       <p><strong>Total:</strong> R{{ totalPrice.toFixed(2) }}</p>
-      <button @click="checkout" class="checkout-btn">Checkout</button>
+      <button v-on:click="checkout" class="checkout-btn">Checkout</button>
     </div>
   </div>
 </template>
@@ -50,10 +51,10 @@ const loadCart = async () => {
 };
 
 // Remove an item
-const removeFromCart = async (itemId) => {
+const removeFromCart = async (productId) => {
   try {
-    await axios.delete(`/petstore/cart/removeItem/${itemId}`);
-    cartItems.value = cartItems.value.filter(item => item.id !== itemId);
+    await axios.delete(`/petstore/cart/removeItem/${productId}`);
+    cartItems.value = cartItems.value.filter(item => item.id !== productId);
   } catch (err) {
     console.error("Error removing item:", err);
   }
