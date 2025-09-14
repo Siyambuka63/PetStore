@@ -10,7 +10,7 @@ import za.ac.cput.service.user.impl.UserServiceImpl;
 
 import java.time.LocalDate;
 import java.util.List;
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/order")
 public class OrderController {
