@@ -27,9 +27,9 @@ public class ReviewController {
         return service.create(review);
     }
 
-    @GetMapping("/read/{userId}/{productId}")
-    public Review read(@PathVariable Long userId, @PathVariable Long productId) {
-        return service.read(new ReviewId(userId, productId));
+    @GetMapping("/read/{email}/{productId}")
+    public Review read(@PathVariable String email, @PathVariable Long productId) {
+        return service.read(new ReviewId(email, productId));
     }
 
     @PostMapping("/update")
@@ -37,9 +37,9 @@ public class ReviewController {
         return service.update(review);
     }
 
-    @DeleteMapping("/delete/{userId}/{productId}")
-    public void delete(@PathVariable Long userId, @PathVariable Long productId) {
-        service.delete(new ReviewId(userId, productId));
+    @DeleteMapping("/delete/{email}/{productId}")
+    public void delete(@PathVariable String email, @PathVariable Long productId) {
+        service.delete(new ReviewId(email, productId));
     }
 
     @GetMapping("/getAll")

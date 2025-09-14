@@ -37,13 +37,12 @@
                 :alt="product.productName"
             />
             <img v-else src="@/assets/logo.png" v-bind:alt="product.productName">
-            <h2 v-if="product.onSale">
+            <span class="price" v-if="product.onSale">
               Was: <s>R{{ product.price.toFixed(2) }}</s>
               Now: R{{ product.salePrice.toFixed(2) }}
-            </h2>
-            <h2 v-else v-text="'R' + product.price.toFixed(2)"></h2>
+            </span>
+            <span class ="price" v-else v-text="'R' + product.price.toFixed(2)"></span>
             <p>{{ product.description }}</p>
-            <span class="price">R{{ product.price.toFixed(2) }}</span>
             <button v-if="product.stock > 0 && product.on_Sale" class="cart" @click="handleAddItem(userID, product.id, product.salePrice, 1)">Add to Cart</button>
             <button v-else-if="product.stock > 0" class="cart" @click="handleAddItem(userID, product.id, product.price, 1)">Add to Cart</button>
             <button class="wishlist" @click="handleAddItemToWishlist(userID, product.id)">Add to Wishlist</button>

@@ -16,7 +16,6 @@ import za.ac.cput.factory.OrderItemFactory;
 import za.ac.cput.factory.ProductFactory;
 import za.ac.cput.factory.user.AddressFactory;
 import za.ac.cput.factory.user.CardFactory;
-import za.ac.cput.factory.user.ContactFactory;
 import za.ac.cput.factory.user.UserFactory;
 
 import java.time.LocalDate;
@@ -45,17 +44,17 @@ class OrderItemControllerTest {
         Card card =  CardFactory.createCard(987554456,"Ozow", "Visa_4456","4456","Visa");
         Address shippingAddress  = AddressFactory.createAddress(3453,"apartment","Cape Town","237 Nkani Street","7894","7570", Type.Both);
         Address billingAddress = AddressFactory.createAddress(3454,"apartment","Cape Town","237 Nkani Street","7894","7570", Type.Both);
-        Contact contact = ContactFactory.createContact(1, "0987654321", "test@gmail.com");
-        List<Product> wishlistItems = new ArrayList<>();
+
         List<Review> reviews = new ArrayList<>();
-        User user = UserFactory.createUser(1, "Name", "Middle", "Last", "password123", wishlistItems, reviews, card, shippingAddress, billingAddress, contact);
+
+        User user = UserFactory.createUser("Name", "Middle", "Last", "password123", reviews, card, shippingAddress, billingAddress, "test@gmail.com", "0987654321");
 
         za.ac.cput.domain.order.Order order = OrderFactory.createOrder(1,user,orderDate,deliveryDate,8000,status);
         System.out.println(order);
 
         List<String> categories = new ArrayList<>();
-        List<User> wishlistedUser = new ArrayList<>();
-        Product product = ProductFactory.createProduct(1,"MissDog", "Nibbles","placeholder.jpg", 4f, 249.99f, 199.99f, true, 23, 1.34f, "SaveMor", "Adult", "Dry", "Dog", "Chicken", categories, wishlistedUser);
+
+        Product product = ProductFactory.createProduct(1,"MissDog", "Nibbles","placeholder.jpg", 4f, 249.99f, 199.99f, true, 23, 1.34f, "SaveMor", "Adult", "Dry", "Dog", "Chicken", categories);
         System.out.println(product);
 
         orderItem = OrderItemFactory.createOrderItem(order, product, 10.0f, 2);

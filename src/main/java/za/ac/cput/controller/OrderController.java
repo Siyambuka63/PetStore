@@ -46,11 +46,11 @@ public class OrderController {
         return service.getAll();
     }
 
-    @GetMapping("getCart/{userId}")
-    public Order getCart(@PathVariable long userId){
-        Order cart = service.getCart(userId);
+    @GetMapping("getCart/{email}")
+    public Order getCart(@PathVariable String email){
+        Order cart = service.getCart(email);
         if (cart == null) {
-            User user = userService.read(userId);
+            User user = userService.read(email);
             System.out.println(user);
             if (user == null) {
                 return null;

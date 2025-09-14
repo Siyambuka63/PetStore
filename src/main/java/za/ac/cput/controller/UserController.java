@@ -3,10 +3,7 @@ package za.ac.cput.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import za.ac.cput.domain.user.User;
-import za.ac.cput.repository.user.UserRepository;
 import za.ac.cput.service.user.impl.UserServiceImpl;
-import java.util.Collections;
-import java.util.Map;
 
 import java.util.List;
 
@@ -14,10 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-
     private UserServiceImpl service;
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     public UserController(UserServiceImpl service) {
@@ -29,9 +23,9 @@ public class UserController {
         return service.create(user);
     }
 
-    @GetMapping("/read/{id}")
-    public User read(@PathVariable long id) {
-        return service.read(id);
+    @GetMapping("/read/{email}")
+    public User read(@PathVariable String email) {
+        return service.read(email);
     }
 
     @PostMapping("/update")
@@ -39,8 +33,10 @@ public class UserController {
         return service.update(user);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable long id) { service.delete(id); }
+    @DeleteMapping("/delete/{email}")
+    public void delete(@PathVariable String email) {
+        service.delete(email);
+    }
 
     @GetMapping("/getAll")
     public List<User> getAll() {
@@ -49,11 +45,6 @@ public class UserController {
 
     @PostMapping("/login")
     public User login(@RequestBody User user) {
-        return service.login(user.getContact().getEmail(), user.getPassword());
+        return service.login(user.getEmail(), user.getPassword());
     }
-    @GetMapping("/email-exists")
-        public Map<String, Boolean> checkEmailExists(@RequestParam String email) {
-            boolean taken = userRepository.existsByEmail(email);
-            return Collections.singletonMap("taken", taken);
-}
 }

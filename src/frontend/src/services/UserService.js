@@ -37,9 +37,8 @@ export async function SignUp(firstName, middleName, lastName, email, phone, pass
     user.middleName = middleName;
     user.lastName = lastName;
     user.password = password;
-    user.contact = {}
-    user.contact.phone = phone;
-    user.contact.email = email;
+    user.phone = phone;
+    user.email = email;
 
     const response = await fetch(`http://localhost:8080/petstore/user/create`, {
         method: "POST",
@@ -57,7 +56,7 @@ export async function LogIn(auth, router, email, password){
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            contact: { email: email },
+            email: email,
             password: password
         })
     });

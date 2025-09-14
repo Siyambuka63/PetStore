@@ -23,10 +23,6 @@ export async function getCartItems(userId) {
             quantity: item.quantity,
         });
     }
-
-    console.log("cart:", JSON.stringify(cart, null, 2));
-    console.log("orderItems:", JSON.stringify(orderItems, null, 2));
-    console.log("products:", JSON.stringify(products, null, 2));
     return products;
 }
 
