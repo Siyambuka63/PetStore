@@ -6,8 +6,7 @@ const store = orderStore();
 let id = store.getOrderId();
 </script>
 <template>
-  <HeaderComponent />
-
+<header-component/>
   <div class="layout">
     <!-- Sidebar -->
     <div class="sidebar">
@@ -19,18 +18,15 @@ let id = store.getOrderId();
         </div>
         <div class="list">
           <ul>
-            <li><a href="#">My Profile</a></li>
-            <li><a href="#">My Wishlist</a></li>
-            <li><a href="#">My Reviews</a></li>
-            <li><a href="/orderPage" class="active">My Orders</a></li>
-            <li><a href="#">Settings</a></li>
-            <li><a href="#">Logout</a></li>
+            <li><router-link to="/profile">My Profile</router-link></li>
+            <li><router-link to="/wishlist">My Wishlist</router-link></li>
+            <li><router-link to="/reviews">My Reviews</router-link></li>
+            <li><router-link to="/orders">My Orders</router-link></li>
+            <li><router-link to="/settings">Settings</router-link></li>
+            <li><router-link to="/logout">Logout</router-link></li>
           </ul>
         </div>
       </div>
-
-
-
     </div>
 
     <!-- Main Content -->
@@ -41,11 +37,10 @@ let id = store.getOrderId();
       <div v-if="orderItems.length" class="orders-list">
         <div v-for="orderItem in getOrderItems(id)" :key="orderItem.id" class="order-card">
           <div class="order-details">
-            <p><strong>Order Item ID:</strong> {{ orderItem.id }}</p>
             <p><strong>Price Per Item:</strong> R{{ orderItem.pricePerItem }}</p>
             <p><strong>Quantity:</strong> {{ orderItem.quantity }}</p>
             <p><strong>Total Price:</strong> R{{ orderItem.totalPrice }}</p>
-            <router-link to="/orderPage">
+            <router-link to="/orders">
               <button>Order details</button>
             </router-link>
           </div>
@@ -64,12 +59,14 @@ let id = store.getOrderId();
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import OrderService from "@/services/OrderService";
 import OrderItemService from "@/services/OrderItemService";
+//import ProductService from "@/services/ProductService";
 export default {
   name: "UserOrders",
   components: { HeaderComponent },
   data() {
     return { orders: [],
       orderItems: [],
+      products: [],
       pickedSort:"",
       showOrderItem: null,
       buttonText: "View Order Detail",};
@@ -88,10 +85,16 @@ export default {
     getOrderItems(orderId) {
       return this.orderItems.filter(orderItem => orderItem.id.orderId === orderId);
     },
+    getProducts() {
+      // ProductService.getProduct().then(response => {
+      //   this.products = response.data;
+      // })
+    }
   },
   created() {
     this.getOrder();
     this.getOrderItem();
+    this.getProducts()
   },
 
 

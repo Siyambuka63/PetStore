@@ -9,15 +9,12 @@ import java.util.List;
 @Entity
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private String email;
     private String firstName;
     private String middleName;
     private String lastName;
     private String password;
-
-    @ManyToMany(mappedBy = "wishlistedUsers")
-    private List<Product> wishlistItems;
+    private String phoneNumber;
 
     @OneToMany
     private List<Review> reviews;
@@ -34,28 +31,23 @@ public class User {
     @JoinColumn(name = "billing_id")
     private Address billingAddress;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "contact_id")
-    private Contact contact;
-
     protected User(){}
 
     private User(Builder builder){
-        id = builder.userID;
+        email = builder.email;
         firstName = builder.firstName;
         middleName = builder.middleName;
         lastName = builder.lastName;
         password = builder.password;
-        wishlistItems = builder.wishlistItems;
+        phoneNumber = builder.phoneNumber;
         reviews = builder.reviews;
         card = builder.card;
         shippingAddress = builder.shippingAddress;
         billingAddress = builder.billingAddress;
-        contact = builder.contact;
     }
 
-    public long getId() {
-        return id;
+    public String getEmail() {
+        return email;
     }
 
     public String getFirstName() {
@@ -74,8 +66,8 @@ public class User {
         return password;
     }
 
-    public List<Product> getWishlistItems() {
-        return wishlistItems;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
     public List<Review> getReviews() {
@@ -94,42 +86,36 @@ public class User {
         return billingAddress;
     }
 
-    public Contact getContact() {
-        return contact;
-    }
-
     @Override
     public String toString() {
         return "User{" +
-                "userID=" + id +
+                "email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", middleName='" + middleName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", password='" + password + '\'' +
-                ", wishlistItems=" + wishlistItems +
+                ", phoneNumber='" + phoneNumber + '\'' +
                 ", reviews=" + reviews +
                 ", card=" + card +
                 ", shippingAddress=" + shippingAddress +
                 ", billingAddress=" + billingAddress +
-                ", contact=" + contact +
                 '}';
     }
 
     public static class Builder {
-        private long userID;
+        private String email;
         private String firstName;
         private String middleName;
         private String lastName;
         private String password;
-        private List<Product> wishlistItems;
+        private String phoneNumber;
         private List<Review> reviews;
         private Card card;
         private Address shippingAddress;
         private Address billingAddress;
-        private Contact contact;
 
-        public Builder setUserID(long userID) {
-            this.userID = userID;
+        public Builder setEmail(String email) {
+            this.email = email;
             return this;
         }
 
@@ -153,8 +139,8 @@ public class User {
             return this;
         }
 
-        public Builder setWishlistItems(List<Product> wishlistItems) {
-            this.wishlistItems = wishlistItems;
+        public Builder setPhoneNumber(String phoneNumber) {
+            this.phoneNumber = phoneNumber;
             return this;
         }
 
@@ -179,17 +165,16 @@ public class User {
         }
 
         public Builder copy(User user){
-            this.userID = user.id;
+            this.email = user.email;
             this.firstName = user.firstName;
             this.middleName = user.middleName;
             this.lastName = user.lastName;
             this.password = user.password;
-            this.wishlistItems = user.wishlistItems;
+            this.phoneNumber = user.phoneNumber;
             this.reviews = user.reviews;
             this.card = user.card;
             this.shippingAddress = user.shippingAddress;
             this.billingAddress = user.billingAddress;
-            this.contact = user.contact;
             return this;
         }
 

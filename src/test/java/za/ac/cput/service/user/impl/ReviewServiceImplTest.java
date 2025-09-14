@@ -11,7 +11,6 @@ import za.ac.cput.domain.user.*;
 import za.ac.cput.factory.ProductFactory;
 import za.ac.cput.factory.user.AddressFactory;
 import za.ac.cput.factory.user.CardFactory;
-import za.ac.cput.factory.user.ContactFactory;
 import za.ac.cput.factory.user.UserFactory;
 import za.ac.cput.factory.ReviewFactory;
 import za.ac.cput.service.impl.ReviewServiceImpl;
@@ -40,12 +39,12 @@ class ReviewServiceImplTest {
         Card card = CardFactory.createCard(987554456, "Ozow", "Visa_4456", "4456", "Visa");
         Address shippingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
         Address billingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
-        Contact contact = ContactFactory.createContact(1, "0987654321", "test@gmail.com");
-        user = UserFactory.createUser(1, "Name", "Middle", "Last", "password123", wishlistItems, reviews, card, shippingAddress, billingAddress, contact);
+
+        user = UserFactory.createUser("Name", "Middle", "Last", "password123", reviews, card, shippingAddress, billingAddress, "test@gmail.com", "0987654321");
 
         List<String> categories = new ArrayList<>();
         List<User> wishlistedUser = new ArrayList<>();
-        product = ProductFactory.createProduct(1, "Multistage", "Nibbles", "placeholder.jpg", 4f, 249.99f, 199.99f, true, 23, 1.34f, "Jock", "Adult", "Dry", "Dog", "Lamb", categories, wishlistedUser);
+        product = ProductFactory.createProduct(1, "Multistage", "Nibbles", "placeholder.jpg", 4f, 249.99f, 199.99f, true, 23, 1.34f, "Jock", "Adult", "Dry", "Dog", "Lamb", categories);
 
 
         review = ReviewFactory.createReview(user, product, "Great product!", 4.7f);
@@ -63,7 +62,7 @@ class ReviewServiceImplTest {
     @Test
     @Order(2)
     void read() {
-        ReviewId id = new ReviewId(user.getId(), product.getId());
+        ReviewId id = new ReviewId(user.getEmail(), product.getId());
         Review read = service.read(id);
         assertNotNull(read);
         System.out.println(read);
@@ -81,7 +80,7 @@ class ReviewServiceImplTest {
     @Test
     @Order(5)
     void delete() {
-        ReviewId id = new ReviewId(user.getId(), product.getId());
+        ReviewId id = new ReviewId(user.getEmail(), product.getId());
         service.delete(id);
         Review deleted = service.read(id);
         assertNull(deleted);

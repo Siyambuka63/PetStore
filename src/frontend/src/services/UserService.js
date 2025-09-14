@@ -1,9 +1,11 @@
-
-
 export async function isValidEmail(email){
     const response = await fetch(`http://localhost:8080/petstore/contact/findByEmail/${email}`);
-    const contact = await response.json();
-    return !contact;
+    try {
+        await response.json();
+        return false;
+    } catch (e) {
+        return true;
+    }
 }
 
 export async function SignUp(firstName, middleName, lastName, email, phone, password, confirmPassword, auth, router){
@@ -35,9 +37,8 @@ export async function SignUp(firstName, middleName, lastName, email, phone, pass
     user.middleName = middleName;
     user.lastName = lastName;
     user.password = password;
-    user.contact = {}
-    user.contact.phone = phone;
-    user.contact.email = email;
+    user.phone = phone;
+    user.email = email;
 
     const response = await fetch(`http://localhost:8080/petstore/user/create`, {
         method: "POST",
@@ -47,7 +48,6 @@ export async function SignUp(firstName, middleName, lastName, email, phone, pass
 
     await router.push("/login");
     const newUser = await response.json();
-    console.log(newUser);
     auth.userID = newUser.userID;
 }
 
@@ -56,17 +56,17 @@ export async function LogIn(auth, router, email, password){
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            contact: { email: email },
+            email: email,
             password: password
         })
     });
 
-    const signedUser = await response.json();
-
-    if (signedUser){
-        auth.userID = signedUser.userID;
+    try {
+        const signedUser = await response.json();
+        auth.setUserId(signedUser.id);
+        console.log(signedUser.id)
         router.push("/")
-    } else {
+    } catch (e) {
         alert("Log in failed. Invalid credentials.");
     }
 }

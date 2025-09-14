@@ -16,7 +16,6 @@ import za.ac.cput.factory.OrderFactory;
 import za.ac.cput.factory.ProductFactory;
 import za.ac.cput.factory.user.AddressFactory;
 import za.ac.cput.factory.user.CardFactory;
-import za.ac.cput.factory.user.ContactFactory;
 import za.ac.cput.factory.user.UserFactory;
 import za.ac.cput.service.impl.OrderItemServiceImpl;
 
@@ -49,14 +48,13 @@ class OrderItemServiceImplTest {
         Card card = CardFactory.createCard(987554456, "Ozow", "Visa_4456", "4456", "Visa");
         Address shippingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
         Address billingAddress = AddressFactory.createAddress(3454, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
-        Contact contact = ContactFactory.createContact(1, "0987654321", "test@gmail.com");
 
-        User user = UserFactory.createUser(1, "Name", "Middle", "Last", "password123", wishlistItems, reviews, card, shippingAddress, billingAddress, contact);
+        User user = UserFactory.createUser("Name", "Middle", "Last", "password123", reviews, card, shippingAddress, billingAddress, "test@gmail.com", "0987654321");
         order = OrderFactory.createOrder(1,user,orderDate,deliveryDate,8000,status);
 
         List<String> categories = new ArrayList<>();
         List<User> wishlistedUser = new ArrayList<>();
-        product = ProductFactory.createProduct(1, "Multistage", "Nibbles", "placeholder.jpg", 4f, 249.99f, 199.99f, true, 23, 1.34f, "Jock", "Adult", "Dry", "Dog", "Lamb", categories, wishlistedUser);
+        product = ProductFactory.createProduct(1, "Multistage", "Nibbles", "placeholder.jpg", 4f, 249.99f, 199.99f, true, 23, 1.34f, "Jock", "Adult", "Dry", "Dog", "Lamb", categories);
 
         orderItem = OrderItemFactory.createOrderItem(order, product, 100f, 2);
     }

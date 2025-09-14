@@ -14,12 +14,11 @@ public class ProductFactoryTest {
     private static Product product;
 
     private final List<String> categories = new ArrayList<>();
-    private final List<User> wishlistedUser = new ArrayList<>();
 
     /*   private Product productWithInvalidRating = ProductFactory.createProduct(2,"MissDog", "Nibbles","placeholder.jpg", 6f, 249.99, 199.99, true, 23, 1.34, "SaveMor", "Adult", "Dry", "Dog", "Chicken", categories);*/
-    private final Product productWithInvalidName = ProductFactory.createProduct(1, "", "imageAddress", "placeholder.jpg", 4.5f, 100.0f, 90.0f, true, 50, 1.0f, "Canin Cuisine", "Adult", "Dry", "Dog", "Peas", categories, wishlistedUser);
-    private final Product productWithNoImage = ProductFactory.createProduct(3, "MissDog", "Nutritional bites","", 4.5f, 100.0f, 90.0f, true, 50, 1.0f, "Canin Cuisine", "Adult", "Dry", "Dog", "Chicken", categories, wishlistedUser);
-    private final Product testProduct = ProductFactory.createProduct(4, "Montego Classic", "Dry Dog Food", "placeholder.jpg", 4f, 189.00f, 189.00f, false, 30, 5.0f, "Montego", "Puppy", "Dry", "Dog", "Beef", categories, wishlistedUser);
+    private final Product productWithInvalidName = ProductFactory.createProduct(1, "", "imageAddress", "placeholder.jpg", 4.5f, 100.0f, 90.0f, true, 50, 1.0f, "Canin Cuisine", "Adult", "Dry", "Dog", "Peas", categories);
+    private final Product productWithNoImage = ProductFactory.createProduct(3, "MissDog", "Nutritional bites","", 4.5f, 100.0f, 90.0f, true, 50, 1.0f, "Canin Cuisine", "Adult", "Dry", "Dog", "Chicken", categories);
+    private final Product testProduct = ProductFactory.createProduct(4, "Montego Classic", "Dry Dog Food", "placeholder.jpg", 4f, 189.00f, 189.00f, false, 30, 5.0f, "Montego", "Puppy", "Dry", "Dog", "Beef", categories);
 
 
     @Test
@@ -45,7 +44,7 @@ public class ProductFactoryTest {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             ProductFactory.createProduct(
                     4, "Montego Classic", "Dry Dog Food", "placeholder.jpg", 7f, 189.00f, 189.00f,
-                    false, 30, 5.0f, "Montego", "Puppy", "Dry", "Dog", "Beef", categories, wishlistedUser
+                    false, 30, 5.0f, "Montego", "Puppy", "Dry", "Dog", "Beef", categories
             );
         });
 
@@ -56,7 +55,7 @@ public class ProductFactoryTest {
     void testCreateProductWithValidRating() {
         Product product = ProductFactory.createProduct(
                 5, "Bulldog eats", "Test Product", "placeholder.jpg", 4.5f, 100.00f, 95.00f, true,
-                10, 1.5f, "Dogmor", "Adult", "Dry", "Dog", "Beef", categories, wishlistedUser
+                10, 1.5f, "Dogmor", "Adult", "Dry", "Dog", "Beef", categories
         );
         assertNotNull(product);
         assertEquals(4.5f, product.getRating());
@@ -68,7 +67,7 @@ public class ProductFactoryTest {
             ProductFactory.createProduct(
                     7, "Special Kibble", "Premium cat food", "placeholder.jpg",
                     3.5f, 150.00f, 160.00f, true, 10, 1.0f, "No Name",
-                    "Puppy", "Dry", "Cat", "pea", categories, wishlistedUser
+                    "Puppy", "Dry", "Cat", "pea", categories
             );
         });
 
@@ -80,7 +79,7 @@ public class ProductFactoryTest {
         Product product = ProductFactory.createProduct(
                 8, "Healthy Bites", "Low fat dog snacks", "placeholder.jpg",
                 4.2f, 100.00f, 75.00f, true, 15, 0.5f, "BiteCo",
-                "Senior", "Dry", "Dog", "Beef", categories, wishlistedUser
+                "Senior", "Dry", "Dog", "Beef", categories
         );
 
         assertNotNull(product);
@@ -95,7 +94,7 @@ public class ProductFactoryTest {
                 12, "Low Stock Product", "This item is out of stock",
                 "placeholder.jpg", 4.0f, 300.00f, 250.00f, true, 0,
                 1.0f, "BrandZero", "Adult", "Dry", "Dog",
-                "Duck", categories, wishlistedUser
+                "Duck", categories
         );
 
         assertNotNull(product);
@@ -109,7 +108,7 @@ public class ProductFactoryTest {
                 8, "Montego Small", "Affordable Dog Food",
                 "placeholder.jpg", 2f, 120.00f, 99.00f,
                 true, 3, 3.0f, "Montego", "Adult",
-                "Dry", "Dog", "Chicken", categories, wishlistedUser
+                "Dry", "Dog", "Chicken", categories
         );
 
         assertNotNull(lowStockProduct);

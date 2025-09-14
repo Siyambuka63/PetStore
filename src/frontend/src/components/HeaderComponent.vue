@@ -2,7 +2,7 @@
   <div class="header">
     <!-- Left Section -->
     <div class="left-section">
-      <img src="@/assets/logo.png" alt="Logo" class="logo" />
+      <router-link to="/"><img src="@/assets/logo.png" alt="Logo" class="logo" /></router-link>
     </div>
 
     <!-- Center Section -->
@@ -17,8 +17,8 @@
 
     <!-- Right Section -->
     <div class="right-section">
-      <a href="#" class="tab">Account</a>
-      <a href="#" class="tab">Wishlist</a>
+      <router-link class="tab" to="/profile">Account</router-link>
+      <router-link class="tab" to="/wishlist">Wishlist</router-link>
       <div class="tab cart" @click="toggleCart">
         Cart ({{ cart.length }})
       </div>
@@ -30,7 +30,7 @@
       <div v-if="cart.length === 0">No items in cart</div>
       <ul>
         <li v-for="(item, index) in cart" :key="index">
-          {{ item.name }} - {{ item.qty }}
+          {{ item.product.productName }} - {{ item.quantity }}
         </li>
       </ul>
     </div>
@@ -38,21 +38,28 @@
 </template>
 
 <script>
+import {useAuth} from "@/Auth";
+import {getCartItems} from "@/services/CartService";
+
 export default {
   name: "HeaderComponent",
   data() {
     return {
       searchQuery: "",
       showCart: false,
-      cart: [
-        { name: "Wireless Headphones", qty: 1 },
-        { name: "Smartwatch", qty: 2 }
-      ]
+      cart: []
     };
   },
   methods: {
     toggleCart() {
       this.showCart = !this.showCart;
+    }
+  },
+  async mounted() {
+    const authUser = useAuth();
+
+    if (authUser.userID) {
+      this.cart = await getCartItems(authUser.userID);
     }
   }
 };

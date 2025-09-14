@@ -10,7 +10,6 @@ import za.ac.cput.domain.review.Review;
 import za.ac.cput.domain.user.*;
 import za.ac.cput.factory.user.AddressFactory;
 import za.ac.cput.factory.user.CardFactory;
-import za.ac.cput.factory.user.ContactFactory;
 import za.ac.cput.factory.user.UserFactory;
 
 import java.time.LocalDate;
@@ -27,15 +26,12 @@ class OrderFactoryTest {
         LocalDate deliveryDate = LocalDate.parse("2025-05-10");
         Status status = Status.Busy;
 
-        List<Product> wishlistItems = new ArrayList<Product>();
         List<Review> reviews = new ArrayList<Review>();
 
         Card card = CardFactory.createCard(987554456, "Ozow", "Visa_4456", "4456", "Visa");
         Address shippingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
         Address billingAddress = AddressFactory.createAddress(3454, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
-        Contact contact = ContactFactory.createContact(1, "0987654321", "test@gmail.com");
-
-        User user = UserFactory.createUser(1, "Name", "Middle", "Last", "password123", wishlistItems, reviews, card, shippingAddress, billingAddress, contact);
+        User user = UserFactory.createUser("Name", "Middle", "Last", "password123", reviews, card, shippingAddress, billingAddress, "test@gmail.com", "0987654321");
         Order order = OrderFactory.createOrder(1,user,orderDate,deliveryDate,8000,status);
         assertNotNull(order);
         System.out.println(order);
@@ -50,11 +46,9 @@ class OrderFactoryTest {
         Card card = CardFactory.createCard(987554456, "Ozow", "Visa_4456", "4456", "Visa");
         Address shippingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
         Address billingAddress = AddressFactory.createAddress(3454, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
-        Contact contact = ContactFactory.createContact(1, "0987654321", "test@gmail.com");
-        List<Product> wishlistItems = new ArrayList<Product>();
         List<Review> reviews = new ArrayList<Review>();
 
-        User user = UserFactory.createUser(1, "Name", "Middle", "Last", "password123", wishlistItems, reviews, card, shippingAddress, billingAddress, contact);
+        User user = UserFactory.createUser("Name", "Middle", "Last", "password123", reviews, card, shippingAddress, billingAddress, "test@gmail.com", "0987654321");
 
         Order orderWithInvalidOrderDate = OrderFactory.createOrder(1,user,null,deliveryDate,8000,status);
         assertNull(orderWithInvalidOrderDate);
@@ -68,11 +62,10 @@ class OrderFactoryTest {
         Card card = CardFactory.createCard(987554456, "Ozow", "Visa_4456", "4456", "Visa");
         Address shippingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
         Address billingAddress = AddressFactory.createAddress(3454, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
-        Contact contact = ContactFactory.createContact(1, "0987654321", "test@gmail.com");
         List<Product> wishlistItems = new ArrayList<Product>();
         List<Review> reviews = new ArrayList<Review>();
 
-        User user = UserFactory.createUser(1, "Name", "Middle", "Last", "password123", wishlistItems, reviews, card, shippingAddress, billingAddress, contact);
+        User user = UserFactory.createUser("Name", "Middle", "Last", "password123", reviews, card, shippingAddress, billingAddress, "test@gmail.com", "0987654321");
         Order orderWithInvalidDeliveryDate = OrderFactory.createOrder(1,user,orderDate,null,8000,status);
         assertNull(orderWithInvalidDeliveryDate);
         System.out.println(orderWithInvalidDeliveryDate);
@@ -86,11 +79,9 @@ class OrderFactoryTest {
         Card card = CardFactory.createCard(987554456, "Ozow", "Visa_4456", "4456", "Visa");
         Address shippingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
         Address billingAddress = AddressFactory.createAddress(3454, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
-        Contact contact = ContactFactory.createContact(1, "0987654321", "test@gmail.com");
-        List<Product> wishlistItems = new ArrayList<Product>();
         List<Review> reviews = new ArrayList<Review>();
 
-        User user = UserFactory.createUser(1, "Name", "Middle", "Last", "password123", wishlistItems, reviews, card, shippingAddress, billingAddress, contact);
+        User user = UserFactory.createUser("Name", "Middle", "Last", "password123", reviews, card, shippingAddress, billingAddress, "test@gmail.com", "0987654321");
         Order orderWithInvalidStatus = OrderFactory.createOrder(1,user,orderDate,deliveryDate,8000,null);
         assertNull(orderWithInvalidStatus);
         System.out.println(orderWithInvalidStatus);
@@ -104,9 +95,8 @@ class OrderFactoryTest {
         Card card = CardFactory.createCard(987554456, "Ozow", "Visa_4456", "4456", "Visa");
         Address shippingAddress = AddressFactory.createAddress(3453, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
         Address billingAddress = AddressFactory.createAddress(3454, "apartment", "Cape Town", "237 Nkani Street", "7894", "7570", Type.Both);
-        Contact contact = ContactFactory.createContact(1, "0987654321", "test@gmail.com");
 
-        User user = UserFactory.createUser(2, "Cart", "Test", "User", "password123", wishlistItems, reviews, card, shippingAddress, billingAddress, contact);
+        User user = UserFactory.createUser("Name", "Middle", "Last", "password123", reviews, card, shippingAddress, billingAddress, "test@gmail.com", "0987654321");
 
         Order cart = OrderFactory.createCart(user);
 

@@ -68,6 +68,11 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findByStatus(status);
     }
 
+    public Order getCart(String email) {
+        return orderRepository.findByUserEmailAndStatus(email, Status.Cart)
+                .orElse(null);
+    }
+
     @Override
     public Order getActiveCart(User user) {
         return orderRepository.findByUserAndStatus(user, Status.Cart)

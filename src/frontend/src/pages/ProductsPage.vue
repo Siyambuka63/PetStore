@@ -32,14 +32,20 @@
         <!-- Product list -->
         <div v-else class="products-grid">
           <div class="product-card" v-for="product in products" :key="product.id">
-            <img
+            <img v-if="product.imageAddress"
                 :src="product.imageAddress ? `http://localhost:8082/productImages/${product.imageAddress}` : '/productImages/placeholder.jpg'"
                 :alt="product.productName"
             />
-            <h2>{{ product.productName }}</h2>
+            <img v-else src="@/assets/logo.png" v-bind:alt="product.productName">
+            <span class="price" v-if="product.onSale">
+              Was: <s>R{{ product.price.toFixed(2) }}</s>
+              Now: R{{ product.salePrice.toFixed(2) }}
+            </span>
+            <span class ="price" v-else v-text="'R' + product.price.toFixed(2)"></span>
             <p>{{ product.description }}</p>
-            <span class="price">R{{ product.price.toFixed(2) }}</span>
-            <button>Add to Cart</button>
+            <button v-if="product.stock > 0 && product.on_Sale" class="cart" @click="handleAddItem(userID, product.id, product.salePrice, 1)">Add to Cart</button>
+            <button v-else-if="product.stock > 0" class="cart" @click="handleAddItem(userID, product.id, product.price, 1)">Add to Cart</button>
+            <button class="wishlist" @click="handleAddItemToWishlist(userID, product.id)">Add to Wishlist</button>
           </div>
         </div>
       </main>
@@ -50,6 +56,9 @@
 <script>
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import axiosInstance from "@/api/AxiosInstance";
+import {addItemToWishlist} from "@/services/WishlistService";
+import {addItem} from "@/services/CartService";
+import {useAuth} from "@/Auth";
 
 export default {
   name: "ProductsPage",
@@ -61,9 +70,28 @@ export default {
       products: [],
       loading: true,
       error: null,
+      userID: null,
     };
   },
   methods: {
+    async handleAddItem(userID, productID, price, quantity){
+      //const router = useRouter();
+
+      if (userID) {
+        await addItem(userID, productID, price, quantity);
+      } else {
+        await this.$router.push("/login");
+      }
+    },
+    async handleAddItemToWishlist(userID, productID){
+      //const router = useRouter();
+
+      if (userID) {
+        await addItemToWishlist(userID, productID);
+      } else {
+        await this.$router.push("/login");
+      }
+    },
     async fetchProducts() {
       try {
         const response = await axiosInstance.get("/petstore/product/getAll");
@@ -83,9 +111,13 @@ export default {
         this.loading = false;
       }
     },
+
   },
   mounted() {
+    const auth = useAuth();
+
     this.fetchProducts();
+    this.userID = auth.userID;
   },
 };
 </script>
@@ -212,7 +244,8 @@ export default {
   color: #0984e3;
 }
 
-.product-card button {
+.product-card .cart {
+  margin: 5px;
   border: none;
   border-radius: 5px;
   padding: 8px 12px;
@@ -222,7 +255,22 @@ export default {
   font-weight: bold;
 }
 
-.product-card button:hover {
+.product-card .cart:hover {
   background: #0652DD;
+}
+
+.product-card .wishlist {
+  margin: 5px;
+  border: 2px solid #0984e3;
+  border-radius: 5px;
+  padding: 8px 12px;
+  background: white;
+  color: #0984e3;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.product-card .wishlist:hover {
+  background: #f1f1f1;
 }
 </style>
