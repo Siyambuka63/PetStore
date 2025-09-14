@@ -35,13 +35,13 @@ export default {
 
 .my_account {
   border-radius: 8px;
-  border: 2px solid #dfe6e9;
+  border: 2px solid #ccc;
 }
 
 .my_account .header {
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  border-bottom: 2px solid #dfe6e9;
+  border-bottom: 2px solid #ccc;
   padding-left: 20px;
   display: flex;
   gap: 10%;
