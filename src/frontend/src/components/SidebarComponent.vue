@@ -10,9 +10,7 @@
         <ul>
           <li><router-link to="/profile">My Profile</router-link></li>
           <li><router-link to="/wishlist">My Wishlist</router-link></li>
-          <li><router-link to="/reviews">My Reviews</router-link></li>
           <li><router-link to="/orders">My Orders</router-link></li>
-          <li><router-link to="/settings">Settings</router-link></li>
           <li><router-link to="/logout">Logout</router-link></li>
         </ul>
       </div>
@@ -37,13 +35,13 @@ export default {
 
 .my_account {
   border-radius: 8px;
-  border: 2px solid #dfe6e9;
+  border: 2px solid #ccc;
 }
 
 .my_account .header {
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  border-bottom: 2px solid #dfe6e9;
+  border-bottom: 2px solid #ccc;
   padding-left: 20px;
   display: flex;
   gap: 10%;
