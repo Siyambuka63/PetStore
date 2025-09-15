@@ -14,14 +14,23 @@ const store = orderStore();
     <div v-if="orders.length" class="order-content">
       <h1 v-for="user in getUserByEmail(userEmail)" :key="user.id"> {{ user.firstName }}'s Orders</h1>
       <div v-for="order in getOrderByEmail(userEmail)" v-bind:key="order.id" id="orders">
+        <div v-if="order.status === Cart">
         <h1>Order ID:{{order.id}}</h1>
         <p>delivery date: {{ order.deliveryDate }}</p>
         <p>order date:{{ order.orderDate }}</p>
         <p>price:{{ order.price }}</p>
         <p>status:{{ order.status }}</p>
+        </div>
+        <div v-else>
+          <h1>Order ID:{{order.id}}</h1>
+          <p>order date:{{ order.orderDate }}</p>
+          <p>price:{{ order.price }}</p>
+          <p>status:{{ order.status }}</p>
+        </div>
         <router-link to="/orderItem">
           <button @click="store.setOrderId(order.id)">View order</button>
         </router-link>
+
       </div>
     </div>
     <div v-else class="no-orders">
