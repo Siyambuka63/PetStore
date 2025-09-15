@@ -14,7 +14,7 @@ const store = orderStore();
     <div v-if="orders.length" class="order-content">
       <h1 v-for="user in getUserByEmail(userEmail)" :key="user.id"> {{ user.firstName }}'s Orders</h1>
       <div v-for="order in getOrderByEmail(userEmail)" v-bind:key="order.id" id="orders">
-
+        <h1>Order ID:{{order.id}}</h1>
         <p>delivery date: {{ order.deliveryDate }}</p>
         <p>order date:{{ order.orderDate }}</p>
         <p>price:{{ order.price }}</p>
