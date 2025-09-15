@@ -1,7 +1,7 @@
 <script setup>
 import {orderStore} from "@/services/OrderStore";
 import {useAuth} from "@/Auth";
-const email = useAuth().getEmail();
+const userEmail = useAuth().getEmail();
 const store = orderStore();
 </script>
 <template>
@@ -20,8 +20,9 @@ const store = orderStore();
 
 
   <div v-if="orders.length" class="order-content">
-    <h1> {{user.firstName}} Orders</h1>
-    <div v-for="order in orders" v-bind:key="order.id" id="orders">
+    <h1 v-for="user in getUserByEmail(userEmail)" :key="user.id"> {{user.firstName}}'s Orders</h1>
+    <div v-for="order in getOrderByEmail(userEmail)" v-bind:key="order.id" id="orders">
+
       <p>delivery date: {{order.deliveryDate}}</p>
       <p>order date:{{order.orderDate}}</p>
       <p>price:{{order.price}}</p>
@@ -32,15 +33,15 @@ const store = orderStore();
     </div>
   </div>
   <div v-else class="no-orders">
-    <div v-for="user in getUserByEmail(email)" :key="user.id">
-    <p>no orders, start now {{user.firstName}}</p>
-    </div>
+    <p v-for="user in getUserByEmail(userEmail)" :key="user.id">no orders yet, start now {{user.firstName}}!</p>
+
   </div>
 </template>
 
 
 <script>
 import OrderService from "@/services/OrderService";
+
 export default {
   name: "UserOrders",
   data() {
@@ -63,13 +64,18 @@ export default {
     },
     getUserByEmail(email) {
       return this.users.filter(user => user.email === email);
+    },
+    getOrderByEmail(email) {
+      return this.orders.filter(order => order.user?.email === email);
     }
   },
-  created() {
+  mounted() {
     this.getOrder();
     this.getUser();
+    this.getOrderByEmail();
     this.getUserByEmail();
-  }
+  },
+
 };
 </script>
 
