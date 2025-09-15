@@ -9,6 +9,9 @@ class OrderService{
     getUser(){
         return axios.get(`${USER_URL}/getAll`)
     }
+    getOrderByEmail(email) {
+        return axios.get(`${BASE_URL}/findByContactEmail/${email}`)
+    }
 }
 
-export default new OrderService()
+ export default new OrderService()
