@@ -4,7 +4,7 @@
     <HeaderComponent />
 
     <main>
-      <h1>Products</h1>
+      <h1 style="padding-left: 30px">Products</h1>
 
       <!-- Show loading or error -->
       <p v-if="loading">Loading products...</p>
@@ -40,12 +40,12 @@
           <p><strong>Rating:</strong> {{ product.rating }}</p>
 
           <!-- Add to cart -->
-          <button>
+          <button @click="handleAddItem(userID, product.id, product.onSale ? product.salePrice : product.price, 1)" class="cart">
             Add to Cart
           </button>
 
           <!-- Add to wishlist -->
-          <button>
+          <button @click="handleAddItemToWishlist(userID, product.id)" class="wishlist">
             Add to Wishlist
           </button>
 
@@ -115,19 +115,25 @@ export default {
     const auth = useAuth();
 
     this.fetchProducts();
-    this.userID = auth.userID;
+    this.userID = auth.getEmail();
   },
 };
 </script>
 
 <style scoped>
+.products {
+  width: calc(100% - 60px);
+  padding: 0 30px;
+  gap: 30px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
 
 .product-card {
-  border: 1px solid #dfe6e9;
+  border: 2px solid #ccc;
   border-radius: 8px;
   padding: 15px;
   text-align: center;
-  background: #fff;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

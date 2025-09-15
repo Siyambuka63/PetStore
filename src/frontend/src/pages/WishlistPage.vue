@@ -9,7 +9,7 @@
         <div v-if="!items || items.length === 0"> You have no items wishlisted </div>
         <div v-for="(item, index) in items" :key="index" class="wishlist-item">
           <div class="left-section">
-            <img class="icon" v-if="item.image_address" :src="require(`@/assets/${item.image_address}`)" v-bind:alt="item.productName">
+            <img class="icon" v-if="item.imageAddress" :src="`/productImages/${item.imageAddress}`" v-bind:alt="item.productName">
             <img class="icon" v-else src="@/assets/logo.png" v-bind:alt="item.productName">
           </div>
 

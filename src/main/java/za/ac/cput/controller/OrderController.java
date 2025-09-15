@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import za.ac.cput.domain.order.Order;
 import za.ac.cput.domain.order.Status;
 import za.ac.cput.domain.user.User;
+import za.ac.cput.domain.user.wishlist.Wishlist;
 import za.ac.cput.service.impl.OrderServiceImpl;
 import za.ac.cput.service.user.impl.UserServiceImpl;
 
@@ -45,6 +46,8 @@ public class OrderController {
     public List<Order> getAll(){
         return service.getAll();
     }
+    @GetMapping("findByContactEmail/{email}")
+    public List<Order> findByContactEmail(@PathVariable String email) { return service.findbyContactEmail(email); }
 
     @GetMapping("getCart/{email}")
     public Order getCart(@PathVariable String email){
