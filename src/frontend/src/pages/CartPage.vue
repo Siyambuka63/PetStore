@@ -5,14 +5,14 @@
 
     <!-- Cart Items -->
     <div v-if="cartItems.length > 0" class="cart-items">
-      <div v-for="item in cartItems" :key="item.productId" class="cart-item">
-        <img :src="item.imageUrl" alt="product" class="cart-img" />
+      <div v-for="item in cartItems" :key="item.product.id" class="cart-item">
+        <img :src="item.product.imageUrl" alt="product" class="cart-img" />
         <div class="cart-details">
-          <h3>{{ item.productName }}</h3>
-          <p>Price: R{{ item.price.toFixed(2) }}</p>
+          <h3>{{ item.product.name }}</h3>
+          <p>Price: R{{ item.product.price.toFixed(2) }}</p>
           <p>Quantity: {{ item.quantity }}</p>
         </div>
-        <button v-on:click="removeFromCart(item.productId)" class="remove-btn">Remove</button>
+        <button v-on:click="removeFromCart(item.product.id)" class="remove-btn">Remove</button>
       </div>
     </div>
 
@@ -29,22 +29,23 @@
   </div>
 </template>
 
-
 <script setup>
-import { ref, computed, onMounted } from "vue";
-import axios from "axios";
+import {computed, onMounted, ref} from "vue";
+import {getCartItems, makeOrder, removeItem} from "@/services/CartService";
+import {useAuth} from "@/Auth";
+import {useRouter} from "vue-router"
 
 const cartItems = ref([]);
+
+const user= useAuth();
+const email= user.getEmail();
+const router = useRouter;
+
 
 // Load active cart from backend
 const loadCart = async () => {
   try {
-    const res = await axios.get("/petstore/cart/getActiveCart/1");
-    if (res.data && res.data.items) {
-      cartItems.value = res.data.items;
-    } else {
-      cartItems.value = [];
-    }
+    cartItems.value = await getCartItems(email);
   } catch (err) {
     console.error("Error loading cart:", err);
   }
@@ -53,8 +54,8 @@ const loadCart = async () => {
 // Remove an item
 const removeFromCart = async (productId) => {
   try {
-    await axios.delete(`/petstore/cart/removeItem/${productId}`);
-    cartItems.value = cartItems.value.filter(item => item.id !== productId);
+    await removeItem(email, productId);
+    cartItems.value = await getCartItems(email);
   } catch (err) {
     console.error("Error removing item:", err);
   }
@@ -63,9 +64,10 @@ const removeFromCart = async (productId) => {
 // Checkout
 const checkout = async () => {
   try {
-    const res = await axios.post("/petstore/cart/checkout/1");
-    alert("Checkout successful! Order status: " + res.data.status);
+    await makeOrder(email, totalPrice.value);
+    alert("Checkout successful!");
     cartItems.value = [];
+    await router.push("/orders");
   } catch (err) {
     console.error("Error during checkout:", err);
   }
@@ -75,8 +77,9 @@ onMounted(loadCart);
 
 // Total Price
 const totalPrice = computed(() =>
-    cartItems.value.reduce((sum, item) => sum + item.price * item.quantity, 0)
+    cartItems.value.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
 );
+
 </script>
 
 <style scoped>
@@ -193,4 +196,3 @@ const totalPrice = computed(() =>
   background: #009ac1;
 }
 </style>
-
