@@ -3,6 +3,8 @@
 
     <header class="header">
       <h1 class="title">Pet Store - Product Details</h1>
+      <h2 class="cart-title">{{cart.length}} items in cart</h2>
+      <button v-on:click="navigateTo('cart')">View Cart</button>
     </header>
 
 
@@ -120,8 +122,8 @@ export default {
       this.selectedProduct = product;
     },
 
-    addToCart() {
-      alert(this.selectedProduct.title + " added to cart!");
+    addToCart(product) {
+      this.addToCart(product);
     }
   }
 };
