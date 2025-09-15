@@ -1,36 +1,27 @@
 <script setup>
 import {orderStore} from "@/services/OrderStore";
+import HeaderComponent from "@/components/HeaderComponent.vue";
+import SidebarComponent from "@/components/SidebarComponent.vue";
 
 const store = orderStore();
 
 let id = store.getOrderId();
 </script>
 <template>
-    <!-- Header part -->
-    <div class="header">
-      <img src="@/assets/logo5-removebg-preview.png" alt="logo 3" >
-    </div>
-    <div class="topnav">
-      <p><router-link to="/profile">My Profile</router-link></p>
-      <p><router-link to="/wishlist">My Wishlist</router-link></p>
-      <p><router-link to="/reviews">My Reviews</router-link></p>
-      <p><router-link to="/orders">My Orders</router-link></p>
-      <p><router-link to="/settings">Settings</router-link></p>
-      <p><router-link to="/logout">Logout</router-link></p>
-    </div>
-
+  <HeaderComponent/>
+  <div class="container">
+    <sidebar-component/>
     <!-- Main Content -->
     <div class="orderItems-content">
-
-      <div v-if="orderItems.length" ><!--check if a orderitem exists-->
+      <div v-if="orderItems.length"><!--check if a orderitem exists-->
         <div v-for="orderItem in getOrderItems(id)" :key="orderItem.id" class="orders-list">
           <div class="order-details">
             <!-- Product details-->
             <div v-for="product in getProductById(orderItem.id.productId)" :key="product.id">
               <h1>Product Details</h1>
-              <p>{{product.imageAddress}}</p>
-              <p>{{product.brand}}</p>
-              <p>{{product.description}}</p>
+              <p>{{ product.imageAddress }}</p>
+              <p>{{ product.brand }}</p>
+              <p>{{ product.description }}</p>
             </div>
 
             <!-- Order Items -->
@@ -51,21 +42,24 @@ let id = store.getOrderId();
         <p>No order items found.</p>
       </div>
     </div>
-
+  </div>
 </template>
 
 <script>
 import OrderService from "@/services/OrderService";
 import OrderItemService from "@/services/OrderItemService";
 import ProductService from "@/services/ProductService";
+
 export default {
   name: "UserOrders",
   data() {
-    return { orders: [],
+    return {
+      orders: [],
       orderItems: [],
       products: [],
-      pickedSort:"",
-      buttonText: "View Order Detail",};
+      pickedSort: "",
+      buttonText: "View Order Detail",
+    };
   },
   methods: {
     getOrder() {
@@ -73,7 +67,7 @@ export default {
         this.orders = response.data;
       });
     },
-    getOrderItem(){
+    getOrderItem() {
       OrderItemService.getOrderItem().then(response => {
         this.orderItems = response.data;
       })
@@ -98,63 +92,47 @@ export default {
   },
 
 
-
 };
 </script>
 
 <style scoped>
-.header {
+.container {
   display: flex;
-  gap: 10%;
-  align-items: center;
-  justify-content: center;
-  background: #0984e3;
-  color: white;
-  padding: 0 30px;
-}
-.header img{
-  height: 120px;
-}
-.topnav{
-  display: flex;
-  gap: 10%;
-  align-items: center;
-  justify-content: center;
-  background: #0984e3;
-}
-.topnav a{
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
-}
-.topnav a:hover {
-  background-color: #ddd;
-  color: darkblue;
+  width: 100%;
 }
 
 /* Main Content */
 .orderItems-content {
-  padding: 30px 30px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
   overflow-y: auto;
-  gap: 10px;
+  width: 70%;
+  padding: 10px 30px;
 }
 
 /* Orders */
-.orders-list{
-  border: darkgray solid 2px;
-  padding: 20px 20px;
-  font-weight: bold;
-  width: 90%;
-}
-.orders-list button{
-  border-radius: 5px;
+.orders-list {
+  border: 2px solid #ccc;
+  border-radius: 8px;
   padding: 10px;
   font-weight: bold;
+  width: calc(100% - 40px);
 }
+
+.orders-list button {
+  border: none;
+  color: white;
+  border-radius: 8px;
+  padding: 10px;
+  font-weight: bold;
+  background: #0984e3;
+}
+
+.orders-list button:hover {
+  background: #0652DD;
+}
+
 .no-orders {
   text-align: center;
   font-size: 1.1em;
