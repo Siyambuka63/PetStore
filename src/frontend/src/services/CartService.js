@@ -1,6 +1,8 @@
+import axios from "axios";
+
 export async function getCart(userID){
-    const response = await fetch(`http://localhost:8080/petstore/order/getCart/${userID}`);
-    return await response.json();
+    const res = await axios.get(`/petstore/order/getCart/${userID}`);
+    return await res.data;
 }
 
 export async function getCartItems(userId) {
@@ -9,9 +11,9 @@ export async function getCartItems(userId) {
     if (!cart) {
         return [];
     }
+    const res = await axios.get('/petstore/order-item/getByOrderId/'+ cart.id);
 
-    const response = await fetch(`http://localhost:8080/petstore/order-item/getByOrderId/${cart.id}`);
-    const data = await response.json();
+    const data = await res.data;
     const orderItems = Array.isArray(data) ? data : data.orderItems ?? [];
 
     const products = [];
@@ -29,29 +31,26 @@ export async function getCartItems(userId) {
 export async function removeItem(userID, itemId){
     const cart = await getCart(userID);
 
-    await fetch(`http://localhost:8080/petstore/order-item/delete/${cart.id}/${itemId}`);
+    await  axios.delete('/petstore/order-item/delete/'+cart.id+'/'+itemId);
 }
 
 export async function addItem(userID, itemId, pricePerItem, quantity){
     const cart = await getCart(userID);
-    await fetch(`http://localhost:8080/petstore/order-item/create`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            id: {
-                orderId: cart.id,
-                productId: itemId
-            },
-            pricePerItem: pricePerItem,
-            quantity: quantity,
-            totalPrice: pricePerItem * quantity
-        })
+    console.log(cart);
+    await axios.post("/petstore/order-item/create", {
+        id: {
+            orderId: cart.id,
+            productId: itemId
+        },
+        pricePerItem: pricePerItem,
+        quantity: quantity,
+        totalPrice: pricePerItem * quantity
     });
 }
 
 export async function getProduct(id){
-    const response = await fetch(`http://localhost:8080/petstore/product/read/${id}`);
-    return await response.json()
+    const res = await axios.get('/petstore/product/read/'+id);
+    return await res.data;
 }
 
 export async function makeOrder(userID, price){
@@ -61,9 +60,7 @@ export async function makeOrder(userID, price){
     cart.orderDate = Date.now();
     cart.deliveryDate = Date.now() + 7;
 
-     await fetch(`http://localhost:8080/petstore/order/create`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({cart})
+    await axios.post('/petstore/order/create', {
+        cart
     });
 }

@@ -15,21 +15,29 @@ let id = store.getOrderId();
     <div class="orderItems-content">
       <div v-if="orderItems.length"><!--check if a orderitem exists-->
         <div v-for="orderItem in getOrderItems(id)" :key="orderItem.id" class="orders-list">
+          <h1>Order item #{{orderItem.id.orderId}}</h1>
           <div class="order-details">
-            <!-- Product details-->
-            <div v-for="product in getProductById(orderItem.id.productId)" :key="product.id">
-              <h1>Product Details</h1>
-              <p>{{ product.imageAddress }}</p>
-              <p>{{ product.brand }}</p>
-              <p>{{ product.description }}</p>
-            </div>
-
             <!-- Order Items -->
-            <h1>Order Items</h1>
-            <p><strong>id:</strong> {{ orderItem.id }}</p>
             <p><strong>Price Per Item:</strong> R{{ orderItem.pricePerItem }}</p>
             <p><strong>Quantity:</strong> {{ orderItem.quantity }}</p>
             <p><strong>Total Price:</strong> R{{ orderItem.totalPrice }}</p>
+
+            <!-- Product details-->
+            <div v-for="product in getProductById(orderItem.id.productId)" :key="product.id" >
+              <h1>Product Summary of {{product.productName}}</h1>
+              <img
+                  :src="product?.imageAddress
+              ? '/productImages/' + product.imageAddress
+              : '/productImages/placeholder.jpg'"
+                  :alt="product.productName"
+              />
+              <p>Brand:{{ product.brand }}</p>
+              <p>Product Description:{{ product.description }}</p>
+              <p>Flavour:{{ product.flavour }}</p>
+              <p>Food type:{{ product.foodType }}</p>
+              <p>Life stage:{{ product.lifeStage }}</p>
+              <p>Rating:{{ product.rating }}</p>
+            </div>
             <router-link to="/orders">
               <button>Order details</button>
             </router-link>
@@ -107,7 +115,6 @@ export default {
   flex-direction: column;
   align-items: center;
   overflow-y: auto;
-  width: 70%;
   padding: 10px 30px;
 }
 
@@ -117,7 +124,8 @@ export default {
   border-radius: 8px;
   padding: 10px;
   font-weight: bold;
-  width: calc(100% - 40px);
+  width: 100%;
+
 }
 
 .orders-list button {
@@ -132,7 +140,12 @@ export default {
 .orders-list button:hover {
   background: #0652DD;
 }
-
+.orders-list img{
+  width: 100%;
+  height: 150px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
 .no-orders {
   text-align: center;
   font-size: 1.1em;

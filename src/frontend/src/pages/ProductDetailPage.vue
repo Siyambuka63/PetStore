@@ -3,6 +3,8 @@
   <div class="product-details">
     <header class="header">
       <h1 class="title">Pet Store - Product Details</h1>
+      <h2 class="cart-title">{{cart.length}} items in cart</h2>
+      <button v-on:click="navigateTo('cart')">View Cart</button>
     </header>
 
     <section class="product-card" v-if="selectedProduct">
@@ -109,10 +111,9 @@ export default {
       const productId = parseInt(this.$route.params.id);
       this.selectedProduct = this.products.find(product => product.id === productId) || null;
     },
-    addToCart() {
-      if (this.selectedProduct) {
-        alert(this.selectedProduct.title + " added to cart!");
-      }
+
+    addToCart(product) {
+      this.addToCart(product);
     }
   }
 };
