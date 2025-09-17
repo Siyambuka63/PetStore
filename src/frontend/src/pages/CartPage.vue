@@ -1,12 +1,12 @@
 <template>
+  <HeaderComponent/>
   <div class="cart-container">
     <h2 class="cart-title">My Cart</h2>
-    <button v-on:click="navigateTo('products')">View Products</button>
 
     <!-- Cart Items -->
     <div v-if="cartItems.length > 0" class="cart-items">
       <div v-for="item in cartItems" :key="item.product.id" class="cart-item">
-        <img :src="item.product.imageUrl" alt="product" class="cart-img" />
+        <img :src="`/productImages/${item.product.imageAddress}`" alt="product" class="cart-img" />
         <div class="cart-details">
           <h3>{{ item.product.name }}</h3>
           <p>Price: R{{ item.product.price.toFixed(2) }}</p>
@@ -33,13 +33,12 @@
 import {computed, onMounted, ref} from "vue";
 import {getCartItems, makeOrder, removeItem} from "@/services/CartService";
 import {useAuth} from "@/Auth";
-import {useRouter} from "vue-router"
+import HeaderComponent from "@/components/HeaderComponent.vue";
 
 const cartItems = ref([]);
 
 const user= useAuth();
 const email= user.getEmail();
-const router = useRouter;
 
 
 // Load active cart from backend
@@ -56,6 +55,7 @@ const removeFromCart = async (productId) => {
   try {
     await removeItem(email, productId);
     cartItems.value = await getCartItems(email);
+    this.$router.go(0);
   } catch (err) {
     console.error("Error removing item:", err);
   }
@@ -67,7 +67,7 @@ const checkout = async () => {
     await makeOrder(email, totalPrice.value);
     alert("Checkout successful!");
     cartItems.value = [];
-    await router.push("/orders");
+    this.$router.push("/orders");
   } catch (err) {
     console.error("Error during checkout:", err);
   }
@@ -123,10 +123,8 @@ const totalPrice = computed(() =>
 }
 
 .cart-img {
-  width: 80px;
-  height: 80px;
+  height: 100px;
   object-fit: cover;
-  border-radius: 8px;
   margin-right: 16px;
 }
 
@@ -146,17 +144,17 @@ const totalPrice = computed(() =>
 }
 
 .remove-btn {
-  background: #ff0207;
-  color: #fff;
   border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.3s;
+  border-radius: 8px;
+  margin: 5px;
+  padding: 10px;
+  color: white;
+  width: 100px;
+  background: #FF2D2D;
 }
 
 .remove-btn:hover {
-  background: #c40004;
+  background: red;
 }
 
 .empty-cart {
@@ -182,17 +180,16 @@ const totalPrice = computed(() =>
 }
 
 .checkout-btn {
-  background: #00ccff;
-  color: #fff;
-  font-weight: 600;
   border: none;
-  padding: 10px 20px;
   border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s;
+  margin: 5px;
+  padding: 10px;
+  color: white;
+  width: 100px;
+  background: #0984e3;
 }
 
 .checkout-btn:hover {
-  background: #009ac1;
+  background: #0652DD;
 }
 </style>

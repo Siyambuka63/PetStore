@@ -3,6 +3,7 @@ export const useAuth = defineStore('user', {
     state: () => ({
         email: null
     }),
+    persist: true,
     actions: {
         getEmail(){
             return this.email;
