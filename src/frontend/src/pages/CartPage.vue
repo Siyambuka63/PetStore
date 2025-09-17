@@ -34,12 +34,13 @@ import {computed, onMounted, ref} from "vue";
 import {getCartItems, makeOrder, removeItem} from "@/services/CartService";
 import {useAuth} from "@/Auth";
 import HeaderComponent from "@/components/HeaderComponent.vue";
+import {useRouter} from "vue-router";
 
 const cartItems = ref([]);
 
 const user= useAuth();
 const email= user.getEmail();
-
+const router = useRouter();
 
 // Load active cart from backend
 const loadCart = async () => {
@@ -55,7 +56,7 @@ const removeFromCart = async (productId) => {
   try {
     await removeItem(email, productId);
     cartItems.value = await getCartItems(email);
-    this.$router.go(0);
+    router.go(0);
   } catch (err) {
     console.error("Error removing item:", err);
   }
@@ -67,7 +68,7 @@ const checkout = async () => {
     await makeOrder(email, totalPrice.value);
     alert("Checkout successful!");
     cartItems.value = [];
-    this.$router.push("/orders");
+    await router.push("/orders");
   } catch (err) {
     console.error("Error during checkout:", err);
   }

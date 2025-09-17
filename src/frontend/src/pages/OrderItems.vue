@@ -13,14 +13,14 @@ let id = store.getOrderId();
     <sidebar-component/>
     <!-- Main Content -->
     <div class="orderItems-content">
-      <div v-if="orderItems.length"><!--check if a orderitem exists-->
+      <div v-if="orderItems.length" class="list"><!--check if a orderitem exists-->
         <div v-for="orderItem in getOrderItems(id)" :key="orderItem.id" class="orders-list">
           <h1>Order item #{{orderItem.id.orderId}}</h1>
           <div class="order-details">
             <!-- Order Items -->
-            <p><strong>Price Per Item:</strong> R{{ orderItem.pricePerItem }}</p>
+            <p><strong>Price Per Item:</strong> R{{ orderItem.pricePerItem.toFixed(2) }}</p>
             <p><strong>Quantity:</strong> {{ orderItem.quantity }}</p>
-            <p><strong>Total Price:</strong> R{{ orderItem.totalPrice }}</p>
+            <p><strong>Total Price:</strong> R{{ orderItem.totalPrice.toFixed(2) }}</p>
 
             <!-- Product details-->
             <div v-for="product in getProductById(orderItem.id.productId)" :key="product.id" >
@@ -31,12 +31,12 @@ let id = store.getOrderId();
               : '/productImages/placeholder.jpg'"
                   :alt="product.productName"
               />
-              <p>Brand:{{ product.brand }}</p>
-              <p>Product Description:{{ product.description }}</p>
-              <p>Flavour:{{ product.flavour }}</p>
-              <p>Food type:{{ product.foodType }}</p>
-              <p>Life stage:{{ product.lifeStage }}</p>
-              <p>Rating:{{ product.rating }}</p>
+              <p>Brand: {{ product.brand }}</p>
+              <p>Product Description: {{ product.description }}</p>
+              <p>Flavour: {{ product.flavour }}</p>
+              <p>Food type: {{ product.foodType }}</p>
+              <p>Life stage: {{ product.lifeStage }}</p>
+              <p>Rating: {{ product.rating }}</p>
             </div>
             <router-link to="/orders">
               <button>Order details</button>
@@ -115,17 +115,22 @@ export default {
   flex-direction: column;
   align-items: center;
   overflow-y: auto;
+  width: 70%;
   padding: 10px 30px;
+}
+
+.list {
+  width: 100%;
 }
 
 /* Orders */
 .orders-list {
   border: 2px solid #ccc;
   border-radius: 8px;
-  padding: 10px;
+  padding: 20px;
   font-weight: bold;
-  width: 100%;
-
+  width: calc(100% - 20px);
+  margin-bottom: 20px;
 }
 
 .orders-list button {
