@@ -1,43 +1,28 @@
 <template>
+  <HeaderComponent/>
   <div class="product-details">
-
     <header class="header">
       <h1 class="title">Pet Store - Product Details</h1>
+      <h2 class="cart-title">{{cart.length}} items in cart</h2>
+      <button v-on:click="navigateTo('cart')">View Cart</button>
     </header>
 
-
-    <div class="product-selector">
-      <button
-          v-for="item in products"
-          :key="item.id"
-          class="selector-button"
-          @click="selectProduct(item)"
-      >
-        {{ item.title }}
-      </button>
-    </div>
-
-
     <section class="product-card" v-if="selectedProduct">
-
       <img
           :src="selectedProduct.image"
           :alt="selectedProduct.title"
           class="product-image"
       />
 
-
       <div class="product-info">
         <h2 class="product-title">{{ selectedProduct.title }}</h2>
         <p class="product-description">{{ selectedProduct.description }}</p>
-
 
         <ul class="product-extra">
           <li><b>Price:</b> {{ selectedProduct.price }}</li>
           <li><b>Quality:</b> {{ selectedProduct.quality }}</li>
           <li><b>Return Policy:</b> {{ selectedProduct.returnPolicy }}</li>
         </ul>
-
 
         <div class="reviews">
           <h3>Customer Reviews</h3>
@@ -48,21 +33,26 @@
           </ul>
         </div>
 
-
         <button class="cta-button" @click="addToCart">
           🛒 Add to Cart
         </button>
       </div>
     </section>
+
+    <div v-else>
+      <p>Product not found.</p>
+    </div>
   </div>
 </template>
 
 <script>
+import HeaderComponent from "@/components/HeaderComponent.vue";
+
 export default {
   name: "ProductDetailsPage",
+  components: {HeaderComponent},
   data() {
     return {
-
       products: [
         {
           id: 1,
@@ -107,28 +97,29 @@ export default {
           image: "https://tse2.mm.bing.net/th/id/OIP.zYgn3Gye6CfPFsYZ1kKdxQHaHa?rs=1&pid=ImgDetMain&o=7&rm=3"
         }
       ],
-
       selectedProduct: null
     };
   },
   created() {
-    this.selectedProduct = this.products[0];
+    this.updateSelectedProduct();
+  },
+  watch: {
+    '$route.params.id': 'updateSelectedProduct'
   },
   methods: {
-
-    selectProduct(product) {
-      this.selectedProduct = product;
+    updateSelectedProduct() {
+      const productId = parseInt(this.$route.params.id);
+      this.selectedProduct = this.products.find(product => product.id === productId) || null;
     },
 
-    addToCart() {
-      alert(this.selectedProduct.title + " added to cart!");
+    addToCart(product) {
+      this.addToCart(product);
     }
   }
 };
 </script>
 
 <style scoped>
-
 .product-details {
   max-width: 900px;
   margin: auto;
@@ -146,26 +137,6 @@ export default {
   color: #333;
 }
 
-
-.product-selector {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.selector-button {
-  margin: 5px;
-  padding: 8px 15px;
-  background: #f0f0f0;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.selector-button:hover {
-  background: #ddd;
-}
-
-
 .product-card {
   display: flex;
   background: #fff;
@@ -174,14 +145,12 @@ export default {
   box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
 }
 
-
 .product-image {
   width: 250px;
   height: auto;
   border-radius: 8px;
   margin-right: 20px;
 }
-
 
 .product-info {
   flex: 1;
@@ -198,7 +167,6 @@ export default {
   color: #555;
 }
 
-
 .product-extra {
   list-style: none;
   padding: 0;
@@ -208,7 +176,6 @@ export default {
 .product-extra li {
   margin-bottom: 5px;
 }
-
 
 .reviews {
   margin-bottom: 20px;
@@ -223,7 +190,6 @@ export default {
   margin-bottom: 5px;
   font-style: italic;
 }
-
 
 .cta-button {
   padding: 10px 20px;
