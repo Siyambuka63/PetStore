@@ -4,7 +4,7 @@
     <HeaderComponent />
 
     <main>
-      <h1 style="padding-left: 30px">Products</h1>
+      <h1 style="padding-centre: 30px">Products</h1>
 
       <!-- Show loading or error -->
       <p v-if="loading">Loading products...</p>
@@ -22,6 +22,10 @@
               :alt="product.productName"
           />
 
+          <!-- Product name -->
+          <p>
+          <strong>{{product.productName}}</strong>
+          </p>
           <!-- Product price -->
           <p class="price">
             <span v-if="product.onSale">
