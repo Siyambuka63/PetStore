@@ -15,17 +15,17 @@ const store = orderStore();
       <h1 v-for="user in getUserByEmail(userEmail)" :key="user.id"> {{ user.firstName }}'s Orders</h1>
       <div v-for="order in getOrderByEmail(userEmail)" v-bind:key="order.id" id="orders">
         <div v-if="order.status === Cart">
-        <h1>Order ID:{{order.id}}</h1>
+        <h1>Order ID: {{order.id}}</h1>
         <p>delivery date: {{ order.deliveryDate }}</p>
-        <p>order date:{{ order.orderDate }}</p>
-        <p>price:{{ order.price }}</p>
-        <p>status:{{ order.status }}</p>
+        <p>order date: {{ order.orderDate }}</p>
+        <p>price: R{{ order.price.toFixed(2) }}</p>
+        <p>status: {{ order.status }}</p>
         </div>
         <div v-else>
-          <h1>Order ID:{{order.id}}</h1>
-          <p>order date:{{ order.orderDate }}</p>
-          <p>price:{{ order.price }}</p>
-          <p>status:{{ order.status }}</p>
+          <h1>Order ID: {{order.id}}</h1>
+          <p>order date: {{ order.orderDate }}</p>
+          <p>price: R{{ order.price.toFixed(2) }}</p>
+          <p>status: {{ order.status }}</p>
         </div>
         <router-link to="/orderItem">
           <button @click="store.setOrderId(order.id)">View order</button>
@@ -102,7 +102,8 @@ export default {
   border-radius: 8px;
   padding: 10px;
   font-weight: bold;
-  width: calc(100% - 40px);
+  width: 100%;
+  margin-bottom: 20px;
 }
 
 #orders button {

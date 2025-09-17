@@ -15,17 +15,17 @@
 
           <div class="info">
             <h3 v-text="item.productName"></h3>
-            <p v-if="item.onSale">
-              Was: <s>R{{ item.price.toFixed(2) }}</s>
-              Now: R{{ item.salePrice.toFixed(2) }}
-            </p>
+            <div v-if="item.onSale">
+              <p>Was: <s>R{{ item.price.toFixed(2) }}</s></p>
+              <p>Now: R{{ item.salePrice.toFixed(2) }}</p>
+            </div>
             <p v-else v-text="'R' + item.price.toFixed(2)"></p>
           </div>
 
           <div class="rating">
             <img v-for="i in Math.ceil(item.rating)" :key="'filled-' + i" class = "stars" src="@/assets/star_filled.png" alt="Filled Star">
 
-            <img v-for="i in Math.ceil(5- item.rating)" :key="'empty-' + i" class = "stars" src="@/assets/star_empty.png" alt="Empty Star">
+            <img v-for="i in Math.floor(5 - item.rating)" :key="'empty-' + i" class = "stars" src="@/assets/star_empty.png" alt="Empty Star">
           </div>
 
           <div class = "buttons">
