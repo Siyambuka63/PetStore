@@ -9,7 +9,6 @@
     <div class="center-section">
       <input
           type="text"
-          v-model="searchQuery"
           placeholder="Search..."
           class="search-bar"
       />
@@ -22,17 +21,26 @@
     <div class="tab cart" @click="toggleCart"> Cart ({{ cart.length }}) </div>
     </div>
 
-
-
     <!-- Cart Dropdown -->
     <div v-if="showCart" class="cart-dropdown">
       <h3>Cart Items</h3>
       <div v-if="cart.length === 0">No items in cart</div>
-      <ul>
-        <li v-for="(item, index) in cart" :key="index">
-          {{ item.product.productName }} - {{ item.quantity }}
-        </li>
-      </ul>
+      <div v-else class="cards">
+        <div v-for="(item, index)  in cart" :key="index" class="card">
+          <img
+              :src="item.product.imageAddress
+              ? '/productImages/' + item.product.imageAddress
+              : '/productImages/placeholder.jpg'"
+              :alt="item.product.productName"
+          />
+          <div>
+            <p>{{ item.product.productName }}</p>
+            <p>Quantity: {{ item.quantity }}</p>
+          </div>
+        </div>
+      </div>
+
+      <button v-if="cart.length > 0" @click="viewCart">View Cart</button>
     </div>
   </div>
 </template>
@@ -52,6 +60,9 @@ export default {
   methods: {
     toggleCart() {
       this.showCart = !this.showCart;
+    },
+    viewCart() {
+      this.$router.push("/cart");
     }
   },
   async mounted() {
@@ -63,7 +74,6 @@ export default {
   }
 };
 </script>
-
 
 <style scoped>
 .header {
@@ -130,6 +140,38 @@ export default {
   padding: 15px;
   width: 260px;
   z-index: 1;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  padding: 10px
+}
+
+.card {
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.card img {
+  height: 50px;
+  align-self: center;
+}
+
+.cart-dropdown button {
+  border: none;
+  border-radius: 8px;
+  margin: 5px;
+  padding: 10px;
+  color: white;
+  width: 100px;
+  background: #0984e3;
+}
+
+.cart-dropdown button:active, .cart-dropdown button:hover {
+  background: #0652DD;
 }
 
 .cart-dropdown h3 {

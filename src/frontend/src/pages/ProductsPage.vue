@@ -4,7 +4,7 @@
     <HeaderComponent />
 
     <main>
-      <h1 style="padding-centre: 30px">Products</h1>
+      <h1 style="padding-left: 30px">Products</h1>
 
       <!-- Show loading or error -->
       <p v-if="loading">Loading products...</p>
@@ -44,12 +44,12 @@
           <p><strong>Rating:</strong> {{ product.rating }}</p>
 
           <!-- Add to cart -->
-          <button @click="handleAddItem(userID, product.id, product.onSale ? product.salePrice : product.price, 1)" class="cart">
+          <button @click="handleAddItem(product.id, product.onSale ? product.salePrice : product.price, 1)" class="cart">
             Add to Cart
           </button>
 
           <!-- Add to wishlist -->
-          <button @click="handleAddItemToWishlist(userID, product.id)" class="wishlist">
+          <button @click="handleAddItemToWishlist(product.id)" class="wishlist">
             Add to Wishlist
           </button>
 
@@ -83,6 +83,7 @@ export default {
     async handleAddItem(productID, price, quantity){
       if (this.userID) {
         await addItem(this.userID, productID, price, quantity);
+        this.$router.go(0);
       } else {
          this.$router.push("/login");
       }

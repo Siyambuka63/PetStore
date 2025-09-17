@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import * as VueRouter from 'vue-router'
 import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import { useAuth } from "@/Auth";
 
 import ProfilePage from "./pages/ProfilePage.vue";
@@ -60,7 +61,8 @@ const router = VueRouter.createRouter({
         },
         {
             path: "/cart",
-            component: CartPage
+            component: CartPage,
+            meta: { requiresAuth: true }
         },
         {
             path: "/logout",
@@ -85,7 +87,10 @@ router.beforeEach((to, from, next) => {
     next()
 })
 
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
+
 createApp(App)
-    .use(createPinia())
+    .use(pinia)
     .use(router)
     .mount('#app')
