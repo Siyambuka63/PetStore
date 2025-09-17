@@ -14,22 +14,28 @@ const store = orderStore();
     <div v-if="orders.length" class="order-content">
       <h1 v-for="user in getUserByEmail(userEmail)" :key="user.id"> {{ user.firstName }}'s Orders</h1>
       <div v-for="order in getOrderByEmail(userEmail)" v-bind:key="order.id" id="orders">
-        <div v-if="order.status === Cart">
-        <h1>Order ID: {{order.id}}</h1>
-        <p>delivery date: {{ order.deliveryDate }}</p>
-        <p>order date: {{ order.orderDate }}</p>
-        <p>price: R{{ order.price.toFixed(2) }}</p>
-        <p>status: {{ order.status }}</p>
+        <div v-if="order.status  !==  'Cart' ">
+          <h1>Order ID: {{order.id}}</h1>
+          <p>delivery date: {{ order.deliveryDate }}</p>
+          <p>order date: {{ order.orderDate }}</p>
+          <p>price: R{{ order.price.toFixed(2) }}</p>
+          <p>status: {{ order.status }}</p>
+          <router-link to="/orderItem">
+            <button @click="store.setOrderId(order.id)">View order</button>
+          </router-link>
         </div>
         <div v-else>
           <h1>Order ID: {{order.id}}</h1>
           <p>order date: {{ order.orderDate }}</p>
-          <p>price: R{{ order.price.toFixed(2) }}</p>
           <p>status: {{ order.status }}</p>
+          <router-link to="/orderItem">
+            <button @click="store.setOrderId(order.id)">View order</button>
+          </router-link>
+          <router-link to="/cart">
+            <button @click="store.setOrderId(order.id)">Checkout</button>
+          </router-link>
         </div>
-        <router-link to="/orderItem">
-          <button @click="store.setOrderId(order.id)">View order</button>
-        </router-link>
+
 
       </div>
     </div>
@@ -86,6 +92,7 @@ export default {
 .container {
   display: flex;
   width: 100%;
+
 }
 
 .order-content {
@@ -95,6 +102,7 @@ export default {
   overflow-y: auto;
   width: 70%;
   padding: 10px 30px;
+  overflow-x: hidden;
 }
 
 #orders {
@@ -113,6 +121,7 @@ export default {
   padding: 10px;
   font-weight: bold;
   background: #0984e3;
+  margin-right: 5px;
 }
 
 #orders button:hover {

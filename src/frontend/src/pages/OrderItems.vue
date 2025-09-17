@@ -15,29 +15,31 @@ let id = store.getOrderId();
     <div class="orderItems-content">
       <div v-if="orderItems.length" class="list"><!--check if a orderitem exists-->
         <div v-for="orderItem in getOrderItems(id)" :key="orderItem.id" class="orders-list">
-          <h1>Order item #{{orderItem.id.orderId}}</h1>
+          <h1>Order item #{{orderItem.id.orderId}}{{orderItem.id.productId}}</h1>
           <div class="order-details">
             <!-- Order Items -->
+            <div v-for="product in getProductById(orderItem.id.productId)" :key="product.id" >
+            <p><strong>Product Name:</strong> {{product.productName}}</p>
             <p><strong>Price Per Item:</strong> R{{ orderItem.pricePerItem.toFixed(2) }}</p>
             <p><strong>Quantity:</strong> {{ orderItem.quantity }}</p>
             <p><strong>Total Price:</strong> R{{ orderItem.totalPrice.toFixed(2) }}</p>
-
+              </div>
             <!-- Product details-->
-            <div v-for="product in getProductById(orderItem.id.productId)" :key="product.id" >
-              <h1>Product Summary of {{product.productName}}</h1>
-              <img
-                  :src="product?.imageAddress
-              ? '/productImages/' + product.imageAddress
-              : '/productImages/placeholder.jpg'"
-                  :alt="product.productName"
-              />
-              <p>Brand: {{ product.brand }}</p>
-              <p>Product Description: {{ product.description }}</p>
-              <p>Flavour: {{ product.flavour }}</p>
-              <p>Food type: {{ product.foodType }}</p>
-              <p>Life stage: {{ product.lifeStage }}</p>
-              <p>Rating: {{ product.rating }}</p>
-            </div>
+<!--            <div v-for="product in getProductById(orderItem.id.productId)" :key="product.id" >-->
+<!--              <h1>Product Summary of {{product.productName}}</h1>-->
+<!--              <img-->
+<!--                  :src="product?.imageAddress-->
+<!--              ? '/productImages/' + product.imageAddress-->
+<!--              : '/productImages/placeholder.jpg'"-->
+<!--                  :alt="product.productName"-->
+<!--              />-->
+<!--              <p>Brand: {{ product.brand }}</p>-->
+<!--              <p>Product Description: {{ product.description }}</p>-->
+<!--              <p>Flavour: {{ product.flavour }}</p>-->
+<!--              <p>Food type: {{ product.foodType }}</p>-->
+<!--              <p>Life stage: {{ product.lifeStage }}</p>-->
+<!--              <p>Rating: {{ product.rating }}</p>-->
+<!--            </div>-->
             <router-link to="/orders">
               <button>Order details</button>
             </router-link>
