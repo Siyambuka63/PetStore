@@ -48,6 +48,13 @@ export async function addItem(userID, itemId, pricePerItem, quantity){
     });
 }
 
+export async function updateQuantity(userID, itemId, quantity){
+    const cart = await getCart(userID);
+
+    await axios.put(`/petstore/order-item/updateQuantity/${cart.id}/${itemId}`,{quantity:quantity});
+
+}
+
 export async function getProduct(id){
     const res = await axios.get(`/petstore/product/read/${id}`);
     return await res.data;
