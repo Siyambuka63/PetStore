@@ -2,6 +2,8 @@
 package za.ac.cput.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.ac.cput.domain.orderItem.OrderItem;
 import za.ac.cput.domain.orderItem.OrderItemId;
@@ -34,6 +36,20 @@ public class OrderItemController {
     public OrderItem update(@RequestBody OrderItem orderItem) {
         return service.update(orderItem);
     }
+
+    @PutMapping("/updateQuantity/{orderId}/{productId}")
+    public ResponseEntity<?> updateQuantity(
+            @PathVariable Long orderId,
+            @PathVariable Long productId,
+            @RequestBody OrderItem orderItem) {
+        OrderItem updated = service.updateQuantity(orderId, productId, orderItem.getQuantity());
+
+        if (updated == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(updated, HttpStatus.OK);
+    }
+
 
     @DeleteMapping("/delete/{orderId}/{productId}")
     public void delete(@PathVariable Long orderId, @PathVariable Long productId) {

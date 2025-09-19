@@ -12,24 +12,17 @@ const store = orderStore();
   <div class="container">
     <sidebar-component/>
     <div v-if="orders.length" class="order-content">
-      <h1 v-for="user in getUserByEmail(userEmail)" :key="user.id"> {{ user.firstName }}'s Orders</h1>
+      <h1 v-for="user in getUserByEmail(userEmail)" :key="user.id"><strong>{{ user.firstName }}'s Orders</strong> </h1>
       <div v-for="order in getOrderByEmail(userEmail)" v-bind:key="order.id" id="orders">
-        <div v-if="order.status === Cart">
-        <h1>Order ID: {{order.id}}</h1>
-        <p>delivery date: {{ order.deliveryDate }}</p>
-        <p>order date: {{ order.orderDate }}</p>
-        <p>price: R{{ order.price.toFixed(2) }}</p>
-        <p>status: {{ order.status }}</p>
-        </div>
-        <div v-else>
-          <h1>Order ID: {{order.id}}</h1>
-          <p>order date: {{ order.orderDate }}</p>
-          <p>price: R{{ order.price.toFixed(2) }}</p>
-          <p>status: {{ order.status }}</p>
-        </div>
-        <router-link to="/orderItem">
-          <button @click="store.setOrderId(order.id)">View order</button>
-        </router-link>
+
+        <h2><strong>Order #{{order.id}}</strong></h2>
+        <p><strong>Order date: </strong>{{ formatDate(order.orderDate) }}</p>
+        <p><strong>Delivery date: </strong>{{ formatDate(order.deliveryDate)}}</p>
+        <p><strong>Total price: </strong>R{{ order.price.toFixed(2) }}</p>
+        <p><strong>Status:</strong> {{ order.status }}</p>
+          <router-link to="/orderItem">
+            <button @click="store.setOrderId(order.id)">View order</button>
+          </router-link>
 
       </div>
     </div>
@@ -55,6 +48,14 @@ export default {
     };
   },
   methods: {
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+    },
     getOrder() {
       OrderService.getOrder().then(response => {
         this.orders = response.data;
@@ -69,7 +70,7 @@ export default {
       return this.users.filter(user => user.email === email);
     },
     getOrderByEmail(email) {
-      return this.orders.filter(order => order.user?.email === email);
+      return this.orders.filter(order => order.user?.email === email && order.status !== 'Cart');
     }
   },
   mounted() {
@@ -86,6 +87,7 @@ export default {
 .container {
   display: flex;
   width: 100%;
+
 }
 
 .order-content {
@@ -95,15 +97,15 @@ export default {
   overflow-y: auto;
   width: 70%;
   padding: 10px 30px;
+  overflow-x: hidden;
 }
 
 #orders {
-  border: 2px solid #ccc;
-  border-radius: 8px;
-  padding: 10px;
-  font-weight: bold;
+  border-radius: 10px;
+  padding: 12px 16px;
   width: 100%;
   margin-bottom: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 #orders button {
@@ -113,6 +115,7 @@ export default {
   padding: 10px;
   font-weight: bold;
   background: #0984e3;
+  margin-right: 5px;
 }
 
 #orders button:hover {

@@ -11,6 +11,11 @@
           <h3>{{ item.product.name }}</h3>
           <p>Price: R{{ item.product.price.toFixed(2) }}</p>
           <p>Quantity: {{ item.quantity }}</p>
+          <div class="quantity-controls">
+            <button v-on:click="decrementQuantity(item.product.id, item.quantity)">-</button>
+            <span>{{item.quantity}}</span>
+            <button v-on:click="incrementQuantity(item.product.id, item.quantity)">+</button>
+          </div>
         </div>
         <button v-on:click="removeFromCart(item.product.id)" class="remove-btn">Remove</button>
       </div>
@@ -31,7 +36,7 @@
 
 <script setup>
 import {computed, onMounted, ref} from "vue";
-import {getCartItems, makeOrder, removeItem} from "@/services/CartService";
+import {getCartItems, makeOrder, removeItem, updateQuantity} from "@/services/CartService";
 import {useAuth} from "@/Auth";
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import {useRouter} from "vue-router";
@@ -81,6 +86,44 @@ const totalPrice = computed(() =>
     cartItems.value.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
 );
 
+//Increse quantity
+const incrementQuantity = async (productId) => {
+  const item = cartItems.value.find(i => i.product.id === productId);
+  if(!item) return;
+
+  item.quantity += 1;
+
+  try {
+   await updateQuantity(email, productId, item.quantity);
+  } catch (err){
+    console.error(err);
+    item.quantity -=1 ;
+  }
+};
+
+//Decrease quantity
+const decrementQuantity = async  (productId) => {
+  const item = cartItems.value.find(i => i.product.id === productId);
+  if (!item) return;
+
+  if(item.quantity > 1) {
+    item.quantity -= 1;
+    try{
+     await updateQuantity(email,productId,item.quantity);
+    }catch(err){
+      console.error(err);
+      item.quantity += 1;
+    }
+  } else {
+    cartItems.value = cartItems.value.filter(i => i.product.id !== productId);
+    try {
+      await removeItem(email,productId);
+    }catch(err){
+      console.error(err);
+      cartItems.value.push(item);
+    }
+  }
+};
 </script>
 
 <style scoped>
@@ -191,6 +234,24 @@ const totalPrice = computed(() =>
 }
 
 .checkout-btn:hover {
+  background: #0652DD;
+}
+
+.quantity-controls {
+  align-items: center;
+  gap: 8px;
+}
+
+.quantity-controls button {
+  background: #0984e3;
+  border: none;
+  border-radius: 6px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.quantity-controls button:hover {
   background: #0652DD;
 }
 </style>
