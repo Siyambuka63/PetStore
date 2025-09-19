@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import za.ac.cput.domain.order.Order;
 import za.ac.cput.domain.order.Status;
+import za.ac.cput.domain.orderItem.OrderItem;
+import za.ac.cput.domain.orderItem.OrderItemId;
 import za.ac.cput.domain.user.User;
 import za.ac.cput.domain.user.wishlist.Wishlist;
 import za.ac.cput.factory.OrderFactory;
@@ -72,7 +74,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> findbyContactEmail(String email) { return orderRepository.findbyContactEmail(email); }
 
-
+// Cart Methods
     public Order getCart(String email) {
         return orderRepository.findByUserEmailAndStatus(email, Status.Cart)
                 .orElse(null);

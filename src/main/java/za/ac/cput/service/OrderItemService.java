@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface OrderItemService extends IService<OrderItem, OrderItemId> {
     public List<OrderItem> getAll();
+
+    OrderItem updateQuantity(Long orderId, Long productId, int quantity);
 }
