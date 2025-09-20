@@ -12,39 +12,28 @@ let id = store.getOrderId();
   <div class="container">
     <sidebar-component/>
     <!-- Main Content -->
-    <div class="orderItems-content">
+    <div class="content">
       <div v-if="orderItems.length" class="list"><!--check if a orderitem exists-->
         <div v-for="orderItem in getOrderItems(id)" :key="orderItem.id" class="orders-list">
-          <h1>Order item #{{orderItem.id.orderId}}</h1>
-          <div class="order-details">
+
+
             <!-- Order Items -->
+            <div v-for="product in getProductById(orderItem.id.productId)" :key="product.id" >
+              <h1>Order details for {{product.productName}}</h1>
+              <img :src="`/productImages/${product.imageAddress}`" alt="product" >
+              <p><strong>Description: </strong> {{product.description}}</p>
+              <p><strong>Sold by:</strong> {{product.brand}}</p>
             <p><strong>Price Per Item:</strong> R{{ orderItem.pricePerItem.toFixed(2) }}</p>
             <p><strong>Quantity:</strong> {{ orderItem.quantity }}</p>
             <p><strong>Total Price:</strong> R{{ orderItem.totalPrice.toFixed(2) }}</p>
+              <router-link to="/orders">
+                <button>Order details</button>
+              </router-link>
+              </div>
 
-            <!-- Product details-->
-            <div v-for="product in getProductById(orderItem.id.productId)" :key="product.id" >
-              <h1>Product Summary of {{product.productName}}</h1>
-              <img
-                  :src="product?.imageAddress
-              ? '/productImages/' + product.imageAddress
-              : '/productImages/placeholder.jpg'"
-                  :alt="product.productName"
-              />
-              <p>Brand: {{ product.brand }}</p>
-              <p>Product Description: {{ product.description }}</p>
-              <p>Flavour: {{ product.flavour }}</p>
-              <p>Food type: {{ product.foodType }}</p>
-              <p>Life stage: {{ product.lifeStage }}</p>
-              <p>Rating: {{ product.rating }}</p>
-            </div>
-            <router-link to="/orders">
-              <button>Order details</button>
-            </router-link>
-          </div>
+
         </div>
       </div>
-
       <!--else statement for check-->
       <div v-else class="no-orders">
         <p>No order items found.</p>
@@ -106,31 +95,25 @@ export default {
 <style scoped>
 .container {
   display: flex;
-  width: 100%;
+  padding: 10px 30px;
+  overflow-x: hidden;
 }
 
 /* Main Content */
-.orderItems-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow-y: auto;
-  width: 70%;
-  padding: 10px 30px;
-}
-
-.list {
+.content{
   width: 100%;
 }
 
-/* Orders */
 .orders-list {
-  border: 2px solid #ccc;
-  border-radius: 8px;
-  padding: 20px;
-  font-weight: bold;
-  width: calc(100% - 20px);
-  margin-bottom: 20px;
+  width: auto;
+  overflow-x: hidden;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 10px;
+  padding: 12px 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .orders-list button {
@@ -145,8 +128,10 @@ export default {
 .orders-list button:hover {
   background: #0652DD;
 }
-.orders-list img{
-  width: 100%;
+
+.content img{
+  float: right;
+  width: 90%;
   height: 150px;
   object-fit: contain;
   margin-bottom: 10px;
