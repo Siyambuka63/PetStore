@@ -12,9 +12,12 @@
           <p>Price: R{{ item.product.price.toFixed(2) }}</p>
           <p>Quantity: {{ item.quantity }}</p>
           <div class="quantity-controls">
-            <button v-on:click="decrementQuantity(item.product.id, item.quantity)">-</button>
-            <span>{{item.quantity}}</span>
-            <button v-on:click="incrementQuantity(item.product.id, item.quantity)">+</button>
+            <input type="number"
+                   v-model.number="item.quantity"
+                   min="1"
+                   @change="updateItemQuantity(item.product.id, item.quantity)"
+                   class="quantity-input"
+                   />
           </div>
         </div>
         <button v-on:click="removeFromCart(item.product.id)" class="remove-btn">Remove</button>
@@ -86,44 +89,22 @@ const totalPrice = computed(() =>
     cartItems.value.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
 );
 
-//Increse quantity
-const incrementQuantity = async (productId) => {
-  const item = cartItems.value.find(i => i.product.id === productId);
-  if(!item) return;
-
-  item.quantity += 1;
-
+//Uodate  quantity
+const updateItemQuantity = async(productId, newQuantity) => {
   try {
-   await updateQuantity(email, productId, item.quantity);
-  } catch (err){
-    console.error(err);
-    item.quantity -=1 ;
+    if(newQuantity<1) {
+      await removeItem(email, productId)
+      cartItems.value = await getCartItems(email);
+      return;
+    }
+    await updateQuantity(email,productId,newQuantity);
+    cartItems.value = await getCartItems(email);
+  } catch(err){
+    console.error("Error updating quantity:", err);
   }
 };
 
-//Decrease quantity
-const decrementQuantity = async  (productId) => {
-  const item = cartItems.value.find(i => i.product.id === productId);
-  if (!item) return;
 
-  if(item.quantity > 1) {
-    item.quantity -= 1;
-    try{
-     await updateQuantity(email,productId,item.quantity);
-    }catch(err){
-      console.error(err);
-      item.quantity += 1;
-    }
-  } else {
-    cartItems.value = cartItems.value.filter(i => i.product.id !== productId);
-    try {
-      await removeItem(email,productId);
-    }catch(err){
-      console.error(err);
-      cartItems.value.push(item);
-    }
-  }
-};
 </script>
 
 <style scoped>
@@ -237,21 +218,12 @@ const decrementQuantity = async  (productId) => {
   background: #0652DD;
 }
 
-.quantity-controls {
-  align-items: center;
-  gap: 8px;
-}
-
-.quantity-controls button {
-  background: #0984e3;
-  border: none;
+.quantity-input {
+  width: 60px;
+  padding: 4px;
+  border: 1px solid #ccc;
   border-radius: 6px;
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
+  text-align: center;
 }
 
-.quantity-controls button:hover {
-  background: #0652DD;
-}
 </style>
