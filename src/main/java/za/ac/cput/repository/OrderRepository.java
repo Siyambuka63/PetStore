@@ -28,6 +28,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Optional<Order> findByUserEmailAndStatus(String email, Status status);
 
-    @Query("SELECT u FROM Order u WHERE u.user.email = :email")
+    @Query("SELECT u FROM Order u WHERE u.user.email = :email order by u.orderDate desc")
     public List<Order> findbyContactEmail(@Param("email") String email);
 }
