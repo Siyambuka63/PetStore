@@ -158,7 +158,7 @@ export default {
 }
 
 .product-card h2 {
-  font-size: 16px;
+  font-size: 18px;
   margin: 5px 0;
   color: #2d3436;
 }
@@ -167,8 +167,8 @@ export default {
   font-size: 14px;
   color: #636e72;
   margin: 5px 0 10px;
-  height: 40px;
-  overflow: hidden;
+  height: auto;
+  overflow: visible;
 }
 
 .product-card .price {
