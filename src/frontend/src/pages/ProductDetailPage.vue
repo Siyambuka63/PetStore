@@ -57,6 +57,12 @@
           > 
             Add to Cart 
           </button> 
+
+          <!-- Add to wishlist -->
+          <button @click="handleAddItemToWishlist(product.id)" class="wishlist">
+            Add to Wishlist
+          </button>
+
         </div> 
       </div> 
     </main> 
@@ -185,3 +191,4 @@ export default {
   text-align: left;
 }
 </style>
+
