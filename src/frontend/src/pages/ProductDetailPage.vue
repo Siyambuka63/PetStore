@@ -73,6 +73,7 @@
 import HeaderComponent from "@/components/HeaderComponent.vue"; 
 import axiosInstance from "@/api/AxiosInstance"; 
 import { addItem } from "@/services/CartService"; 
+  import { addItemToWishlist } from "@/services/WishlistService";
 import { useAuth } from "@/Auth"; 
 
 export default { 
@@ -199,5 +200,6 @@ export default {
   text-align: left;
 }
 </style>
+
 
 
