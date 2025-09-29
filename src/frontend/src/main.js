@@ -56,7 +56,8 @@ const router = VueRouter.createRouter({
             component: SignUpPage 
         },
         {
-            path: "/product",
+            path: "/products/:id",
+            name: "ProductDetails",
             component: ProductDetailsPage
         },
         {
