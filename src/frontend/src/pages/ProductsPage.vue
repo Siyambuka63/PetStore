@@ -14,18 +14,23 @@
       <div v-else class="products">
         <div v-for="product in products" :key="product.id" class="product-card">
 
-          <!-- Product image -->
-          <img
-              :src="product.imageAddress
-              ? '/productImages/' + product.imageAddress
-              : '/productImages/placeholder.jpg'"
-              :alt="product.productName"
-          />
+          <!-- Clickable Product image -->
+          <router-link :to="`/products/${product.id}`">
+            <img
+                :src="product.imageAddress
+                ? '/productImages/' + product.imageAddress
+                : '/productImages/placeholder.jpg'"
+                :alt="product.productName"
+            />
+          </router-link>
 
-          <!-- Product name -->
+          <!-- Clickable Product name -->
           <p>
-          <strong>{{product.productName}}</strong>
+            <router-link :to="`/products/${product.id}`" class="product-link">
+              <strong>{{ product.productName }}</strong>
+            </router-link>
           </p>
+
           <!-- Product price -->
           <p class="price">
             <span v-if="product.onSale">
@@ -62,9 +67,9 @@
 <script>
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import axiosInstance from "@/api/AxiosInstance";
-import {addItemToWishlist} from "@/services/WishlistService";
-import {addItem} from "@/services/CartService";
-import {useAuth} from "@/Auth";
+import { addItemToWishlist } from "@/services/WishlistService";
+import { addItem } from "@/services/CartService";
+import { useAuth } from "@/Auth";
 
 export default {
   name: "ProductsPage",
@@ -85,14 +90,14 @@ export default {
         await addItem(this.userID, productID, price, quantity);
         this.$router.go(0);
       } else {
-         this.$router.push("/login");
+        this.$router.push("/login");
       }
     },
     async handleAddItemToWishlist(productID){
       if (this.userID) {
         await addItemToWishlist(this.userID, productID);
       } else {
-         this.$router.push("/login");
+        this.$router.push("/login");
       }
     },
     async fetchProducts() {
@@ -114,7 +119,6 @@ export default {
         this.loading = false;
       }
     },
-
   },
   mounted() {
     const auth = useAuth();
@@ -206,5 +210,14 @@ export default {
 
 .product-card .wishlist:hover {
   background: #f1f1f1;
+}
+
+.product-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.product-link:hover {
+  color: #0984e3;
 }
 </style>
