@@ -99,6 +99,14 @@ export default {
         this.loading = false; 
       } 
     }, 
+
+    async handleAddItemToWishlist(productID){
+      if (this.userID) {
+        await addItemToWishlist(this.userID, productID);
+      } else {
+        this.$router.push("/login");
+      }
+    },
     async handleAddItem(productID, price, quantity) { 
       if (this.userID) { 
         await addItem(this.userID, productID, price, quantity); 
@@ -191,4 +199,5 @@ export default {
   text-align: left;
 }
 </style>
+
 
