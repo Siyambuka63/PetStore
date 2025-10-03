@@ -1,8 +1,6 @@
 package za.ac.cput.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import za.ac.cput.domain.user.User;
 
 import java.util.List;
 /*Oluhle Makhaye

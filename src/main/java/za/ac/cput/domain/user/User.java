@@ -2,7 +2,7 @@ package za.ac.cput.domain.user;
 
 import jakarta.persistence.*;
 import za.ac.cput.domain.review.Review;
-import za.ac.cput.domain.Product;
+import za.ac.cput.domain.user.Role;
 
 import java.util.List;
 
@@ -15,6 +15,9 @@ public class User {
     private String lastName;
     private String password;
     private String phoneNumber;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Role> roles;
 
     @OneToMany
     private List<Review> reviews;
@@ -70,6 +73,8 @@ public class User {
         return phoneNumber;
     }
 
+    public List<Role> getRoles() {return roles;}
+
     public List<Review> getReviews() {
         return reviews;
     }
@@ -95,6 +100,7 @@ public class User {
                 ", lastName='" + lastName + '\'' +
                 ", password='" + password + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
+                ", roles=" + roles +
                 ", reviews=" + reviews +
                 ", card=" + card +
                 ", shippingAddress=" + shippingAddress +
@@ -109,6 +115,7 @@ public class User {
         private String lastName;
         private String password;
         private String phoneNumber;
+        private List<Role> roles;
         private List<Review> reviews;
         private Card card;
         private Address shippingAddress;
@@ -144,6 +151,11 @@ public class User {
             return this;
         }
 
+        public Builder setRoles(List<Role> roles) {
+            this.roles = roles;
+            return this;
+        }
+
         public Builder setReviews(List<Review> reviews) {
             this.reviews = reviews;
             return this;
@@ -171,6 +183,7 @@ public class User {
             this.lastName = user.lastName;
             this.password = user.password;
             this.phoneNumber = user.phoneNumber;
+            this.roles = user.roles;
             this.reviews = user.reviews;
             this.card = user.card;
             this.shippingAddress = user.shippingAddress;
