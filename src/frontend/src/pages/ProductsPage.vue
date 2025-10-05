@@ -33,14 +33,16 @@
 
           <!-- Product price -->
           <p class="price">
-            <span v-if="product.onSale">
-              Was: <s>R{{ product.price.toFixed(2) }}</s><br>
-              Now: R{{ product.salePrice.toFixed(2) }}
-            </span>
+  <span v-if="product.discountedPrice < product.price">
+    Was: <s>R{{ product.price.toFixed(2) }}</s><br>
+    Now: R{{ product.discountedPrice.toFixed(2) }}
+  </span>
             <span v-else>
-              R{{ product.price.toFixed(2) }}
-            </span>
+    R{{ product.price.toFixed(2) }}
+  </span>
           </p>
+
+
 
           <!-- Description -->
           <p>{{ product.description }}</p>

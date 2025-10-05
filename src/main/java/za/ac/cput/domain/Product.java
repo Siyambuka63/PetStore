@@ -1,5 +1,8 @@
 package za.ac.cput.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -7,6 +10,7 @@ import java.util.List;
  * 222419636
  * product class*/
 
+@JsonDeserialize(builder = Product.Builder.class)
 @Entity
 @Table(name="product")
 public class Product {
@@ -18,8 +22,7 @@ public class Product {
     private String description;
     private float rating;
     private double price;
-    private double salePrice;
-    private boolean onSale;
+    private double discountPercent;
     private int stock;
     private double weight;
     private String brand;
@@ -41,8 +44,7 @@ public class Product {
         description = builder.description;
         rating = builder.rating;
         price = builder.price;
-        salePrice = builder.salePrice;
-        onSale = builder.onSale;
+        discountPercent = builder.discountPercent;
         stock = builder.stock;
         weight = builder.weight;
         brand = builder.brand;
@@ -77,11 +79,13 @@ public class Product {
         return price;
     }
 
-    public double getSalePrice() {
-        return salePrice;
-    }
 
-    public boolean getOnSale() {return onSale;}
+    @Transient // <== prevents this field from being stored in DB
+    @JsonProperty
+    public double getDiscountedPrice() {
+        if (discountPercent <= 0) return price;
+        return price - (price * discountPercent / 100);
+    }
 
     public int getStock() {
         return stock;
@@ -124,8 +128,7 @@ public class Product {
                 ", description='" + description + '\'' +
                 ", rating=" + rating +
                 ", price=" + price +
-                ", salePrice=" + salePrice +
-                ", onSale=" + onSale +
+                ", discountPercent=" + discountPercent +
                 ", stock=" + stock +
                 ", weight=" + weight +
                 ", brand='" + brand + '\'' +
@@ -137,6 +140,7 @@ public class Product {
                 '}';
     }
 
+    @JsonPOJOBuilder(withPrefix = "set") // matches your builder methods
     public static class Builder {
         private long productID;
         private String productName;
@@ -144,8 +148,7 @@ public class Product {
         private String description;
         private float rating;
         private double price;
-        private double salePrice;
-        private boolean onSale;
+        private double discountPercent;
         private int stock;
         private double weight;
         private String brand;
@@ -185,13 +188,8 @@ public class Product {
             return this;
         }
 
-        public Builder setSalePrice(double salePrice) {
-            this.salePrice = salePrice;
-            return this;
-        }
-
-        public Builder setOnSale(boolean onSale) {
-            this.onSale = onSale;
+        public Builder setDiscountPercent(double discountPercent) {
+            this.discountPercent = discountPercent;
             return this;
         }
 
@@ -242,8 +240,7 @@ public class Product {
             this.description = product.description;
             this.rating = product.rating;
             this.price = product.price;
-            this.salePrice = product.salePrice;
-            this.onSale = product.onSale;
+            this.discountPercent = product.discountPercent;
             this.stock = product.stock;
             this.weight = product.weight;
             this.brand = product.brand;

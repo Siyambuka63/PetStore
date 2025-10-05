@@ -54,7 +54,7 @@ class OrderItemControllerTest {
 
         List<String> categories = new ArrayList<>();
 
-        Product product = ProductFactory.createProduct(1,"MissDog", "Nibbles","placeholder.jpg", 4f, 249.99f, 199.99f, true, 23, 1.34f, "SaveMor", "Adult", "Dry", "Dog", "Chicken", categories);
+        Product product = ProductFactory.createProduct(1,"MissDog", "Nibbles","placeholder.jpg", 4f, 249.99f, 13.00f, 23, 1.34f, "SaveMor", "Adult", "Dry", "Dog", "Chicken", categories);
         System.out.println(product);
 
         orderItem = OrderItemFactory.createOrderItem(order, product, 10.0f, 2);

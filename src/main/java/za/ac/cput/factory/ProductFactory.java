@@ -15,8 +15,7 @@ public class ProductFactory {
                                         String imageAddress,
                                         float rating,
                                         float price,
-                                        float salePrice,
-                                        boolean onSale,
+                                        float discountPercent,
                                         int stock,
                                         float weight,
                                         String brand,
@@ -28,7 +27,7 @@ public class ProductFactory {
         if (Helper.isNullOrEmpty(productName) || Helper.isNullOrEmpty(description)) return null;
         if (!Helper.isValidRating(rating)) return null;
         if (!Helper.isValidPrice(price)) return null;
-        if (!Helper.isValidPriceVsSale(price, salePrice)) return null;
+        //if (!Helper.isValidPriceVsSale(price, salePrice)) return null;
         if (stock < 0) return null;
 
         return new Product.Builder()
@@ -38,8 +37,7 @@ public class ProductFactory {
                 .setImageAddress(imageAddress)
                 .setRating(rating)
                 .setPrice(price)
-                .setSalePrice(salePrice)
-                .setOnSale(onSale)
+                .setDiscountPercent(discountPercent)
                 .setStock(stock)
                 .setWeight(weight)
                 .setBrand(brand)
