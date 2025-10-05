@@ -39,11 +39,6 @@ public class ProductController {
     @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable long id) { service.delete(id); }
 
-//    @GetMapping("/getAll")
-//    public List<Product> getAll() {
-//        return service.getAll();
-//    }
-
     @GetMapping("/getAll")
     public ResponseEntity<List<Product>> getAllProducts() {
         List<Product> products = service.getAllProducts();

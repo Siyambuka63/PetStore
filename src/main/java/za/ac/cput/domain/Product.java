@@ -140,7 +140,7 @@ public class Product {
                 '}';
     }
 
-    @JsonPOJOBuilder(withPrefix = "set") // matches your builder methods
+    @JsonPOJOBuilder(withPrefix = "set")
     public static class Builder {
         private long productID;
         private String productName;
