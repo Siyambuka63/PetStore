@@ -61,11 +61,13 @@
         </div>
       </div>
     </main>
+    <FooterComponent/>
   </div>
 </template>
 
 <script>
 import HeaderComponent from "@/components/HeaderComponent.vue";
+import FooterComponent from "@/components/FooterComponent.vue";
 import axiosInstance from "@/api/AxiosInstance";
 import { addItemToWishlist } from "@/services/WishlistService";
 import { addItem } from "@/services/CartService";
@@ -75,6 +77,7 @@ export default {
   name: "ProductsPage",
   components: {
     HeaderComponent,
+    FooterComponent,
   },
   data() {
     return {
