@@ -27,7 +27,7 @@ class ProductServiceImplTest {
         List<String> categories = new ArrayList<>();
         List<User> wishlistedUser = new ArrayList<>();
 
-        product = ProductFactory.createProduct(1, "Multistage", "Nibbles", "placeholder.jpg", 4f, 249.99f, 199.99f, true, 23, 1.34f, "Jock", "Adult", "Dry", "Dog", "Lamb", categories);}
+        product = ProductFactory.createProduct(1, "Multistage", "Nibbles", "placeholder.jpg", 4f, 249.99f, 15.00f, 23, 1.34f, "Jock", "Adult", "Dry", "Dog", "Lamb", categories);}
 
         @Test
         @Order(1)
@@ -66,7 +66,7 @@ class ProductServiceImplTest {
         @Test
         @Order(4)
         void getAll() {
-            List<Product> products = service.getAll();
+            List<Product> products = service.getAllProducts();
             assertNotNull(products);
             System.out.println(products);
         }

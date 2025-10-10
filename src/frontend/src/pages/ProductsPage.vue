@@ -33,14 +33,16 @@
 
           <!-- Product price -->
           <p class="price">
-            <span v-if="product.onSale">
-              Was: <s>R{{ product.price.toFixed(2) }}</s><br>
-              Now: R{{ product.salePrice.toFixed(2) }}
-            </span>
+  <span v-if="product.discountedPrice < product.price">
+    Was: <s>R{{ product.price.toFixed(2) }}</s><br>
+    Now: R{{ product.discountedPrice.toFixed(2) }}
+  </span>
             <span v-else>
-              R{{ product.price.toFixed(2) }}
-            </span>
+    R{{ product.price.toFixed(2) }}
+  </span>
           </p>
+
+
 
           <!-- Description -->
           <p>{{ product.description }}</p>
@@ -61,11 +63,13 @@
         </div>
       </div>
     </main>
+    <FooterComponent/>
   </div>
 </template>
 
 <script>
 import HeaderComponent from "@/components/HeaderComponent.vue";
+import FooterComponent from "@/components/FooterComponent.vue";
 import axiosInstance from "@/api/AxiosInstance";
 import { addItemToWishlist } from "@/services/WishlistService";
 import { addItem } from "@/services/CartService";
@@ -75,6 +79,7 @@ export default {
   name: "ProductsPage",
   components: {
     HeaderComponent,
+    FooterComponent,
   },
   data() {
     return {

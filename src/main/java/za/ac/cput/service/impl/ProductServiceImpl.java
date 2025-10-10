@@ -11,10 +11,10 @@ import java.util.List;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    @Autowired
-    private static ProductService service;
+//    @Autowired
+//    private ProductService service;
 
-    private ProductRepository repository;
+    private final ProductRepository repository;
 
     @Autowired
     public ProductServiceImpl(ProductRepository repository) {
@@ -36,7 +36,7 @@ public class ProductServiceImpl implements ProductService {
     public void delete(Long id) {repository.deleteById(id);}
 
     @Override
-    public List<Product> getAll() {
+    public List<Product> getAllProducts() {
         return repository.findAll();
     }
 
