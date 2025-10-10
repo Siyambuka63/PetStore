@@ -34,6 +34,10 @@ export async function SignUp(firstName, middleName, lastName, email, phone, pass
     user.phoneNumber = phone;
     user.email = email;
 
+    const role = {}
+    role.description = "USER";
+    user.roles = [ role ];
+
     const response = await fetch(`http://localhost:8080/petstore/user/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

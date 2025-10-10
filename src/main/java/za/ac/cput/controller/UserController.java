@@ -48,6 +48,11 @@ public class UserController {
         return service.login(user.getEmail(), user.getPassword());
     }
 
+    @PostMapping("/verify")
+    public String verify(@RequestBody User user) {
+        return service.verify(user.getEmail(), user.getPassword());
+    }
+
     @GetMapping("/email-exists/{email}")
     public boolean emailExists(@PathVariable String email) {
         User user = service.read(email);
