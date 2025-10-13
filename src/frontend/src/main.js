@@ -14,6 +14,7 @@ import ProductDetailsPage from "./pages/ProductDetailPage.vue";
 import OrdersPage from "@/pages/OrdersPage.vue";
 import OrderItems from "@/pages/OrderItems.vue";
 import CartPage from "@/pages/CartPage.vue";
+import AdminDashboard from "@/pages/AdminDashboard.vue";
 
 const router = VueRouter.createRouter({
     history: VueRouter.createWebHistory(process.env.BASE_URL),
@@ -68,6 +69,11 @@ const router = VueRouter.createRouter({
         {
             path: "/logout",
             name: "logout"
+        },
+        {
+            path: "/admin",
+            component: AdminDashboard,
+            meta: { requiresAuth: true }
         }
     ]
  })
