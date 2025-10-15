@@ -21,7 +21,7 @@
         <img
             :src="product.imageAddress
             ? '/productImages/' + product.imageAddress
-            : '/productImages/placeholder.jpg'"
+            : '/productImages/placeholder.png'"
             :alt="product.productName"
         />
 
@@ -40,7 +40,7 @@
         </p>
 
         <p class="description">{{ product.description }}</p>
-        <p><strong>Rating:</strong> {{ product.rating }}</p>
+        <p><strong>Stock:</strong> {{ product.stock }}</p>
 
 
         <button class="edit" @click="editProduct(product)">Edit</button>
@@ -66,15 +66,15 @@
           <label>Description</label>
           <textarea v-model="form.description" required></textarea>
 
-          <label>Rating</label>
-          <input v-model.number="form.rating" type="number" min="0" max="5" step="0.1" />
+          <label>Stock</label>
+          <input v-model.number="form.stock" type="number" min="0" max="5000"  />
 
           <label>Image Filename (from assets)</label>
-          <input v-model="form.imageAddress" placeholder="example.jpg" />
+          <input v-model="form.imageAddress" placeholder="example.png" />
 
           <div class="modal-buttons">
-            <button type="submit" class="cart">Save</button>
-            <button type="button" class="wishlist" @click="closeModal">Cancel</button>
+            <button type="submit" class="save">Save</button>
+            <button type="button" class="cancel" @click="closeModal">Cancel</button>
           </div>
         </form>
       </div>
@@ -102,7 +102,7 @@ export default {
         price: 0,
         salePercentage: 0,
         description: "",
-        rating: 0,
+        stock: 0,
         imageAddress: ""
       },
     };
@@ -129,7 +129,7 @@ export default {
         price: 0,
         salePercentage: 0,
         description: "",
-        rating: 0,
+        stock: 0,
         imageAddress: ""
       };
       this.showModal = true;
