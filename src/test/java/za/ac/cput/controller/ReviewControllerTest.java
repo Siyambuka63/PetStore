@@ -36,7 +36,7 @@ class ReviewControllerTest {
     static void setUp() {
         List<String> categories = new ArrayList<>();
 
-        product = ProductFactory.createProduct(1, "Multistage", "Nibbles", "placeholder.jpg", 4f, 249.99f, 19.00f, 23, 1.34f, "Jock", "Adult", "Dry", "Dog", "Lamb", categories);
+        product = ProductFactory.createProduct(1, "Multistage", "Nibbles", "placeholder.jpg", 4f, 249.99f, 19L, 23, 1.34f, "Jock", "Adult", "Dry", "Dog", "Lamb", categories);
 
         List<Product> wishlistItems = new ArrayList<>();
         List<Review> reviews = new ArrayList<>();

@@ -40,10 +40,7 @@ public class ProductController {
     public void delete(@PathVariable long id) { service.delete(id); }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<Product>> getAllProducts() {
-        List<Product> products = service.getAllProducts();
-        return ResponseEntity.ok(products);
-    }
+    public List<Product> getAll() { return service.getAllProducts(); }
 
     @GetMapping("/findByProductName/{productName}")
     public Product findByProductName(@PathVariable String productName) { return this.service.findByProductName(productName); }

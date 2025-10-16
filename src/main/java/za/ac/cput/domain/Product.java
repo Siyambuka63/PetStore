@@ -1,8 +1,5 @@
 package za.ac.cput.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -10,7 +7,6 @@ import java.util.List;
  * 222419636
  * product class*/
 
-@JsonDeserialize(builder = Product.Builder.class)
 @Entity
 @Table(name="product")
 public class Product {
@@ -22,7 +18,7 @@ public class Product {
     private String description;
     private float rating;
     private double price;
-    private double discountPercent;
+    private long discountPercent;
     private int stock;
     private double weight;
     private String brand;
@@ -79,12 +75,8 @@ public class Product {
         return price;
     }
 
-
-    @Transient // <== prevents this field from being stored in DB
-    @JsonProperty
-    public double getDiscountedPrice() {
-        if (discountPercent <= 0) return price;
-        return price - (price * discountPercent / 100);
+    public long getDiscountPercent() {
+      return discountPercent;
     }
 
     public int getStock() {
@@ -140,7 +132,6 @@ public class Product {
                 '}';
     }
 
-    @JsonPOJOBuilder(withPrefix = "set")
     public static class Builder {
         private long productID;
         private String productName;
@@ -148,7 +139,7 @@ public class Product {
         private String description;
         private float rating;
         private double price;
-        private double discountPercent;
+        private long discountPercent;
         private int stock;
         private double weight;
         private String brand;
@@ -188,7 +179,7 @@ public class Product {
             return this;
         }
 
-        public Builder setDiscountPercent(double discountPercent) {
+        public Builder setDiscountPercent(long discountPercent) {
             this.discountPercent = discountPercent;
             return this;
         }

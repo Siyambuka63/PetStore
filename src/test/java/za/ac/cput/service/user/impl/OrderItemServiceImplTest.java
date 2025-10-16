@@ -54,7 +54,7 @@ class OrderItemServiceImplTest {
 
         List<String> categories = new ArrayList<>();
         List<User> wishlistedUser = new ArrayList<>();
-        product = ProductFactory.createProduct(1, "Multistage", "Nibbles", "placeholder.jpg", 4f, 249.99f, 15.00f, 23, 1.34f, "Jock", "Adult", "Dry", "Dog", "Lamb", categories);
+        product = ProductFactory.createProduct(1, "Multistage", "Nibbles", "placeholder.jpg", 4f, 249.99f, 15L, 23, 1.34f, "Jock", "Adult", "Dry", "Dog", "Lamb", categories);
 
         orderItem = OrderItemFactory.createOrderItem(order, product, 100f, 2);
     }

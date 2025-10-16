@@ -33,7 +33,7 @@ class ProductControllerTest {
         List<String> categories = new ArrayList<>();
         List<User> wishlistedUser = new ArrayList<>();
 
-        product = ProductFactory.createProduct(2,"No Name", "Meat and Vegetable","meat&veg.jpg", 2f, 149.99f, 14.00f, 10, 2.34f, "max foods", "puppy", "Wet", "Dog", "Beef", categories);
+        product = ProductFactory.createProduct(2,"No Name", "Meat and Vegetable","meat&veg.jpg", 2f, 149.99f, 14L, 10, 2.34f, "max foods", "puppy", "Wet", "Dog", "Beef", categories);
     }
 
     @Test

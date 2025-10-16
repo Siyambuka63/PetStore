@@ -15,7 +15,7 @@ public class ProductFactory {
                                         String imageAddress,
                                         float rating,
                                         float price,
-                                        float discountPercent,
+                                        long discountPercent,
                                         int stock,
                                         float weight,
                                         String brand,
@@ -28,6 +28,7 @@ public class ProductFactory {
         if (!Helper.isValidRating(rating)) return null;
         if (!Helper.isValidPrice(price)) return null;
         //if (!Helper.isValidPriceVsSale(price, salePrice)) return null;
+        if (!Helper.isValidDiscountPercent(discountPercent)) throw new IllegalArgumentException("Discount must be between 0 and 100");
         if (stock < 0) return null;
 
         return new Product.Builder()
