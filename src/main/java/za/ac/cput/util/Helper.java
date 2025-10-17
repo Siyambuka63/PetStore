@@ -30,6 +30,10 @@ public class Helper {
         return price > 0;
     }
 
+    public static boolean isValidDiscountPercent(long discountPercent) {
+        return discountPercent >= 0 && discountPercent <= 100;
+    }
+
     public static boolean isValidQuantity(int quantity) {
         return quantity > 0;
     }
