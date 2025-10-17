@@ -33,7 +33,7 @@ class OrderItemFactoryTest {
 
     private List<String> categories = new ArrayList<>();
 
-    private Product validProduct = ProductFactory.createProduct(1,"MissDog", "Nibbles","placeholder.jpg", 4f, 249.99f, 199.99f, true, 23, 1.34f, "SaveMor", "Adult", "Dry", "Dog", "Chicken", categories);
+    private Product validProduct = ProductFactory.createProduct(1,"MissDog", "Nibbles","placeholder.jpg", 4f, 249.99f, 19L, 23, 1.34f, "SaveMor", "Adult", "Dry", "Dog", "Chicken", categories);
 
     private OrderItem orderItemWithNullOrder = OrderItemFactory.createOrderItem(null, validProduct, 10f, 1);
     private OrderItem orderItemWithNullProduct = OrderItemFactory.createOrderItem(validOrder, null, 10f, 1);

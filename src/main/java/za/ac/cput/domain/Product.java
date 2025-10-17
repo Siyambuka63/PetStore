@@ -18,8 +18,7 @@ public class Product {
     private String description;
     private float rating;
     private double price;
-    private double salePrice;
-    private boolean onSale;
+    private long discountPercent;
     private int stock;
     private double weight;
     private String brand;
@@ -41,8 +40,7 @@ public class Product {
         description = builder.description;
         rating = builder.rating;
         price = builder.price;
-        salePrice = builder.salePrice;
-        onSale = builder.onSale;
+        discountPercent = builder.discountPercent;
         stock = builder.stock;
         weight = builder.weight;
         brand = builder.brand;
@@ -77,11 +75,9 @@ public class Product {
         return price;
     }
 
-    public double getSalePrice() {
-        return salePrice;
+    public long getDiscountPercent() {
+      return discountPercent;
     }
-
-    public boolean getOnSale() {return onSale;}
 
     public int getStock() {
         return stock;
@@ -124,8 +120,7 @@ public class Product {
                 ", description='" + description + '\'' +
                 ", rating=" + rating +
                 ", price=" + price +
-                ", salePrice=" + salePrice +
-                ", onSale=" + onSale +
+                ", discountPercent=" + discountPercent +
                 ", stock=" + stock +
                 ", weight=" + weight +
                 ", brand='" + brand + '\'' +
@@ -144,8 +139,7 @@ public class Product {
         private String description;
         private float rating;
         private double price;
-        private double salePrice;
-        private boolean onSale;
+        private long discountPercent;
         private int stock;
         private double weight;
         private String brand;
@@ -185,13 +179,8 @@ public class Product {
             return this;
         }
 
-        public Builder setSalePrice(double salePrice) {
-            this.salePrice = salePrice;
-            return this;
-        }
-
-        public Builder setOnSale(boolean onSale) {
-            this.onSale = onSale;
+        public Builder setDiscountPercent(long discountPercent) {
+            this.discountPercent = discountPercent;
             return this;
         }
 
@@ -242,8 +231,7 @@ public class Product {
             this.description = product.description;
             this.rating = product.rating;
             this.price = product.price;
-            this.salePrice = product.salePrice;
-            this.onSale = product.onSale;
+            this.discountPercent = product.discountPercent;
             this.stock = product.stock;
             this.weight = product.weight;
             this.brand = product.brand;

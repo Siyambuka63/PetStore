@@ -2,10 +2,23 @@ import axios from 'axios'
 
 const BASE_URL = "/petstore/product"
 
-class ProductService{
-    getProduct(){
+class ProductService {
+    getProduct() {
         return axios.get(`${BASE_URL}/getAll`)
     }
+
+    addProduct(product) {
+        return axios.post(`${BASE_URL}/create`, product);
+    }
+
+    updateProduct(product) {
+        return axios.post(`${BASE_URL}/update`, product);
+    }
+
+    deleteProduct(id) {
+        return axios.delete(`${BASE_URL}/delete/${id}`);
+    }
+
 }
 
 export default new ProductService()
