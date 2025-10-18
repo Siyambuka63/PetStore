@@ -12,7 +12,7 @@
       <div v-else-if="product" class="product-details product-card">
         <!-- Product image -->
         <img
-            :src="product.imageAddress
+            :src="`http://localhost:8080/product/image/${product.id}`
             ? '/productImages/' + product.imageAddress
             : '/productImages/placeholder.jpg'"
             :alt="product.productName"

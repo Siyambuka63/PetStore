@@ -1,50 +1,43 @@
 <script setup>
-import {orderStore} from "@/services/OrderStore";
-import {useAuth} from "@/Auth";
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import SidebarComponent from "@/components/SidebarComponent.vue";
 
-const userEmail = useAuth().getEmail();
-const store = orderStore();
 </script>
 <template>
   <HeaderComponent/>
   <div class="container">
     <sidebar-component/>
     <div v-if="orders.length" class="order-content">
-      <h1 v-for="user in getUserByEmail(userEmail)" :key="user.id"><strong>{{ user.firstName }}'s Orders</strong> </h1>
-      <div v-for="order in getOrderByEmail(userEmail)" v-bind:key="order.id" id="orders">
-
+      <h1><strong>{{ firstName }}'s Orders</strong> </h1>
+      <div v-for="order in orders" v-bind:key="order.id" id="orders">
         <h2><strong>Order #{{order.id}}</strong></h2>
         <p><strong>Order date: </strong>{{ formatDate(order.orderDate) }}</p>
         <p><strong>Delivery date: </strong>{{ formatDate(order.deliveryDate)}}</p>
         <p><strong>Total price: </strong>R{{ order.price.toFixed(2) }}</p>
         <p><strong>Status:</strong> {{ order.status }}</p>
-          <router-link to="/orderItem">
-            <button @click="store.setOrderId(order.id)">View order</button>
-          </router-link>
-
+        <button @click="router.push(`/orders/${order.id}`)">View order</button>
       </div>
     </div>
     <div v-else class="no-orders">
-      <p v-for="user in getUserByEmail(userEmail)" :key="user.id">no orders yet, start now {{ user.firstName }}!</p>
+      <p>no orders yet, start now {{ firstName }}!</p>
     </div>
   </div>
 </template>
 
 
 <script>
-import OrderService from "@/services/OrderService";
+import {getUser} from "@/services/ProfileService";
+import {useRouter} from "vue-router";
+import axiosInstance from "@/api/AxiosInstance";
+
+const router = useRouter();
 
 export default {
   name: "UserOrders",
   data() {
     return {
       orders: [],
-      orderItems: [],
-      pickedSort: "",
-      buttonText: "View Order Detail",
-      users: []
+      firstName: "",
     };
   },
   methods: {
@@ -56,28 +49,18 @@ export default {
         year: 'numeric'
       });
     },
-    getOrder() {
-      OrderService.getOrder().then(response => {
-        this.orders = response.data;
-      });
-    },
-    getUser() {
-      OrderService.getUser().then(response => {
-        this.users = response.data;
-      })
-    },
-    getUserByEmail(email) {
-      return this.users.filter(user => user.email === email);
-    },
-    getOrderByEmail(email) {
-      return this.orders.filter(order => order.user?.email === email && order.status !== 'Cart');
+    async getOrdersByEmail(email) {
+      const response = await axiosInstance.get(`/order/findByContactEmail/${email}`);
+      this.orders = await response.data;
     }
   },
-  mounted() {
-    this.getOrder();
-    this.getUser();
-    this.getOrderByEmail();
-    this.getUserByEmail();
+  async mounted() {
+    const email = localStorage.getItem("email");
+    const user = await getUser(email);
+
+    this.firstName = user.firstName;
+
+     await this.getOrdersByEmail();
   },
 
 };
@@ -87,7 +70,6 @@ export default {
 .container {
   display: flex;
   width: 100%;
-
 }
 
 .order-content {

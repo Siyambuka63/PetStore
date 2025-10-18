@@ -1,100 +1,68 @@
 <script setup>
-import {orderStore} from "@/services/OrderStore";
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import SidebarComponent from "@/components/SidebarComponent.vue";
-
-const store = orderStore();
-
-let id = store.getOrderId();
 </script>
 <template>
-
   <HeaderComponent/>
-
   <div class="container">
     <sidebar-component/>
-
     <!-- Main Content -->
     <div class="content">
       <h1>Order details:</h1>
+      <h2><strong>Order #{{order.id}}</strong></h2>
+      <p><strong>Order date: </strong>{{ formatDate(order.orderDate) }}</p>
+      <p><strong>Delivery date: </strong>{{ formatDate(order.deliveryDate)}}</p>
+      <p><strong>Total price: </strong>R{{ order.price.toFixed(2) }}</p>
+      <p><strong>Status:</strong> {{ order.status }}</p>
+
       <div v-if="orderItems.length" class="list"><!--check if a orderitem exists-->
-        <div v-for="orderItem in getOrderItems(id)" :key="orderItem.id" class="orders-list">
-
-
-            <!-- Order Items -->
-            <div v-for="product in getProductById(orderItem.id.productId)" :key="product.id" >
-              <img :src="`/productImages/${product.imageAddress}`" alt="product" >
-              <p><strong>Product name: </strong> {{product.productName}}</p>
-              <p><strong>Sold by:</strong> {{product.brand}}</p>
+        <div v-for="orderItem in orderItems" :key="orderItem.id" class="orders-list">
+          <!-- Order Items -->
+          <div v-for="product in getProductById(orderItem.id.productId)" :key="product.id">
+            <img :src="`/productImages/${product.imageAddress}`" alt="product">
+            <p><strong>Product name: </strong> {{ product.productName }}</p>
             <p><strong>Price Per Item:</strong> R{{ orderItem.pricePerItem.toFixed(2) }}</p>
             <p><strong>Quantity:</strong> {{ orderItem.quantity }}</p>
             <p><strong>Subtotal:</strong> R{{ orderItem.totalPrice.toFixed(2) }}</p>
-              </div>
-
-
+          </div>
         </div>
-
       </div>
       <!--else statement for check-->
       <div v-else class="no-orders">
         <p>No order items found.</p>
       </div>
-
     </div>
-
-
-
-
   </div>
 </template>
 
 <script>
-import OrderService from "@/services/OrderService";
-import OrderItemService from "@/services/OrderItemService";
-import ProductService from "@/services/ProductService";
+import axiosInstance from "@/api/AxiosInstance";
 
 export default {
   name: "UserOrders",
   data() {
     return {
-      orders: [],
+      order: null,
       orderItems: [],
-      products: [],
-      pickedSort: "",
-      buttonText: "View Order Detail",
     };
   },
   methods: {
-    getOrder() {
-      OrderService.getOrder().then(response => {
-        this.orders = response.data;
-      });
+    async getOrder() {
+      const orderId = this.$route.params.id;
+      let response = await axiosInstance.get(`/order/read/${orderId}`);
+      this.orders = await response.data;
+
+      response = await axiosInstance.get(`/order-item/getByOrderId/${orderId}`);
+      this.orderItems = await response.data;
     },
-    getOrderItem() {
-      OrderItemService.getOrderItem().then(response => {
-        this.orderItems = response.data;
-      })
-    },
-    getOrderItems(orderId) {
-      return this.orderItems.filter(orderItem => orderItem.id.orderId === orderId);
-    },
-    getProducts() {
-      ProductService.getProduct().then(response => {
-        this.products = response.data;
-      })
-    },
-    getProductById(productId) {
-      return this.products.filter(product => product.id === productId);
+    async getProductById(productId) {
+      const response = await axiosInstance.get(`/product/read/${productId}`);
+      this.orderItems = await response.data;
     }
   },
-  created() {
+  mounted() {
     this.getOrder();
-    this.getOrderItem();
-    this.getProducts();
-    this.getProductById();
   },
-
-
 };
 </script>
 
@@ -106,19 +74,22 @@ export default {
 }
 
 /* Main Content */
-.content{
+.content {
   width: 100%;
 
 }
-.content h1{
+
+.content h1 {
   text-align: center;
   justify-content: center;
 }
-.content footer{
-  padding:  30px;
+
+.content footer {
+  padding: 30px;
   background-color: #0652DD;
   color: white;
 }
+
 .orders-list {
   width: auto;
   overflow-x: hidden;
@@ -144,13 +115,14 @@ export default {
   background: #0652DD;
 }
 
-.content img{
+.content img {
   float: right;
   width: 90%;
   height: 150px;
   object-fit: contain;
   margin-bottom: 10px;
 }
+
 .no-orders {
   text-align: center;
   font-size: 1.1em;

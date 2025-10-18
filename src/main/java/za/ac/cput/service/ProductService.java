@@ -5,7 +5,7 @@ import za.ac.cput.domain.Product;
 import java.util.List;
 
 public interface ProductService extends IService<Product, Long> {
-    List<Product> getAllProducts();
+    List<Product> getAll();
 
     Product findByProductName(String productName);
 }

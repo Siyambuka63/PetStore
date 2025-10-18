@@ -1,17 +1,13 @@
 <template>
   <div>
     <!-- Header -->
-    <HeaderComponent />
-
-
+    <HeaderComponent/>
     <div class="admin-header">
       <h1>Admin Dashboard</h1>
       <button class="add-product-btn" @click="openAddModal">+ Add Product</button>
     </div>
 
     <h2 class="section-title">Products</h2>
-
-
     <p v-if="loading" style="padding-left:30px">Loading products...</p>
     <p v-else-if="error" style="padding-left:30px">{{ error }}</p>
 
@@ -24,13 +20,10 @@
             : '/productImages/placeholder.png'"
             :alt="product.productName"
         />
-
         <p class="product-link"><strong>{{ product.productName }}</strong></p>
-
-
         <p class="price">
           <span v-if="product.salePercentage && product.salePercentage > 0">
-            Was: <s>R{{ product.price.toFixed(2) }}</s><br />
+            Was: <s>R{{ product.price.toFixed(2) }}</s><br/>
             Now: R{{ (product.price * (1 - product.salePercentage / 100)).toFixed(2) }}
             ({{ product.salePercentage }}% off)
           </span>
@@ -38,16 +31,13 @@
             R{{ product.price.toFixed(2) }}
           </span>
         </p>
-
         <p class="description">{{ product.description }}</p>
         <p><strong>Stock:</strong> {{ product.stock }}</p>
-
 
         <button class="edit" @click="editProduct(product)">Edit</button>
         <button class="delete" @click="deleteProduct(product.id)">Delete</button>
       </div>
     </div>
-
 
     <div v-if="showModal" class="modal-overlay">
       <div class="modal">
@@ -55,22 +45,22 @@
 
         <form @submit.prevent="saveProduct">
           <label>Product Name</label>
-          <input v-model="form.productName" required />
+          <input v-model="form.productName" required/>
 
           <label>Price</label>
-          <input v-model.number="form.price" type="number" required />
+          <input v-model.number="form.price" type="number" required/>
 
           <label>Sale Percentage (0 if none)</label>
-          <input v-model.number="form.salePercentage" type="number" min="0" max="100" />
+          <input v-model.number="form.salePercentage" type="number" min="0" max="100"/>
 
           <label>Description</label>
           <textarea v-model="form.description" required></textarea>
 
           <label>Stock</label>
-          <input v-model.number="form.stock" type="number" min="0" max="5000"  />
+          <input v-model.number="form.stock" type="number" min="0" max="5000"/>
 
           <label>Image Filename (from assets)</label>
-          <input v-model="form.imageAddress" placeholder="example.png" />
+          <input v-model="form.imageAddress" placeholder="example.png"/>
 
           <div class="modal-buttons">
             <button type="submit" class="save">Save</button>
@@ -88,7 +78,7 @@ import HeaderComponent from "@/components/HeaderComponent.vue";
 
 export default {
   name: "AdminDashboard",
-  components: { HeaderComponent },
+  components: {HeaderComponent},
   data() {
     return {
       products: [],
@@ -136,7 +126,7 @@ export default {
     },
     editProduct(product) {
       this.editMode = true;
-      this.form = { ...product };
+      this.form = {...product};
       this.showModal = true;
     },
     closeModal() {
@@ -195,7 +185,7 @@ export default {
 
 .product-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
 .product-card img {
@@ -252,7 +242,7 @@ export default {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -264,7 +254,7 @@ export default {
   border-radius: 10px;
   padding: 25px;
   width: 400px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 .modal h2 {
@@ -295,6 +285,7 @@ export default {
   display: flex;
   justify-content: space-between;
 }
+
 .add-product-btn {
   background: #0984e3;
   color: white;

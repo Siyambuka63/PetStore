@@ -49,6 +49,11 @@ public class SecurityConfig {
                                 "/user/login",
                                 "/user/verify",
                                 "/user/create").permitAll()
+                        .requestMatchers(
+                                "/product/create",
+                                "/product/update",
+                                "/product/delete/**"
+                        ).hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) //ToDo state management

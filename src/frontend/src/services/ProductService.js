@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const BASE_URL = "/petstore/product"
+const BASE_URL = "/product"
 
 class ProductService {
     getProduct() {
@@ -18,7 +18,6 @@ class ProductService {
     deleteProduct(id) {
         return axios.delete(`${BASE_URL}/delete/${id}`);
     }
-
 }
 
 export default new ProductService()

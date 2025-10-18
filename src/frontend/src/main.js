@@ -26,7 +26,13 @@ const router = VueRouter.createRouter({
         },
         {
             path: '/',
-            component: ProductsPage
+            get component() {
+                if (localStorage.getItem("roles").includes("ADMIN")) {
+                    return AdminDashboard;
+                } else {
+                    return ProductsPage;
+                }
+            }
         },
         {
             path: '/orders',
@@ -34,8 +40,9 @@ const router = VueRouter.createRouter({
             meta: { requiresAuth: true }
         },
         {
-            path: '/orderItem',
-            component: OrderItems
+            path: '/orders/:id',
+            component: OrderItems,
+            meta: { requiresAuth: true }
         },
         {
             path: '/profile',
@@ -49,7 +56,7 @@ const router = VueRouter.createRouter({
         },
         {
             path: '/products',
-            redirect: "/"
+            component: ProductsPage
         },
         { 
             path: "/signup",
@@ -70,11 +77,12 @@ const router = VueRouter.createRouter({
             path: "/logout",
             name: "logout"
         },
-        {
-            path: "/admin",
-            component: AdminDashboard,
-            meta: { requiresAuth: true }
-        }
+        // {
+        //     path: "/admin",
+        //     name: "admin",
+        //     component: AdminDashboard,
+        //     meta: { requiresAdmin: true }
+        // }
     ]
  })
 
@@ -82,22 +90,19 @@ router.beforeEach((to, from, next) => {
     const user = useAuth()
 
     if (to.name === "logout") {
-        user.logout()
-        console.log(user.getEmail())
+        localStorage.removeItem("email");
+        localStorage.removeItem("roles");
+        localStorage.removeItem("token");
         return next("/")
     }
 
-    if (to.meta.requiresAuth && !user.getEmail()) {
+    if (to.meta.requiresAuth && !localStorage.getItem("token")) {
         return next({ name: "LogIn" })
     }
 
     next()
 })
 
-const pinia = createPinia()
-pinia.use(piniaPluginPersistedstate)
-
 createApp(App)
-    .use(pinia)
     .use(router)
     .mount('#app')

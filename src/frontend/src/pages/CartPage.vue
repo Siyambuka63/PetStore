@@ -46,8 +46,7 @@ import {useRouter} from "vue-router";
 
 const cartItems = ref([]);
 
-const user= useAuth();
-const email= user.getEmail();
+const email = localStorage.getItem("email");
 const router = useRouter();
 
 // Load active cart from backend
