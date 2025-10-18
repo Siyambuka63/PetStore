@@ -8,37 +8,43 @@ const store = orderStore();
 let id = store.getOrderId();
 </script>
 <template>
+
   <HeaderComponent/>
+
   <div class="container">
     <sidebar-component/>
+
     <!-- Main Content -->
     <div class="content">
+      <h1>Order details:</h1>
       <div v-if="orderItems.length" class="list"><!--check if a orderitem exists-->
         <div v-for="orderItem in getOrderItems(id)" :key="orderItem.id" class="orders-list">
 
 
             <!-- Order Items -->
             <div v-for="product in getProductById(orderItem.id.productId)" :key="product.id" >
-              <h1>Order details for {{product.productName}}</h1>
               <img :src="`/productImages/${product.imageAddress}`" alt="product" >
-              <p><strong>Description: </strong> {{product.description}}</p>
+              <p><strong>Product name: </strong> {{product.productName}}</p>
               <p><strong>Sold by:</strong> {{product.brand}}</p>
             <p><strong>Price Per Item:</strong> R{{ orderItem.pricePerItem.toFixed(2) }}</p>
             <p><strong>Quantity:</strong> {{ orderItem.quantity }}</p>
-            <p><strong>Total Price:</strong> R{{ orderItem.totalPrice.toFixed(2) }}</p>
-              <router-link to="/orders">
-                <button>Order details</button>
-              </router-link>
+            <p><strong>Subtotal:</strong> R{{ orderItem.totalPrice.toFixed(2) }}</p>
               </div>
 
 
         </div>
+
       </div>
       <!--else statement for check-->
       <div v-else class="no-orders">
         <p>No order items found.</p>
       </div>
+
     </div>
+
+
+
+
   </div>
 </template>
 
@@ -102,8 +108,17 @@ export default {
 /* Main Content */
 .content{
   width: 100%;
-}
 
+}
+.content h1{
+  text-align: center;
+  justify-content: center;
+}
+.content footer{
+  padding:  30px;
+  background-color: #0652DD;
+  color: white;
+}
 .orders-list {
   width: auto;
   overflow-x: hidden;

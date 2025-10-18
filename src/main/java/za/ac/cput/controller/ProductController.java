@@ -3,6 +3,7 @@ package za.ac.cput.controller;
  * 222419636*/
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.ac.cput.domain.Product;
 import za.ac.cput.service.impl.ProductServiceImpl;
@@ -13,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/product")
 public class ProductController {
-    private ProductServiceImpl service;
+    private final ProductServiceImpl service;
 
     @Autowired
     public ProductController(ProductServiceImpl service) {
@@ -39,9 +40,7 @@ public class ProductController {
     public void delete(@PathVariable long id) { service.delete(id); }
 
     @GetMapping("/getAll")
-    public List<Product> getAll() {
-        return service.getAll();
-    }
+    public List<Product> getAll() { return service.getAllProducts(); }
 
     @GetMapping("/findByProductName/{productName}")
     public Product findByProductName(@PathVariable String productName) { return this.service.findByProductName(productName); }
