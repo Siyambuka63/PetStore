@@ -35,7 +35,7 @@ public class ProductFactory {
                 .setProductID(productID)
                 .setProductName(productName)
                 .setDescription(description)
-                .setImageAddress(imageAddress)
+//                .setImageAddress(imageAddress)
                 .setRating(rating)
                 .setPrice(price)
                 .setDiscountPercent(discountPercent)

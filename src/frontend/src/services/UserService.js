@@ -1,6 +1,8 @@
+import axiosInstance from "@/api/AxiosInstance";
+
 export async function isEmailTaken(email){
-    const response = await fetch(`http://localhost:8080/petstore/user/email-exists/${encodeURIComponent(email)}`);
-    return await response.json();
+    const response = await axiosInstance.get(`/user/email-exists/${encodeURIComponent(email)}`);
+    return await response.data;
 }
 
 export async function SignUp(firstName, middleName, lastName, email, phone, password, confirmPassword){
@@ -15,7 +17,8 @@ export async function SignUp(firstName, middleName, lastName, email, phone, pass
     }
 
      if (await isEmailTaken(email)) {
-         throw new Error("Email address is already taken");
+         alert("Email address is already taken");
+         return;
      }
 
     try {
@@ -38,35 +41,40 @@ export async function SignUp(firstName, middleName, lastName, email, phone, pass
     role.description = "USER";
     user.roles = [ role ];
 
-    const response = await fetch(`http://localhost:8080/petstore/user/create`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(user)
-    });
-    if (!response.ok) {
-        const errorMsg = await response.text();
-        throw new Error(errorMsg || "Failed to create user");
+    const response = await axiosInstance.post(`/user/create`, user);
+
+    if (response.status !== 200) {
+        throw new Error(response.data || "Failed to create user");
     }
 
-    return await response.json();
-
+    return response.data;
 }
 
-export async function LogIn(auth, router, email, password){
-    const response = await fetch(`http://localhost:8080/petstore/user/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            email: email,
-            password: password
-        })
-    });
-
+export async function LogIn(auth, router, email, password) {
     try {
-        const signedUser = await response.json();
-        auth.setUserEmail(signedUser.email);
+        let response = await axiosInstance.post("/user/verify", {
+            email,
+            password
+        });
+
+        const token = response.data;
+
+        if (!token || token === "Invalid user credentials") {
+            alert("Login failed. Invalid credentials.");
+            return;
+        }
+
+        localStorage.setItem("token", token);
+        localStorage.setItem("email", email);
+
+        response = await axiosInstance.get(`/user/read/${email}`);
+        const user = response.data;
+
+        localStorage.setItem("email", email);
+
         router.push("/");
-    } catch (e) {
-        alert("Log in failed. Invalid credentials.");
+    } catch (error) {
+        console.error("Login failed:", error);
+        alert("Login failed. Please check your credentials and try again.");
     }
 }

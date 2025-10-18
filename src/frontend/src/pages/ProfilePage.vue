@@ -265,7 +265,7 @@ export default {
   },
   async mounted() {
     const authUser = useAuth();
-    this.user = await getUser(authUser.getEmail());
+    this.user = await getUser(localStorage.getItem("email"));
 
     if (this.user) {
       this.firstName = this.user.firstName;

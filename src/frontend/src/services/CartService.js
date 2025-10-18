@@ -1,8 +1,11 @@
-import axios from "axios";
+import axiosInstance from "@/api/AxiosInstance";
 
 export async function getCart(userID){
-    const res = await axios.get(`/petstore/order/getCart/${userID}`);
-    return await res.data;
+    if (userID) {
+        const res = await axiosInstance.get(`/order/getCart/${userID}`);
+        return await res.data;
+    }
+    return null;
 }
 
 export async function getCartItems(userId) {
@@ -11,7 +14,8 @@ export async function getCartItems(userId) {
     if (!cart) {
         return [];
     }
-    const res = await axios.get(`/petstore/order-item/getByOrderId/${cart.id}`);
+
+    const res = await axiosInstance().get(`/order-item/getByOrderId/${cart.id}`);
 
     const data = await res.data;
     const orderItems = Array.isArray(data) ? data : data.orderItems ?? [];
@@ -31,13 +35,13 @@ export async function getCartItems(userId) {
 export async function removeItem(userID, itemId){
     const cart = await getCart(userID);
 
-    await  axios.delete(`/petstore/order-item/delete/${cart.id}/${itemId}`);
+    await  axiosInstance.delete(`/order-item/delete/${cart.id}/${itemId}`);
 }
 
 export async function addItem(userID, itemId, pricePerItem, quantity){
     const cart = await getCart(userID);
     console.log(cart);
-    await axios.post("/petstore/order-item/create", {
+    await axiosInstance.post("/order-item/create", {
         id: {
             orderId: cart.id,
             productId: itemId
@@ -51,12 +55,12 @@ export async function addItem(userID, itemId, pricePerItem, quantity){
 export async function updateQuantity(userID, itemId, quantity){
     const cart = await getCart(userID);
 
-    await axios.put(`/petstore/order-item/updateQuantity/${cart.id}/${itemId}`,{quantity:quantity});
+    await axiosInstance.put(`/order-item/updateQuantity/${cart.id}/${itemId}`,{quantity:quantity});
 
 }
 
 export async function getProduct(id){
-    const res = await axios.get(`/petstore/product/read/${id}`);
+    const res = await axiosInstance.get(`/product/read/${id}`);
     return await res.data;
 }
 
@@ -68,5 +72,5 @@ export async function makeOrder(userID, price){
     cart.orderDate =  new Date().toISOString();
     cart.deliveryDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
 
-    await axios.post('/petstore/order/update', cart);
+    await axiosInstance.post('/order/update', cart);
 }

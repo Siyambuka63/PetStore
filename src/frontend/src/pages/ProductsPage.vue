@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Simple header -->
-    <HeaderComponent />
+    <HeaderComponent/>
 
     <main>
       <h1 style="padding-left: 30px">Products</h1>
@@ -17,7 +17,7 @@
           <!-- Clickable Product image -->
           <router-link :to="`/products/${product.id}`">
             <img
-                :src="product.imageAddress
+                :src="`http://localhost:8080/product/image/${product.id}`
                 ? '/productImages/' + product.imageAddress
                 : '/productImages/placeholder.jpg'"
                 :alt="product.productName"
@@ -43,7 +43,6 @@
           </p>
 
 
-
           <!-- Description -->
           <p>{{ product.description }}</p>
 
@@ -51,7 +50,8 @@
           <p><strong>Rating:</strong> {{ product.rating }}</p>
 
           <!-- Add to cart -->
-          <button @click="handleAddItem(product.id, product.onSale ? product.salePrice : product.price, 1)" class="cart">
+          <button @click="handleAddItem(product.id, product.onSale ? product.salePrice : product.price, 1)"
+                  class="cart">
             Add to Cart
           </button>
 
@@ -71,9 +71,9 @@
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import FooterComponent from "@/components/FooterComponent.vue";
 import axiosInstance from "@/api/AxiosInstance";
-import { addItemToWishlist } from "@/services/WishlistService";
-import { addItem } from "@/services/CartService";
-import { useAuth } from "@/Auth";
+import {addItemToWishlist} from "@/services/WishlistService";
+import {addItem} from "@/services/CartService";
+import {useAuth} from "@/Auth";
 
 export default {
   name: "ProductsPage",
@@ -90,7 +90,7 @@ export default {
     };
   },
   methods: {
-    async handleAddItem(productID, price, quantity){
+    async handleAddItem(productID, price, quantity) {
       if (this.userID) {
         await addItem(this.userID, productID, price, quantity);
         this.$router.go(0);
@@ -98,7 +98,7 @@ export default {
         this.$router.push("/login");
       }
     },
-    async handleAddItemToWishlist(productID){
+    async handleAddItemToWishlist(productID) {
       if (this.userID) {
         await addItemToWishlist(this.userID, productID);
       } else {
@@ -107,6 +107,7 @@ export default {
     },
     async fetchProducts() {
       try {
+        console.log(useAuth().getEmail());
         const response = await axiosInstance.get("/petstore/product/getAll");
 
         // Handle different backend response shapes
@@ -156,7 +157,7 @@ export default {
 
 .product-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
 .product-card img {

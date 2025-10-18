@@ -28,7 +28,7 @@
       <div v-else class="cards">
         <div v-for="(item, index)  in cart" :key="index" class="card">
           <img
-              :src="item.product.imageAddress
+              :src="`http://localhost:8080/product/image/${product.id}`
               ? '/productImages/' + item.product.imageAddress
               : '/productImages/placeholder.jpg'"
               :alt="item.product.productName"

@@ -1,24 +1,32 @@
 package za.ac.cput.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.Arrays;
 import java.util.List;
 /*Oluhle Makhaye
  * 222419636
  * product class*/
 
 @Entity
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
 @Table(name="product")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String productName;
-    private String imageAddress;
     private String description;
     private float rating;
     private double price;
-    private long discountPercent;
+    private double discountPercent;
     private int stock;
     private double weight;
     private String brand;
@@ -26,6 +34,11 @@ public class Product {
     private String foodType;
     private String petType;
     private String flavour;
+
+    private String imageName;
+    private String imageType;
+    @Lob
+    private byte[] imageData;
 
     @ElementCollection
     private List<String> categories;
@@ -36,7 +49,6 @@ public class Product {
     private Product(Builder builder) {
         id = builder.productID;
         productName = builder.productName;
-        imageAddress = builder.imageAddress;
         description = builder.description;
         rating = builder.rating;
         price = builder.price;
@@ -51,72 +63,11 @@ public class Product {
         categories = builder.categories;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public String getImageAddress() {
-        return imageAddress;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public float getRating() {
-        return rating;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public long getDiscountPercent() {
-      return discountPercent;
-    }
-
-    public int getStock() {
-        return stock;
-    }
-
-    public double getWeight() {
-        return weight;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public String getLifeStage() {
-        return lifeStage;
-    }
-
-    public String getFoodType() {
-        return foodType;
-    }
-
-    public String getPetType() {
-        return petType;
-    }
-
-    public String getFlavour() {
-        return flavour;
-    }
-
-    public List<String> getCategories() {
-        return categories;
-    }
-
     @Override
     public String toString() {
         return "Product{" +
                 "id=" + id +
                 ", productName='" + productName + '\'' +
-                ", imageAddress='" + imageAddress + '\'' +
                 ", description='" + description + '\'' +
                 ", rating=" + rating +
                 ", price=" + price +
@@ -128,6 +79,9 @@ public class Product {
                 ", foodType='" + foodType + '\'' +
                 ", petType='" + petType + '\'' +
                 ", flavour='" + flavour + '\'' +
+                ", imageName='" + imageName + '\'' +
+                ", imageType='" + imageType + '\'' +
+                ", imageData=" + Arrays.toString(imageData) +
                 ", categories=" + categories +
                 '}';
     }
@@ -135,11 +89,10 @@ public class Product {
     public static class Builder {
         private long productID;
         private String productName;
-        private String imageAddress;
         private String description;
         private float rating;
         private double price;
-        private long discountPercent;
+        private double discountPercent;
         private int stock;
         private double weight;
         private String brand;
@@ -159,10 +112,10 @@ public class Product {
             return this;
         }
 
-        public Builder setImageAddress(String imageAddress) {
-            this.imageAddress = imageAddress;
-            return this;
-        }
+//        public Builder setImageAddress(String imageAddress) {
+//            this.imageAddress = imageAddress;
+//            return this;
+//        }
 
         public Builder setDescription(String description) {
             this.description = description;
@@ -179,7 +132,7 @@ public class Product {
             return this;
         }
 
-        public Builder setDiscountPercent(long discountPercent) {
+        public Builder setDiscountPercent(double discountPercent) {
             this.discountPercent = discountPercent;
             return this;
         }
@@ -227,7 +180,7 @@ public class Product {
         public Builder copy(Product product) {
             this.productID = product.id;
             this.productName = product.productName;
-            this.imageAddress = product.imageAddress;
+//            this.imageAddress = product.imageAddress;
             this.description = product.description;
             this.rating = product.rating;
             this.price = product.price;
