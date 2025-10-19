@@ -28,7 +28,7 @@
       <div v-else class="cards">
         <div v-for="(item, index)  in cart" :key="index" class="card">
           <img
-              :src="`http://localhost:8080/product/image/${product.id}`
+              :src="`http://localhost:8080/product/image/${item.product.id}`
               ? '/productImages/' + item.product.imageAddress
               : '/productImages/placeholder.jpg'"
               :alt="item.product.productName"
@@ -46,7 +46,6 @@
 </template>
 
 <script>
-import {useAuth} from "@/Auth";
 import {getCartItems} from "@/services/CartService";
 
 export default {
@@ -66,10 +65,10 @@ export default {
     }
   },
   async mounted() {
-    const authUser = useAuth();
+    const email = localStorage.getItem("email");
 
-    if (authUser.getEmail()) {
-      this.cart = await getCartItems(authUser.getEmail());
+    if (email) {
+      this.cart = await getCartItems(email);
     }
   }
 };

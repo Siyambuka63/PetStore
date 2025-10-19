@@ -19,17 +19,15 @@
 
 <script setup>
 import { ref } from "vue";
-import { useAuth } from "@/Auth.js";
 import { useRouter } from "vue-router";
 import {LogIn} from "@/services/UserService";
 
 const email = ref("");
 const password = ref("");
-const auth = useAuth();
 const router = useRouter();
 
 async function handleLogin() {
-  await LogIn(auth, router, email.value, password.value);
+  await LogIn(router, email.value, password.value);
 }
 </script>
 

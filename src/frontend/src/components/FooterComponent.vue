@@ -127,7 +127,7 @@ export default {
   padding: 8px;
   border: none;
   border-radius: 6px;
-  width: 100%;
+  width: calc(100%-16px);
 }
 
 .subscribe-btn {
