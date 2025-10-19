@@ -74,6 +74,7 @@ const checkout = async () => {
   try {
     await makeOrder(email, totalPrice.value);
     alert("Checkout successful!");
+    window.dispatchEvent(new Event("refresh-products"));
     cartItems.value = [];
     await router.push("/orders");
   } catch (err) {
@@ -88,7 +89,7 @@ const totalPrice = computed(() =>
     cartItems.value.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
 );
 
-//Uodate  quantity
+//Update  quantity
 const updateItemQuantity = async(productId, newQuantity) => {
   try {
     if(newQuantity<1) {

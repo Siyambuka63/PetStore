@@ -131,6 +131,12 @@ export default {
 
     this.fetchProducts();
     this.userID = auth.getEmail();
+
+    window.addEventListener("refresh-products", this.fetchProducts());
+  },
+
+  beforeUnmount() {
+    window.removeEventListener("refresh-products", this.fetchProducts());
   },
 };
 </script>

@@ -1,7 +1,9 @@
 package za.ac.cput.service.impl;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import za.ac.cput.domain.Product;
 import za.ac.cput.domain.order.Order;
 import za.ac.cput.domain.order.Status;
 import za.ac.cput.domain.orderItem.OrderItem;
@@ -10,6 +12,7 @@ import za.ac.cput.domain.user.User;
 import za.ac.cput.domain.user.wishlist.Wishlist;
 import za.ac.cput.factory.OrderFactory;
 import za.ac.cput.repository.OrderRepository;
+import za.ac.cput.repository.ProductRepository;
 import za.ac.cput.service.OrderService;
 
 import java.time.LocalDate;
@@ -21,16 +24,37 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private static OrderService service;
+    private final ProductRepository productRepository;
 
     private OrderRepository orderRepository ;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository){
-        this.orderRepository = orderRepository;}
+    public OrderServiceImpl(OrderRepository orderRepository, ProductRepository productRepository) {
+        this.orderRepository = orderRepository;
+        this.productRepository = productRepository;
+    }
 
     @Override
-    public Order create(Order order) {
-        return orderRepository.save(order);
+    @Transactional
+    public Order create(Order order)
+    {
+        Order savedOrder = orderRepository.save(order);
+
+        for (OrderItem item : savedOrder.getItems()) {
+            Product product = productRepository.findById(item.getId().getProductId()).orElseThrow(() -> new RuntimeException("Product not found" + item.getId().getProductId()));
+
+            int currentStock = product.getStock();
+            int orderedQuantity = item.getQuantity();
+
+
+            if (orderedQuantity > currentStock) {
+                throw new IllegalStateException("Not enough stock for product: " + product.getProductName());
+            }
+
+            product.setStock(currentStock - orderedQuantity);
+            productRepository.save(product);
+        }
+        return savedOrder;
     }
 
     @Override
