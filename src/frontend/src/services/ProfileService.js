@@ -1,12 +1,12 @@
 import axiosInstance from "@/api/AxiosInstance";
 
 export async function getUser(email) {
-    const response =  await axiosInstance.get(`/petstore/user/read/${email}`);
+    const response =  await axiosInstance.get(`/user/read/${email}`);
     return response.data;
 }
 
 async function update(user, router, message){
-    const response =  await axiosInstance.post('petstore/user/update', user);
+    const response =  await axiosInstance.post('/user/update', user);
 
     alert(message);
 
@@ -199,7 +199,7 @@ export async function removeShippingAddress(user, router) {
     }
 
     await update(updated, router, "Shipping address removed");
-    await axiosInstance.delete('petstore/address/delete/'+ user.shippingAddress.addressID);
+    await axiosInstance.delete('/address/delete/'+ user.shippingAddress.addressID);
 }
 
 export async function removeBillingAddress(user, router) {
@@ -212,7 +212,7 @@ export async function removeBillingAddress(user, router) {
     }
 
     await update(updated, router, "Billing address removed");
-    await axiosInstance.delete('petstore/address/delete/'+ user.billingAddress.addressID);
+    await axiosInstance.delete('/address/delete/'+ user.billingAddress.addressID);
 }
 
 export async function addCard(user, brand, holder, number, expiry, cvv, router) {
@@ -288,7 +288,7 @@ export async function removeCard(user, router){
     updated.card = null;
 
     await update(updated, router, "Card removed");
-    await axiosInstance.delete('petstore/card/delete/'+ user.card.id);
+    await axiosInstance.delete('/card/delete/'+ user.card.id);
 }
 
 export async function resetPassword(user, passwordOld, password, passwordConfirmation, router){

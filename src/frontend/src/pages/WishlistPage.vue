@@ -6,15 +6,20 @@
     <div class="main-content">
       <h1>My Wishlist</h1>
       <div class="wishlist">
-        <div v-if="!items || items.length === 0"> You have no items wishlisted </div>
+        <div v-if="!items || items.length === 0"> You have no items wishlisted</div>
         <div v-for="(item, index) in items" :key="index" class="wishlist-item">
-          <div class="left-section">
-            <img class="icon" v-if="item.imageData" :src="`http://localhost:8080/product/image/${product.id}`" v-bind:alt="item.productName">
-            <img class="icon" v-else src="@/assets/logo.png" v-bind:alt="item.productName">
-          </div>
+          <router-link :to="`/products/${item.id}`">
+            <div class="left-section">
+              <img class="icon" v-if="item.imageData" :src="`http://localhost:8080/product/image/${product.id}`"
+                   v-bind:alt="item.productName">
+              <img class="icon" v-else src="@/assets/logo.png" v-bind:alt="item.productName">
+            </div>
+          </router-link>
 
           <div class="info">
-            <h3 v-text="item.productName"></h3>
+            <router-link :to="`/products/${item.id}`">
+              <h4 v-text="item.productName"></h4>
+            </router-link>
             <div v-if="item.onSale">
               <p>Was: <s>R{{ item.price.toFixed(2) }}</s></p>
               <p>Now: R{{ item.salePrice.toFixed(2) }}</p>
@@ -23,33 +28,41 @@
           </div>
 
           <div class="rating">
-            <img v-for="i in Math.ceil(item.rating)" :key="'filled-' + i" class = "stars" src="@/assets/star_filled.png" alt="Filled Star">
+            <img v-for="i in Math.ceil(item.rating)" :key="'filled-' + i" class="stars" src="@/assets/star_filled.png"
+                 alt="Filled Star">
 
-            <img v-for="i in Math.floor(5 - item.rating)" :key="'empty-' + i" class = "stars" src="@/assets/star_empty.png" alt="Empty Star">
+            <img v-for="i in Math.floor(5 - item.rating)" :key="'empty-' + i" class="stars"
+                 src="@/assets/star_empty.png" alt="Empty Star">
           </div>
 
-          <div class = "buttons">
-            <button v-if="item.stock > 0 && item.on_Sale" id="add_button" @click="handleAddItem(userID, item.id, item.salePrice, 1)">Add to Cart</button>
-            <button v-else-if="item.stock > 0" id="add_button" @click="handleAddItem(userID, item.id, item.price, 1)">Add to Cart</button>
+          <div class="buttons">
+            <button v-if="item.stock > 0 && item.on_Sale" id="add_button"
+                    @click="handleAddItem(item.id, item.salePrice, 1)">Add to Cart
+            </button>
+            <button v-else-if="item.stock > 0" id="add_button" @click="handleAddItem(item.id, item.price, 1)">Add to
+              Cart
+            </button>
             <p v-else>SOLD OUT</p>
-            <button id="remove_button" @click="removeItem(item.id)" >Remove</button>
+            <button id="remove_button" @click="removeItem(item.id)">Remove from Wishlist</button>
           </div>
         </div>
       </div>
     </div>
   </div>
-
+  <FooterComponent/>
 </template>
 
 <script>
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import SidebarComponent from "@/components/SidebarComponent.vue";
-import {useAuth} from "@/Auth";
 import {getUserWishlistItems, removeItemFromWishlist} from "@/services/WishlistService";
+import FooterComponent from "@/components/FooterComponent.vue";
+import {addItem} from "@/services/CartService";
 
 export default {
   name: "WishlistPage",
   components: {
+    FooterComponent,
     SidebarComponent,
     HeaderComponent
   },
@@ -60,15 +73,18 @@ export default {
     };
   },
   async mounted() {
-    const user = useAuth();
-
-    this.email = user.getEmail();
+    this.email = localStorage.getItem("email");
     this.items = await getUserWishlistItems(this.email);
   },
   methods: {
     async removeItem(itemID) {
       this.items = await removeItemFromWishlist(this.email, itemID);
-    }
+    },
+    async handleAddItem(productID, price, quantity) {
+      if (this.email) {
+        await addItem(this.email, productID, price, quantity, this.$router);
+      }
+    },
   }
 };
 </script>
@@ -160,6 +176,11 @@ button {
 
 #remove_button:active, #remove_button:hover {
   background: red;
+}
+
+a {
+  text-decoration: none;
+  color: black;
 }
 
 </style>

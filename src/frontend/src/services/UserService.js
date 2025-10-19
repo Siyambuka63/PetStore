@@ -39,7 +39,10 @@ export async function SignUp(firstName, middleName, lastName, email, phone, pass
 
     const role = {}
     role.description = "USER";
+
     user.roles = [ role ];
+
+    console.log(user);
 
     const response = await axiosInstance.post(`/user/create`, user);
 
@@ -50,7 +53,7 @@ export async function SignUp(firstName, middleName, lastName, email, phone, pass
     return response.data;
 }
 
-export async function LogIn(auth, router, email, password) {
+export async function LogIn(router, email, password) {
     try {
         let response = await axiosInstance.post("/user/verify", {
             email,
@@ -69,8 +72,9 @@ export async function LogIn(auth, router, email, password) {
 
         response = await axiosInstance.get(`/user/read/${email}`);
         const user = response.data;
+        console.log(user);
 
-        localStorage.setItem("email", email);
+        localStorage.setItem("roles", user.roles);
 
         router.push("/");
     } catch (error) {

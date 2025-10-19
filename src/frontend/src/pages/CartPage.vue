@@ -34,15 +34,16 @@
       <p><strong>Total:</strong> R{{ totalPrice.toFixed(2) }}</p>
       <button v-on:click="checkout" class="checkout-btn">Checkout</button>
     </div>
+    <FooterComponent/>
   </div>
 </template>
 
 <script setup>
 import {computed, onMounted, ref} from "vue";
 import {getCartItems, makeOrder, removeItem, updateQuantity} from "@/services/CartService";
-import {useAuth} from "@/Auth";
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import {useRouter} from "vue-router";
+import FooterComponent from "@/components/FooterComponent.vue";
 
 const cartItems = ref([]);
 
@@ -62,7 +63,7 @@ const loadCart = async () => {
 const removeFromCart = async (productId) => {
   try {
     await removeItem(email, productId);
-    cartItems.value = await getCartItems(email);
+    //cartItems.value = await getCartItems(email);
     router.go(0);
   } catch (err) {
     console.error("Error removing item:", err);

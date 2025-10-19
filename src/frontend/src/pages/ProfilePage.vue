@@ -196,12 +196,12 @@
       </div>
     </div>
   </div>
+  <FooterComponent/>
 </template>
 
 <script>
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import SidebarComponent from "@/components/SidebarComponent.vue";
-import {useAuth} from "@/Auth";
 import {
   addAddress,
   addCard,
@@ -215,10 +215,11 @@ import {
   updateUser
 } from "@/services/ProfileService";
 import {useRouter} from "vue-router";
+import FooterComponent from "@/components/FooterComponent.vue";
 
 export default {
   name: 'ProfilePage',
-  components: {SidebarComponent, HeaderComponent},
+  components: {FooterComponent, SidebarComponent, HeaderComponent},
   data() {
     return {
       user: {},
@@ -264,7 +265,6 @@ export default {
     };
   },
   async mounted() {
-    const authUser = useAuth();
     this.user = await getUser(localStorage.getItem("email"));
 
     if (this.user) {

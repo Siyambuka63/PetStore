@@ -66,7 +66,7 @@ class ProductServiceImplTest {
         @Test
         @Order(4)
         void getAll() {
-            List<Product> products = service.getAllProducts();
+            List<Product> products = service.getAll();
             assertNotNull(products);
             System.out.println(products);
         }
