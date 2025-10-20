@@ -27,7 +27,7 @@ public class ProductServiceImpl implements ProductService {
     public Product create(Product product) {return repository.save(product);}
 
     public Product createProduct(Product product, MultipartFile file) {
-        product.setProductName(file.getOriginalFilename());
+        product.setImageName(file.getOriginalFilename());
         product.setImageType(file.getContentType());
         try {
             product.setImageData(file.getBytes());

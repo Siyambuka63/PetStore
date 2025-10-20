@@ -23,7 +23,10 @@ import FooterComponent from "@/components/FooterComponent.vue";
               :to="`/products/${orderItem.product.id}`"
               class="orders-list"
           >
-            <img :src="`/productImages/${orderItem.product.imageAddress}`" alt="product">
+            <img
+                :src="orderItem.product.imageData ? `/petstore/product/image/${orderItem.product.id}` : '/productImages/placeholder.jpg'"
+                :alt="orderItem.product.productName"
+            />
             <div>
               <p><strong>Product name: </strong> {{ orderItem.product.productName }}</p>
               <p><strong>Price Per Item:</strong> R{{ orderItem.pricePerItem.toFixed(2) }}</p>

@@ -12,11 +12,8 @@
       <div v-else-if="product" class="product-details product-card">
         <!-- Product image -->
         <img
-            :src="`http://localhost:8080/product/image/${product.id}`
-            ? '/productImages/' + product.imageAddress
-            : '/productImages/placeholder.jpg'"
-            :alt="product.productName"
-            class="product-image"
+            :src="product.imageData ? `/petstore/product/image/${product.id}` : '/productImages/placeholder.jpg'"
+            :alt="product.productName" class="product-image"
         />
 
         <!-- Info Section -->
@@ -32,13 +29,14 @@
 
           <!-- Price -->
           <p class="price">
-            <span v-if="product.onSale">
-              Was: <s>R{{ product.price.toFixed(2) }}</s><br />
-              Now: R{{ product.salePrice.toFixed(2) }}
-            </span>
+          <span v-if="product.discountPercent && product.discountPercent > 0">
+            Was: <s>R{{ product.price.toFixed(2) }}</s><br/>
+            Now: R{{ (product.price * (1 - product.discountPercent / 100)).toFixed(2) }}
+            ({{ product.discountPercent }}% off)
+          </span>
             <span v-else>
-              R{{ product.price.toFixed(2) }}
-            </span>
+            R{{ product.price.toFixed(2) }}
+          </span>
           </p>
 
           <!-- Reviews -->

@@ -17,9 +17,7 @@
           <!-- Clickable Product image -->
           <router-link :to="`/products/${product.id}`">
             <img
-                :src="`http://localhost:8080/product/image/${product.id}`
-                ? '/productImages/' + product.imageAddress
-                : '/productImages/placeholder.jpg'"
+                :src="product.imageData ? `/petstore/product/image/${product.id}` : '/productImages/placeholder.jpg'"
                 :alt="product.productName"
             />
           </router-link>
@@ -33,13 +31,14 @@
 
           <!-- Product price -->
           <p class="price">
-  <span v-if="product.discountedPrice < product.price">
-    Was: <s>R{{ product.price.toFixed(2) }}</s><br>
-    Now: R{{ product.discountedPrice.toFixed(2) }}
-  </span>
+          <span v-if="product.discountPercent && product.discountPercent > 0">
+            Was: <s>R{{ product.price.toFixed(2) }}</s><br/>
+            Now: R{{ (product.price * (1 - product.discountPercent / 100)).toFixed(2) }}
+            ({{ product.discountPercent }}% off)
+          </span>
             <span v-else>
-    R{{ product.price.toFixed(2) }}
-  </span>
+            R{{ product.price.toFixed(2) }}
+          </span>
           </p>
 
           <!-- Description -->
@@ -113,9 +112,9 @@ export default {
 
         // Handle different backend response shapes
         if (Array.isArray(response.data)) {
-          this.products = response.data;
+          this.products = response.data.filter(product => product.stock > 0);
         } else if (response.data.products) {
-          this.products = response.data.products;
+          this.products = response.data.products.filter(product => product.stock > 0);
         } else {
           this.error = "Unexpected response format from server.";
         }
