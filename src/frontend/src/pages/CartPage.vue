@@ -27,6 +27,7 @@
             <input type="number"
                    v-model.number="item.quantity"
                    min="1"
+                   max="{{ item.quantity }}"
                    @change="updateItemQuantity(item.product.id, item.quantity)"
                    class="quantity-input"
                    />
