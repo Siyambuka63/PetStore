@@ -64,14 +64,46 @@ export async function getProduct(id) {
     return res.data;
 }
 
-export async function makeOrder(userID, price) {
+export async function makeOrder(userID, price, cartItems) {
     const cart = await getCart(userID);
-    if (!cart) return;
-    cart.status = "Busy";
-    cart.price = price;
-    cart.orderDate = new Date().toISOString();
-    cart.deliveryDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
-    await axiosInstance.post('/order/update', cart);
+    if (!cart) {
+        alert("Cart not found.");
+        return;
+    }
+    try {
+
+        // Validate product stock
+        for (const item of cartItems) {
+            const product = await getProduct(item.product.id);
+            if (item.quantity > product.stock) {
+                alert(`Insufficient stock for ${product.productName}. Available: ${product.stock}`);
+                return; // stop if stock is insufficient
+            }
+        }
+
+        // Order creation
+        cart.status = "Busy";
+        cart.price = price;
+        cart.orderDate = new Date().toISOString();
+        cart.deliveryDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+
+        await axiosInstance.post("/order/update", cart);
+
+        // Reduce stock for each ordered product
+        for (const item of cartItems) {
+            const newStock = item.product.stock - item.quantity;
+            await axiosInstance.put(`/product/updateStock/${item.product.id}`, {
+                stock: newStock
+            });
+        }
+
+
+        alert(" Order placed successfully and stock updated!");
+
+    } catch (error) {
+        console.error("Error making order:", error);
+        alert(" An error occurred while processing your order.");
+    }
 }
 
 export async function isCarted(userID, productId) {
