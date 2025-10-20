@@ -29,32 +29,12 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository ;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, ProductRepository productRepository) {
-        this.orderRepository = orderRepository;
-        this.productRepository = productRepository;
-    }
+    public OrderServiceImpl(OrderRepository orderRepository){
+        this.orderRepository = orderRepository;}
 
     @Override
-    @Transactional
-    public Order create(Order order)
-    {
-        Order savedOrder = orderRepository.save(order);
-
-        for (OrderItem item : savedOrder.getItems()) {
-            Product product = productRepository.findById(item.getId().getProductId()).orElseThrow(() -> new RuntimeException("Product not found" + item.getId().getProductId()));
-
-            int currentStock = product.getStock();
-            int orderedQuantity = item.getQuantity();
-
-
-            if (orderedQuantity > currentStock) {
-                throw new IllegalStateException("Not enough stock for product: " + product.getProductName());
-            }
-
-            product.setStock(currentStock - orderedQuantity);
-            productRepository.save(product);
-        }
-        return savedOrder;
+    public Order create(Order order) {
+        return orderRepository.save(order);
     }
 
     @Override
