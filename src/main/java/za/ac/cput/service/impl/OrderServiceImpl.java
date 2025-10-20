@@ -1,6 +1,5 @@
 package za.ac.cput.service.impl;
 
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import za.ac.cput.domain.Product;
@@ -24,7 +23,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private static OrderService service;
-    private final ProductRepository productRepository;
 
     private OrderRepository orderRepository ;
 
