@@ -92,6 +92,7 @@ const checkout = async () => {
     );
 
 
+
     await makeOrder(email, totalPrice.value, cartItems);
   // alert("Checkout successful!");
    // cartItems.value = [];

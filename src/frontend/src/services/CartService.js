@@ -97,6 +97,7 @@ export async function makeOrder(userID, price, cartItems) {
             });
         }
 
+
         alert(" Order placed successfully and stock updated!");
 
     } catch (error) {
