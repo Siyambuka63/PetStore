@@ -86,9 +86,17 @@ const removeFromCart = async (productId) => {
 // Checkout
 const checkout = async () => {
   try {
-    await makeOrder(email, totalPrice.value);
-    alert("Checkout successful!");
-    cartItems.value = [];
+    const cartItems = await getCartItems(this.userID); // fetch items for validation
+    const totalPrice = cartItems.reduce(
+        (sum, item) => sum + item.product.price * item.quantity,
+        0
+    );
+
+
+
+    await makeOrder(email, totalPrice.value, cartItems);
+  // alert("Checkout successful!");
+   // cartItems.value = [];
     await router.push("/orders");
   } catch (err) {
     console.error("Error during checkout:", err);
@@ -102,7 +110,7 @@ const totalPrice = computed(() =>
     cartItems.value.reduce((sum, item) => sum + (item.product.price * (1 - item.product.discountPercent / 100)) * item.quantity, 0)
 );
 
-//Uodate  quantity
+//Update  quantity
 const updateItemQuantity = async(productId, newQuantity) => {
   try {
     if(newQuantity<1) {

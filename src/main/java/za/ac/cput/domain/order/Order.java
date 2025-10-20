@@ -1,9 +1,12 @@
 package za.ac.cput.domain.order;
 
 import jakarta.persistence.*;
+import za.ac.cput.domain.orderItem.OrderItem;
 import za.ac.cput.domain.user.User;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
      Order class
@@ -23,7 +26,6 @@ public class Order {
     private float price;
     @Enumerated(EnumType.STRING)
     private Status status;
-
     protected Order() {}
 
     private Order(Builder builder) {
