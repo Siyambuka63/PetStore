@@ -6,10 +6,22 @@
     <!-- Cart Items -->
     <div v-if="cartItems.length > 0" class="cart-items">
       <div v-for="item in cartItems" :key="item.product.id" class="cart-item">
-        <img :src="`/productImages/${item.product.imageAddress}`" alt="product" class="cart-img" />
+        <img
+            :src="item.product.imageData ? `/petstore/product/image/${item.product.id}` : '/productImages/placeholder.jpg'"
+            :alt="item.product.productName" class="cart-img"
+        />
         <div class="cart-details">
           <h3>{{ item.product.name }}</h3>
-          <p>Price: R{{ item.product.price.toFixed(2) }}</p>
+          <p>
+          <span v-if="item.product.discountPercent && item.product.discountPercent > 0">
+            Was: <s>R{{ item.product.price.toFixed(2) }}</s><br/>
+            Now: R{{ (item.product.price * (1 - item.product.discountPercent / 100)).toFixed(2) }}
+            ({{ item.product.discountPercent }}% off)
+          </span>
+            <span v-else>
+            R{{ item.product.price.toFixed(2) }}
+          </span>
+          </p>
           <p>Quantity: {{ item.quantity }}</p>
           <div class="quantity-controls">
             <input type="number"
@@ -34,15 +46,16 @@
       <p><strong>Total:</strong> R{{ totalPrice.toFixed(2) }}</p>
       <button v-on:click="checkout" class="checkout-btn">Checkout</button>
     </div>
+    <FooterComponent/>
   </div>
 </template>
 
 <script setup>
 import {computed, onMounted, ref} from "vue";
 import {getCartItems, makeOrder, removeItem, updateQuantity} from "@/services/CartService";
-import {useAuth} from "@/Auth";
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import {useRouter} from "vue-router";
+import FooterComponent from "@/components/FooterComponent.vue";
 
 const cartItems = ref([]);
 
@@ -62,7 +75,7 @@ const loadCart = async () => {
 const removeFromCart = async (productId) => {
   try {
     await removeItem(email, productId);
-    cartItems.value = await getCartItems(email);
+    //cartItems.value = await getCartItems(email);
     router.go(0);
   } catch (err) {
     console.error("Error removing item:", err);
@@ -86,7 +99,7 @@ onMounted(loadCart);
 
 // Total Price
 const totalPrice = computed(() =>
-    cartItems.value.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
+    cartItems.value.reduce((sum, item) => sum + (item.product.price * (1 - item.product.discountPercent / 100)) * item.quantity, 0)
 );
 
 //Update  quantity

@@ -1,12 +1,14 @@
 package za.ac.cput.domain.user;
 
 import jakarta.persistence.*;
+import lombok.Setter;
 import za.ac.cput.domain.review.Review;
 import za.ac.cput.domain.user.Role;
 
 import java.util.List;
 
 @Entity
+@Setter
 public class User {
     @Id
     private String email;
@@ -16,7 +18,12 @@ public class User {
     private String password;
     private String phoneNumber;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_email"),
+            inverseJoinColumns = @JoinColumn(name = "roles_description")
+    )
     private List<Role> roles;
 
     @OneToMany

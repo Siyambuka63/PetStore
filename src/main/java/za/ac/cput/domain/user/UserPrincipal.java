@@ -20,7 +20,7 @@ public class UserPrincipal implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         for (Role role: user.getRoles()) {
-            authorities.add(new SimpleGrantedAuthority(role.getDescription()));
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getDescription()));
         }
         return authorities;
     }

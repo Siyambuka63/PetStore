@@ -12,11 +12,8 @@
       <div v-else-if="product" class="product-details product-card">
         <!-- Product image -->
         <img
-            :src="`http://localhost:8080/product/image/${product.id}`
-            ? '/productImages/' + product.imageAddress
-            : '/productImages/placeholder.jpg'"
-            :alt="product.productName"
-            class="product-image"
+            :src="product.imageData ? `/petstore/product/image/${product.id}` : '/productImages/placeholder.jpg'"
+            :alt="product.productName" class="product-image"
         />
 
         <!-- Info Section -->
@@ -24,19 +21,23 @@
           <h1>{{ product.productName }}</h1>
           <p class="description">{{ product.description }}</p>
 
-          <!-- Price -->
-          <p class="price">
-            <span v-if="product.onSale">
-              Was: <s>R{{ product.price.toFixed(2) }}</s><br />
-              Now: R{{ product.salePrice.toFixed(2) }}
-            </span>
-            <span v-else>
-              R{{ product.price.toFixed(2) }}
-            </span>
-          </p>
+          <!-- Rating -->
+          <p><strong>Rating:</strong> {{ product.rating }}</p>
 
           <!-- Stock -->
           <p><strong>Stock:</strong> {{ product.stock }}</p>
+
+          <!-- Price -->
+          <p class="price">
+          <span v-if="product.discountPercent && product.discountPercent > 0">
+            Was: <s>R{{ product.price.toFixed(2) }}</s><br/>
+            Now: R{{ (product.price * (1 - product.discountPercent / 100)).toFixed(2) }}
+            ({{ product.discountPercent }}% off)
+          </span>
+            <span v-else>
+            R{{ product.price.toFixed(2) }}
+          </span>
+          </p>
 
           <!-- Reviews -->
           <div class="reviews">
@@ -50,49 +51,75 @@
             <p v-if="!product.reviews || product.reviews.length === 0">No reviews yet.</p>
           </div>
 
-          <!-- Button -->
-          <button
-              @click="handleAddItem(product.id, product.onSale ? product.salePrice : product.price, product.quantity)"
-              class="cart"
-          >
+          <!-- Add to cart -->
+          <button v-if="inCart" class="cart" id="remove" @click="removeFromCart(product.id)">
+            In Cart
+          </button>
+          <button v-else @click="handleAddItem(product.id, product.onSale ? product.salePrice : product.price, 1)"
+                  class="cart">
             Add to Cart
           </button>
 
           <!-- Add to wishlist -->
-          <button @click="handleAddItemToWishlist(product.id)" class="wishlist">
+          <button v-if="wishlisted" class="wishlist" id="remove_button" @click="removeFromWishlist(product.id)">
+            Wishlisted
+          </button>
+          <button v-else @click="handleAddItemToWishlist(product.id)" class="wishlist">
             Add to Wishlist
           </button>
+
+          <!-- Additional Information -->
+          <div class="more-info">
+            <h3>Additional Information</h3>
+            <p><strong>Weight: </strong>
+              {{ product.weight
+                  ? (product.weight >= 1000
+                      ? (product.weight / 1000).toFixed(2) + ' kg'
+                      : product.weight + ' g')
+                  : 'N/A' }}
+            </p>
+            <p><strong>Brand: </strong> {{ product.brand || 'N/A' }}</p>
+            <p><strong>Life Stage: </strong> {{ product.lifeStage || 'N/A' }}</p>
+            <p><strong>Food Type: </strong> {{ product.foodType || 'N/A' }}</p>
+            <p><strong>Pet Type: </strong> {{ product.petType || 'N/A' }}</p>
+            <p><strong>Flavour: </strong> {{ product.flavour || 'N/A' }}</p>
+          </div>
 
         </div>
       </div>
     </main>
+    <FooterComponent/>
   </div>
 </template>
 
 <script>
 import HeaderComponent from "@/components/HeaderComponent.vue";
+import FooterComponent from "@/components/FooterComponent.vue";
 import axiosInstance from "@/api/AxiosInstance";
-import { addItem } from "@/services/CartService";
-import { addItemToWishlist } from "@/services/WishlistService";
-import { useAuth } from "@/Auth";
+import {addItem, isCarted, removeItem} from "@/services/CartService";
+import {addItemToWishlist, isWishlisted, removeWishlistItem} from "@/services/WishlistService";
 
 export default {
   name: "ProductDetails",
-  components: { HeaderComponent },
+  components: { FooterComponent, HeaderComponent },
   data() {
     return {
       product: null,
       loading: true,
       error: null,
       userID: null,
+      inCart: false,
+      wishlisted: false,
     };
   },
   methods: {
     async fetchProductDetails() {
       try {
         const productId = this.$route.params.id;
-        const response = await axiosInstance.get(`/petstore/product/read/${productId}`);
+        const response = await axiosInstance.get(`/product/read/${productId}`);
         this.product = response.data;
+
+        await this.checkCartAndWishlist(productId);
       } catch (err) {
         console.error(err);
         this.error = "Failed to load product details.";
@@ -100,27 +127,41 @@ export default {
         this.loading = false;
       }
     },
-
-    async handleAddItemToWishlist(productID){
-      if (this.userID) {
-        await addItemToWishlist(this.userID, productID);
-      } else {
-        this.$router.push("/login");
-      }
+    async checkCartAndWishlist(productId) {
+      if (!this.userID) return;
+      this.inCart = await isCarted(this.userID, productId);
+      this.wishlisted = await isWishlisted(this.userID, productId);
     },
     async handleAddItem(productID, price, quantity) {
       if (this.userID) {
-        await addItem(this.userID, productID, price, quantity);
-        this.$router.go(0);
+        await addItem(this.userID, productID, price, quantity, this.$router);
+        this.inCart = true;
       } else {
         this.$router.push("/login");
       }
     },
+    async handleAddItemToWishlist(productID) {
+      if (this.userID) {
+        await addItemToWishlist(this.userID, productID);
+        this.wishlisted = true;
+      } else {
+        this.$router.push("/login");
+      }
+    },
+    async removeFromCart(productID) {
+      if (!this.userID) return;
+      await removeItem(this.userID, productID);
+      this.$router.go(0);
+    },
+    async removeFromWishlist(productID) {
+      if (!this.userID) return;
+      await removeWishlistItem(this.userID, productID);
+      this.wishlisted = false;
+    },
   },
-  mounted() {
-    const auth = useAuth();
-    this.userID = auth.getEmail();
-    this.fetchProductDetails();
+  async mounted() {
+    this.userID = localStorage.getItem("email");
+    await this.fetchProductDetails();
   },
 };
 </script>
@@ -131,6 +172,7 @@ export default {
   padding: 0 30px;
   display: flex;
   justify-content: center;
+  margin-top: 40px;
 }
 
 .product-details {
@@ -146,12 +188,6 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 15px rgba(0,0,0,0.1);
 }
 
 .product-card img {
@@ -181,10 +217,10 @@ export default {
 }
 
 .product-card .cart {
-  margin: 5px auto;
+  margin: 5px;
   border: none;
   border-radius: 5px;
-  padding: 8px 12px;
+  padding: 10px 14px;
   background: #0984e3;
   color: white;
   cursor: pointer;
@@ -193,6 +229,14 @@ export default {
 
 .product-card .cart:hover {
   background: #0652DD;
+}
+
+#remove {
+  background: #0652DD;
+}
+
+#remove:hover {
+  background: #0984e3;
 }
 
 .product-card .wishlist {
@@ -210,10 +254,30 @@ export default {
   background: #f1f1f1;
 }
 
+#remove_button {
+  background: #f1f1f1;
+  border: 2px solid #0652DD;
+  color: #0652DD;
+}
+
+#remove_button:active, #remove_button:hover {
+  background: white;
+}
+
 .reviews {
   margin-top: 15px;
   text-align: left;
 }
+
+p {
+  margin-top: 15px;
+}
+
+.price span {
+  font-size: 20px;
+}
+
+.info {
+  text-align: left;
+}
 </style>
-
-

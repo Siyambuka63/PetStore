@@ -17,9 +17,7 @@
           <!-- Clickable Product image -->
           <router-link :to="`/products/${product.id}`">
             <img
-                :src="`http://localhost:8080/product/image/${product.id}`
-                ? '/productImages/' + product.imageAddress
-                : '/productImages/placeholder.jpg'"
+                :src="product.imageData ? `/petstore/product/image/${product.id}` : '/productImages/placeholder.jpg'"
                 :alt="product.productName"
             />
           </router-link>
@@ -33,15 +31,15 @@
 
           <!-- Product price -->
           <p class="price">
-  <span v-if="product.discountedPrice < product.price">
-    Was: <s>R{{ product.price.toFixed(2) }}</s><br>
-    Now: R{{ product.discountedPrice.toFixed(2) }}
-  </span>
+          <span v-if="product.discountPercent && product.discountPercent > 0">
+            Was: <s>R{{ product.price.toFixed(2) }}</s><br/>
+            Now: R{{ (product.price * (1 - product.discountPercent / 100)).toFixed(2) }}
+            ({{ product.discountPercent }}% off)
+          </span>
             <span v-else>
-    R{{ product.price.toFixed(2) }}
-  </span>
+            R{{ product.price.toFixed(2) }}
+          </span>
           </p>
-
 
           <!-- Description -->
           <p>{{ product.description }}</p>
@@ -50,16 +48,19 @@
           <p><strong>Rating:</strong> {{ product.rating }}</p>
 
           <!-- Add to cart -->
-          <button @click="handleAddItem(product.id, product.onSale ? product.salePrice : product.price, 1)"
+          <button v-if="isCarted(product.id)" class="cart" id="remove" @click="removeFromCart(product.id)">
+            In Cart
+          </button>
+          <button v-else @click="handleAddItem(product.id, product.onSale ? product.salePrice : product.price, 1)"
                   class="cart">
             Add to Cart
           </button>
 
           <!-- Add to wishlist -->
-          <button @click="handleAddItemToWishlist(product.id)" class="wishlist">
-            Add to Wishlist
+          <button v-if="isWishlisted(product.id)" class="wishlist" id="remove_button" @click="removeItem(product.id)">
+            Wishlisted
           </button>
-
+          <button v-else @click="handleAddItemToWishlist(product.id)" class="wishlist">Add to Wishlist</button>
         </div>
       </div>
     </main>
@@ -71,9 +72,8 @@
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import FooterComponent from "@/components/FooterComponent.vue";
 import axiosInstance from "@/api/AxiosInstance";
-import {addItemToWishlist} from "@/services/WishlistService";
-import {addItem} from "@/services/CartService";
-import {useAuth} from "@/Auth";
+import {addItemToWishlist, getWishlist, removeWishlistItem} from "@/services/WishlistService";
+import {addItem, getCartedItems, removeItem} from "@/services/CartService";
 
 export default {
   name: "ProductsPage",
@@ -84,6 +84,8 @@ export default {
   data() {
     return {
       products: [],
+      wishlist: [],
+      carted: [],
       loading: true,
       error: null,
       userID: null,
@@ -92,29 +94,27 @@ export default {
   methods: {
     async handleAddItem(productID, price, quantity) {
       if (this.userID) {
-        await addItem(this.userID, productID, price, quantity);
-        this.$router.go(0);
+        await addItem(this.userID, productID, price, quantity, this.$router);
       } else {
         this.$router.push("/login");
       }
     },
     async handleAddItemToWishlist(productID) {
       if (this.userID) {
-        await addItemToWishlist(this.userID, productID);
+        this.wishlist = await addItemToWishlist(this.userID, productID);
       } else {
         this.$router.push("/login");
       }
     },
     async fetchProducts() {
       try {
-        console.log(useAuth().getEmail());
-        const response = await axiosInstance.get("/petstore/product/getAll");
+        const response = await axiosInstance.get("/product/getAll");
 
         // Handle different backend response shapes
         if (Array.isArray(response.data)) {
-          this.products = response.data;
+          this.products = response.data.filter(product => product.stock > 0);
         } else if (response.data.products) {
-          this.products = response.data.products;
+          this.products = response.data.products.filter(product => product.stock > 0);
         } else {
           this.error = "Unexpected response format from server.";
         }
@@ -125,18 +125,48 @@ export default {
         this.loading = false;
       }
     },
+    async fetchWishlist() {
+      const data = await getWishlist(this.userID);
+      if (data) {
+        this.wishlist = data;
+      }
+    },
+    async removeItem(itemID) {
+      this.wishlist = await removeWishlistItem(this.userID, itemID);
+    },
+    async removeFromCart(productId) {
+      try {
+        await removeItem(this.userID, productId);
+        this.$router.go(0);
+      } catch (err) {
+        console.error("Error removing item:", err);
+      }
+    },
+    async getCart(){
+      this.carted = await getCartedItems(this.userID);
+    },
+    isWishlisted(productId) {
+      for (let i = 0; i < this.wishlist.length; i++) {
+        if (this.wishlist[i].id.productId === productId) {
+          return true;
+        }
+      }
+      return false;
+    },
+    isCarted(productId) {
+      for (let i = 0; i < this.carted.length; i++) {
+        if (this.carted[i].id && this.carted[i].id.productId === productId) {
+          return true;
+        }
+      }
+      return false;
+    }
   },
   mounted() {
-    const auth = useAuth();
-
     this.fetchProducts();
-    this.userID = auth.getEmail();
-
-    window.addEventListener("refresh-products", this.fetchProducts());
-  },
-
-  beforeUnmount() {
-    window.removeEventListener("refresh-products", this.fetchProducts());
+    this.userID = localStorage.getItem("email");
+    this.fetchWishlist();
+    this.getCart();
   },
 };
 </script>
@@ -198,7 +228,7 @@ export default {
   margin: 5px;
   border: none;
   border-radius: 5px;
-  padding: 8px 12px;
+  padding: 10px 14px;
   background: #0984e3;
   color: white;
   cursor: pointer;
@@ -207,6 +237,14 @@ export default {
 
 .product-card .cart:hover {
   background: #0652DD;
+}
+
+#remove {
+  background: #0652DD;
+}
+
+#remove:hover {
+  background: #0984e3;
 }
 
 .product-card .wishlist {
@@ -231,5 +269,15 @@ export default {
 
 .product-link:hover {
   color: #0984e3;
+}
+
+#remove_button {
+  background: #f1f1f1;
+  border: 2px solid #0652DD;
+  color: #0652DD;
+}
+
+#remove_button:active, #remove_button:hover {
+  background: white;
 }
 </style>

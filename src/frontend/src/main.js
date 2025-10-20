@@ -1,9 +1,6 @@
-import { createApp } from 'vue'
+import {createApp} from 'vue'
 import App from './App.vue'
 import * as VueRouter from 'vue-router'
-import { createPinia } from 'pinia'
-import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
-import { useAuth } from "@/Auth";
 
 import ProfilePage from "./pages/ProfilePage.vue";
 import WishlistPage from "./pages/WishlistPage.vue";
@@ -27,41 +24,42 @@ const router = VueRouter.createRouter({
         {
             path: '/',
             get component() {
-                if (localStorage.getItem("roles").includes("ADMIN")) {
-                    return AdminDashboard;
-                } else {
-                    return ProductsPage;
+                const rolesString = localStorage.getItem("roles");
+                if (rolesString) {
+                    const roles = JSON.parse(rolesString); // now an array of strings
+                    if (roles.includes("ADMIN")) return AdminDashboard;
                 }
+                return ProductsPage;
             }
         },
         {
             path: '/orders',
             component: OrdersPage,
-            meta: { requiresAuth: true }
+            meta: {requiresAuth: true}
         },
         {
             path: '/orders/:id',
             component: OrderItems,
-            meta: { requiresAuth: true }
+            meta: {requiresAuth: true}
         },
         {
             path: '/profile',
             component: ProfilePage,
-            meta: { requiresAuth: true }
+            meta: {requiresAuth: true}
         },
         {
             path: '/wishlist',
             component: WishlistPage,
-            meta: { requiresAuth: true }
+            meta: {requiresAuth: true}
         },
         {
             path: '/products',
             component: ProductsPage
         },
-        { 
+        {
             path: "/signup",
             name: "SignUp",
-            component: SignUpPage 
+            component: SignUpPage
         },
         {
             path: "/products/:id",
@@ -71,7 +69,7 @@ const router = VueRouter.createRouter({
         {
             path: "/cart",
             component: CartPage,
-            meta: { requiresAuth: true }
+            meta: {requiresAuth: true}
         },
         {
             path: "/logout",
@@ -81,14 +79,12 @@ const router = VueRouter.createRouter({
         //     path: "/admin",
         //     name: "admin",
         //     component: AdminDashboard,
-        //     meta: { requiresAdmin: true }
+        //     meta: { requiresAuth: true }
         // }
     ]
- })
+})
 
 router.beforeEach((to, from, next) => {
-    const user = useAuth()
-
     if (to.name === "logout") {
         localStorage.removeItem("email");
         localStorage.removeItem("roles");
@@ -97,7 +93,7 @@ router.beforeEach((to, from, next) => {
     }
 
     if (to.meta.requiresAuth && !localStorage.getItem("token")) {
-        return next({ name: "LogIn" })
+        return next({name: "LogIn"})
     }
 
     next()

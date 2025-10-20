@@ -31,7 +31,6 @@
 <script setup>
 import {ref} from "vue";
 import {isEmailTaken, SignUp} from "@/services/UserService";
-import {useAuth} from "@/Auth";
 import {useRouter} from "vue-router";
 
 const firstName = ref("");
@@ -43,7 +42,6 @@ const password = ref("");
 const confirmPassword = ref("");
 const emailError = ref("");
 const successMessage = ref("");
-const auth = useAuth();
 const router = useRouter();
 
 async function handleSignUp() {
@@ -56,7 +54,7 @@ async function handleSignUp() {
     return;
   }
   try {
-    const createdUser = await SignUp(
+    await SignUp(
         firstName.value,
         middleName.value,
         lastName.value,
@@ -66,7 +64,6 @@ async function handleSignUp() {
         confirmPassword.value,
     );
 
-    auth.setUserEmail(createdUser.email)
     successMessage.value = "Signup successful!";
 
     setTimeout(() => {

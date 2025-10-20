@@ -1,38 +1,52 @@
 <script setup>
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import SidebarComponent from "@/components/SidebarComponent.vue";
+import FooterComponent from "@/components/FooterComponent.vue";
 </script>
 <template>
   <HeaderComponent/>
   <div class="container">
-    <sidebar-component/>
+    <SidebarComponent/>
     <!-- Main Content -->
     <div class="content">
-      <h1>Order details:</h1>
-      <h2><strong>Order #{{order.id}}</strong></h2>
-      <p><strong>Order date: </strong>{{ formatDate(order.orderDate) }}</p>
-      <p><strong>Delivery date: </strong>{{ formatDate(order.deliveryDate)}}</p>
-      <p><strong>Total price: </strong>R{{ order.price.toFixed(2) }}</p>
-      <p><strong>Status:</strong> {{ order.status }}</p>
+      <div v-if="order">
+        <h2><strong>Order #{{ order.id }}</strong></h2>
+        <p><strong>Order date: </strong>{{ formatDate(order.orderDate) }}</p>
+        <p><strong>Delivery date: </strong>{{ formatDate(order.deliveryDate) }}</p>
+        <p><strong>Total price: </strong>R{{ order.price.toFixed(2) }}</p>
+        <p><strong>Status:</strong> {{ order.status }}</p>
 
-      <div v-if="orderItems.length" class="list"><!--check if a orderitem exists-->
-        <div v-for="orderItem in orderItems" :key="orderItem.id" class="orders-list">
-          <!-- Order Items -->
-          <div v-for="product in getProductById(orderItem.id.productId)" :key="product.id">
-            <img :src="`/productImages/${product.imageAddress}`" alt="product">
-            <p><strong>Product name: </strong> {{ product.productName }}</p>
-            <p><strong>Price Per Item:</strong> R{{ orderItem.pricePerItem.toFixed(2) }}</p>
-            <p><strong>Quantity:</strong> {{ orderItem.quantity }}</p>
-            <p><strong>Subtotal:</strong> R{{ orderItem.totalPrice.toFixed(2) }}</p>
-          </div>
+        <div v-if="orderItems.length" class="list">
+          <router-link
+              v-for="orderItem in orderItems"
+              :key="orderItem.id"
+              :to="`/products/${orderItem.product.id}`"
+              class="orders-list"
+          >
+            <img
+                :src="orderItem.product.imageData ? `/petstore/product/image/${orderItem.product.id}` : '/productImages/placeholder.jpg'"
+                :alt="orderItem.product.productName"
+            />
+            <div>
+              <p><strong>Product name: </strong> {{ orderItem.product.productName }}</p>
+              <p><strong>Price Per Item:</strong> R{{ orderItem.pricePerItem.toFixed(2) }}</p>
+              <p><strong>Quantity:</strong> {{ orderItem.quantity }}</p>
+              <p><strong>Subtotal:</strong> R{{ orderItem.totalPrice.toFixed(2) }}</p>
+            </div>
+          </router-link>
+        </div>
+
+        <div v-else class="no-orders">
+          <p>No order items found.</p>
         </div>
       </div>
-      <!--else statement for check-->
-      <div v-else class="no-orders">
-        <p>No order items found.</p>
+
+      <div v-else>
+        <p>Loading order...</p>
       </div>
     </div>
   </div>
+  <FooterComponent/>
 </template>
 
 <script>
@@ -47,17 +61,35 @@ export default {
     };
   },
   methods: {
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+    },
     async getOrder() {
       const orderId = this.$route.params.id;
       let response = await axiosInstance.get(`/order/read/${orderId}`);
-      this.orders = await response.data;
+      this.order = await response.data;
+
+      console.log(this.order);
+      console.log(localStorage.getItem("email"));
+
+      if (this.order.user.email !== localStorage.getItem("email")) {
+        window.location.href = "/orders"
+      }
 
       response = await axiosInstance.get(`/order-item/getByOrderId/${orderId}`);
-      this.orderItems = await response.data;
-    },
-    async getProductById(productId) {
-      const response = await axiosInstance.get(`/product/read/${productId}`);
-      this.orderItems = await response.data;
+      const items = response.data;
+
+      for (let item of items) {
+        const productResponse = await axiosInstance.get(`/product/read/${item.id.productId}`);
+        item.product = productResponse.data;
+      }
+
+      this.orderItems = items;
     }
   },
   mounted() {
@@ -76,7 +108,6 @@ export default {
 /* Main Content */
 .content {
   width: 100%;
-
 }
 
 .content h1 {
@@ -91,15 +122,17 @@ export default {
 }
 
 .orders-list {
+  text-decoration: none;
+  color: black;
   width: auto;
-  overflow-x: hidden;
   display: flex;
-  justify-content: space-between;
   flex-direction: row;
   align-items: center;
   border-radius: 10px;
   padding: 12px 16px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border: 2px solid #ccc;
+  margin-bottom: 20px;
+  cursor: pointer;
 }
 
 .orders-list button {
@@ -117,10 +150,8 @@ export default {
 
 .content img {
   float: right;
-  width: 90%;
-  height: 150px;
-  object-fit: contain;
-  margin-bottom: 10px;
+  height: 100px;
+  margin: 0 50px 10px 0;
 }
 
 .no-orders {

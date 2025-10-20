@@ -1,6 +1,7 @@
 <script setup>
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import SidebarComponent from "@/components/SidebarComponent.vue";
+import FooterComponent from "@/components/FooterComponent.vue";
 
 </script>
 <template>
@@ -15,22 +16,20 @@ import SidebarComponent from "@/components/SidebarComponent.vue";
         <p><strong>Delivery date: </strong>{{ formatDate(order.deliveryDate)}}</p>
         <p><strong>Total price: </strong>R{{ order.price.toFixed(2) }}</p>
         <p><strong>Status:</strong> {{ order.status }}</p>
-        <button @click="router.push(`/orders/${order.id}`)">View order</button>
+        <button @click="$router.push(`/orders/${order.id}`)">View order</button>
       </div>
     </div>
     <div v-else class="no-orders">
       <p>no orders yet, start now {{ firstName }}!</p>
     </div>
   </div>
+  <FooterComponent/>
 </template>
 
 
 <script>
 import {getUser} from "@/services/ProfileService";
-import {useRouter} from "vue-router";
 import axiosInstance from "@/api/AxiosInstance";
-
-const router = useRouter();
 
 export default {
   name: "UserOrders",
@@ -51,7 +50,7 @@ export default {
     },
     async getOrdersByEmail(email) {
       const response = await axiosInstance.get(`/order/findByContactEmail/${email}`);
-      this.orders = await response.data;
+      this.orders = response.data.filter(order => order.status !== "Cart");
     }
   },
   async mounted() {
@@ -60,7 +59,7 @@ export default {
 
     this.firstName = user.firstName;
 
-     await this.getOrdersByEmail();
+     await this.getOrdersByEmail(email);
   },
 
 };
@@ -87,7 +86,7 @@ export default {
   padding: 12px 16px;
   width: 100%;
   margin-bottom: 20px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  border: 2px solid #ccc;
 }
 
 #orders button {
