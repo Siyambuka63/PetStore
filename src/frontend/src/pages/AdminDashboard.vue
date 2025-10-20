@@ -15,17 +15,15 @@
     <div v-else class="products">
       <div v-for="product in products" :key="product.id" class="product-card">
         <img
-            :src="product.imageAddress
-            ? '/productImages/' + product.imageAddress
-            : '/productImages/placeholder.png'"
+            :src="product.imageData ? `/petstore/product/image/${product.id}` : '/productImages/placeholder.jpg'"
             :alt="product.productName"
         />
         <p class="product-link"><strong>{{ product.productName }}</strong></p>
         <p class="price">
-          <span v-if="product.salePercentage && product.salePercentage > 0">
+          <span v-if="product.discountPercent && product.discountPercent > 0">
             Was: <s>R{{ product.price.toFixed(2) }}</s><br/>
-            Now: R{{ (product.price * (1 - product.salePercentage / 100)).toFixed(2) }}
-            ({{ product.salePercentage }}% off)
+            Now: R{{ (product.price * (1 - product.discountPercent / 100)).toFixed(2) }}
+            ({{ product.discountPercent }}% off)
           </span>
           <span v-else>
             R{{ product.price.toFixed(2) }}
@@ -52,7 +50,7 @@
           <input v-model.number="form.price" type="number" required />
 
           <label>Sale Percentage (0 if none)</label>
-          <input v-model.number="form.salePercentage" type="number" min="0" max="100" />
+          <input v-model.number="form.discountPercent" type="number" min="0" max="100" />
 
           <label>Description</label>
           <textarea v-model="form.description" required></textarea>
@@ -115,7 +113,7 @@ export default {
         id: null,
         productName: "",
         price: 0,
-        salePercentage: 0,
+        discountPercent: 0,
         description: "",
         stock: 0,
         rating: 0,
@@ -142,14 +140,13 @@ export default {
         this.loading = false;
       }
     },
-
     openAddModal() {
       this.editMode = false;
       this.form = {
         id: null,
         productName: "",
         price: 0,
-        salePercentage: 0,
+        discountPercent: 0,
         description: "",
         stock: 0,
         rating: 0,
@@ -163,35 +160,33 @@ export default {
       this.file = null;
       this.showModal = true;
     },
-
     saveImage(event) {
       const file = event.target.files[0];
       if (!file) return;
       this.file = file;
     },
-
     editProduct(product) {
       this.editMode = true;
       this.form = { ...product };
       this.file = null;
       this.showModal = true;
     },
-
     closeModal() {
       this.showModal = false;
     },
-
     async saveProduct() {
       try {
         const formData = new FormData();
         formData.append("product", new Blob([JSON.stringify(this.form)], { type: "application/json" }));
-        if (this.file) formData.append("file", this.file);
-
-        const endpoint = this.editMode ? `/product/update` : `/product/product`;
-        await axiosInstance.post(endpoint, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-
+        if (this.file) {
+          formData.append("file", this.file);
+          const endpoint = `/product/product`;
+          await axiosInstance.post(endpoint, formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+          });
+        } else {
+          await axiosInstance.post('/product/create', this.form);
+        }
         await this.loadProducts();
         this.closeModal();
       } catch (err) {
@@ -199,7 +194,6 @@ export default {
         alert("Error saving product. Please try again.");
       }
     },
-
     async deleteProduct(id) {
       if (confirm("Are you sure you want to delete this product?")) {
         try {
@@ -262,34 +256,33 @@ export default {
   color: #0984e3;
 }
 
-.product-card .edit,
-.product-card .delete {
-  margin: 8px 5px 0 5px;
-  border-radius: 5px;
-  padding: 6px 10px;
-  font-weight: bold;
-  cursor: pointer;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.product-card .edit {
+.product-card .edit, .save, .add-product-btn {
+  margin: 5px;
   border: none;
+  border-radius: 5px;
+  padding: 10px 14px;
   background: #0984e3;
   color: white;
+  cursor: pointer;
+  font-weight: bold;
 }
 
-.product-card .delete {
-  border: 2px solid #0984e3;
-  background: white;
-  color: #0984e3;
-}
-
-.product-card .edit:hover {
+.product-card .edit:hover, .save:hover, .add-product-btn:hover {
   background: #0652DD;
 }
 
-.product-card .delete:hover {
+.product-card .delete, .cancel {
+  margin: 5px;
+  border: 2px solid #0984e3;
+  border-radius: 5px;
+  padding: 8px 12px;
+  background: white;
+  color: #0984e3;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.product-card .delete:hover, .cancel:hover {
   background: #f1f1f1;
 }
 
@@ -335,25 +328,6 @@ export default {
   padding: 8px;
   border-radius: 5px;
   border: 1px solid #ccc;
-}
-
-.modal-buttons {
-  display: flex;
-  justify-content: space-between;
-}
-
-.add-product-btn {
-  background: #0984e3;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 10px 20px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.add-product-btn:hover {
-  background: #0652DD;
 }
 
 .admin-header {

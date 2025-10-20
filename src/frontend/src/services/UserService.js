@@ -74,7 +74,7 @@ export async function LogIn(router, email, password) {
         const user = response.data;
         console.log(user);
 
-        localStorage.setItem("roles", user.roles);
+        localStorage.setItem("roles", JSON.stringify(user.roles.map(r => r.description)));
 
         router.push("/");
     } catch (error) {

@@ -47,6 +47,7 @@ public class SecurityConfig {
                                 "/user/create").permitAll()
                         .requestMatchers(
                                 "/product/create",
+                                "/product/product",
                                 "/product/update",
                                 "/product/delete/**"
                         ).hasRole("ADMIN")

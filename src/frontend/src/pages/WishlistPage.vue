@@ -10,9 +10,10 @@
         <div v-for="(item, index) in items" :key="index" class="wishlist-item">
           <router-link :to="`/products/${item.id}`">
             <div class="left-section">
-              <img class="icon" v-if="item.imageData" :src="`http://localhost:8080/product/image/${product.id}`"
-                   v-bind:alt="item.productName">
-              <img class="icon" v-else src="@/assets/logo.png" v-bind:alt="item.productName">
+              <img
+                  :src="item.imageData ? `/petstore/product/image/${item.id}` : '/productImages/placeholder.jpg'"
+                  :alt="item.productName" class="icon"
+              />
             </div>
           </router-link>
 

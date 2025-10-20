@@ -24,8 +24,10 @@ const router = VueRouter.createRouter({
         {
             path: '/',
             get component() {
-                if (localStorage.getItem("roles") !== null) {
-                    if (localStorage.getItem("roles").includes("ADMIN")) return AdminDashboard;
+                const rolesString = localStorage.getItem("roles");
+                if (rolesString) {
+                    const roles = JSON.parse(rolesString); // now an array of strings
+                    if (roles.includes("ADMIN")) return AdminDashboard;
                 }
                 return ProductsPage;
             }
