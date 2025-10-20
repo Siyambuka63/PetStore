@@ -2,7 +2,9 @@
   <div class="header">
     <!-- Left Section -->
     <div class="left-section">
-      <router-link to="/" class="logo">PetShop</router-link>
+      <router-link to="/" class="logo">
+        <img src="../assets/logo.jpg" alt="logo"/>
+      </router-link>
     </div>
 
     <!-- Center Section -->
@@ -80,7 +82,11 @@ export default {
   justify-content: center;
   background: #0984e3;
   color: white;
-  padding: 0 30px;
+  padding: 5px 30px;
+}
+
+.header img {
+  height: 100px;
 }
 
 .right-section {
@@ -93,7 +99,7 @@ export default {
   cursor: pointer;
   color: white;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .tab:hover {
@@ -106,6 +112,7 @@ export default {
 
 .search-bar {
   width: 500px;
+  font-size: 16px;
   padding: 6px 10px;
   border-radius: 8px;
   border: none;
@@ -119,7 +126,6 @@ export default {
 
 .logo {
   font-size: 40px;
-  padding: 20px 0;
   text-decoration: none;
   color: white;
   cursor: pointer;
