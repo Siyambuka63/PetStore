@@ -27,7 +27,7 @@
             <input type="number"
                    v-model.number="item.quantity"
                    min="1"
-                   max="{{ item.quantity }}"
+                   :max=item.product.stock
                    @change="updateItemQuantity(item.product.id, item.quantity)"
                    class="quantity-input"
                    />
@@ -47,8 +47,8 @@
       <p><strong>Total:</strong> R{{ totalPrice.toFixed(2) }}</p>
       <button v-on:click="checkout" class="checkout-btn">Checkout</button>
     </div>
-    <FooterComponent/>
   </div>
+  <FooterComponent/>
 </template>
 
 <script setup>
@@ -86,18 +86,16 @@ const removeFromCart = async (productId) => {
 // Checkout
 const checkout = async () => {
   try {
-    const cartItems = await getCartItems(this.userID); // fetch items for validation
+    const cartItems = await getCartItems(email); // fetch items for validation
     const totalPrice = cartItems.reduce(
         (sum, item) => sum + item.product.price * item.quantity,
         0
     );
 
-
-
-    await makeOrder(email, totalPrice.value, cartItems);
-  // alert("Checkout successful!");
-   // cartItems.value = [];
-    await router.push("/orders");
+    if (await makeOrder(email, totalPrice.value, cartItems)) {
+      alert("Checkout successful!");
+      await router.push("/orders");
+    }
   } catch (err) {
     console.error("Error during checkout:", err);
   }
@@ -124,8 +122,6 @@ const updateItemQuantity = async(productId, newQuantity) => {
     console.error("Error updating quantity:", err);
   }
 };
-
-
 </script>
 
 <style scoped>

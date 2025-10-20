@@ -68,7 +68,7 @@ export async function makeOrder(userID, price, cartItems) {
     const cart = await getCart(userID);
     if (!cart) {
         alert("Cart not found.");
-        return;
+        return false;
     }
     try {
 
@@ -77,7 +77,7 @@ export async function makeOrder(userID, price, cartItems) {
             const product = await getProduct(item.product.id);
             if (item.quantity > product.stock) {
                 alert(`Insufficient stock for ${product.productName}. Available: ${product.stock}`);
-                return; // stop if stock is insufficient
+                return false; // stop if stock is insufficient
             }
         }
 
@@ -97,12 +97,11 @@ export async function makeOrder(userID, price, cartItems) {
             });
         }
 
-
-        alert(" Order placed successfully and stock updated!");
-
+        return true
     } catch (error) {
         console.error("Error making order:", error);
         alert(" An error occurred while processing your order.");
+        return false;
     }
 }
 
